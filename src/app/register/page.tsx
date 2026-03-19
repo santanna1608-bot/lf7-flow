@@ -26,6 +26,10 @@ export default function RegisterPage() {
     try {
       // O gatilho handle_new_user() no banco de dados agora cuida de tudo
       // se passarmos 'company_name' no metadata.
+      // - [x] Configuração de Auth & RLS
+      // - [x] Criar políticas de RLS para isolamento por `company_id`
+      // - [x] Configurar trigger para criação automática de perfil no signup
+      // - [x] Corrigir erro de RLS no cadastro atômico
       const { error: signUpError } = await supabase.auth.signUp({
         email: formData.email,
         password: formData.password,

@@ -14,7 +14,8 @@ import {
   Settings, 
   Zap,
   ChevronRight,
-  LogOut
+  LogOut,
+  ShieldCheck
 } from "lucide-react"
 
 const menuItems = [
@@ -36,13 +37,14 @@ export function Sidebar() {
       if (session) {
         const { data: profile } = await supabase
           .from('profiles')
-          .select('full_name, company_id, companies(name)')
+          .select('full_name, role, company_id, companies(name)')
           .eq('user_id', session.user.id)
           .single()
         
         setUser({
           name: profile?.full_name || session.user.email?.split('@')[0],
           email: session.user.email,
+          role: profile?.role,
           companyName: (profile as any)?.companies?.name || "LF7 AI Flow"
         })
       }
@@ -86,6 +88,24 @@ export function Sidebar() {
             )
           })}
         </nav>
+
+        {user?.role === 'super_admin' && (
+          <div className="mt-8 px-3">
+            <p className="px-3 text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2">Administração Global</p>
+            <Link
+              href="/admin"
+              className={cn(
+                "group flex items-center rounded-md px-3 py-2 text-sm font-medium transition-colors",
+                pathname === '/admin' 
+                  ? "bg-primary/20 text-primary border border-primary/20 shadow-sm" 
+                  : "text-muted-foreground hover:bg-accent hover:text-accent-foreground"
+              )}
+            >
+              <ShieldCheck className="mr-3 h-5 w-5" />
+              Painel Global
+            </Link>
+          </div>
+        )}
       </div>
       <div className="border-t p-4 space-y-3">
         <div className="flex items-center space-x-3 rounded-md bg-muted/50 p-2">
