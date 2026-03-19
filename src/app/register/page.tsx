@@ -24,27 +24,16 @@ export default function RegisterPage() {
     setError(null)
 
     try {
-      // 1. Criar a empresa primeiro (publicamente?) 
-      // Nota: Idealmente isso seria via RPC ou Edge Function, mas para MVP vamos tentar direto
-      // com permissões anonimas temporarias ou apenas usando o endpoint de signup para carregar tudo
-      
-      const { data: company, error: companyError } = await supabase
-        .from('companies')
-        .insert({ name: formData.companyName })
-        .select()
-        .single()
-
-      if (companyError) throw companyError
-
-      // 2. Criar o usuário vinculado a essa empresa
+      // O gatilho handle_new_user() no banco de dados agora cuida de tudo
+      // se passarmos 'company_name' no metadata.
       const { error: signUpError } = await supabase.auth.signUp({
         email: formData.email,
         password: formData.password,
         options: {
           data: {
             full_name: formData.fullName,
-            company_id: company.id,
-            role: 'admin' // Usuário que cadastra a empresa é Admin
+            company_name: formData.companyName,
+            role: 'admin'
           }
         }
       })
