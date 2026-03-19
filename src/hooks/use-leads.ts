@@ -40,9 +40,8 @@ export function useLeads() {
   }, [])
 
   const updateLeadStatus = async (leadId: string, newStatus: string) => {
-    const { error } = await supabase
-      .from('leads')
-      .update({ status: newStatus } as any)
+    const { error } = await (supabase.from('leads') as any)
+      .update({ status: newStatus })
       .eq('id', leadId)
 
     if (error) {
