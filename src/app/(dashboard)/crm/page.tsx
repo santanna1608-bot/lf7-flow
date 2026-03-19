@@ -1,7 +1,6 @@
 "use client"
 
 import { KanbanBoard } from "@/components/crm/kanban-board"
-import { Button } from "@/components/ui/button"
 import { Plus } from "lucide-react"
 
 export default function CRMPage() {
