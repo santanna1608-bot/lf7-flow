@@ -1,12 +1,13 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import { supabase } from "@/lib/supabase"
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs"
 import { Database } from "@/types/database"
 
 type Lead = Database['public']['Tables']['leads']['Row']
 
 export function useLeads() {
+  const supabase = createClientComponentClient<Database>()
   const [leads, setLeads] = useState<Lead[]>([])
   const [loading, setLoading] = useState(true)
 
@@ -41,7 +42,7 @@ export function useLeads() {
   const updateLeadStatus = async (leadId: string, newStatus: string) => {
     const { error } = await supabase
       .from('leads')
-      .update({ status: newStatus })
+      .update({ status: newStatus } as any)
       .eq('id', leadId)
 
     if (error) {

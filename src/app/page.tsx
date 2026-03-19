@@ -20,12 +20,12 @@ export default function Home() {
           <span className="text-2xl font-bold tracking-tight">LF7 AI Flow</span>
         </div>
         <div className="hidden md:flex items-center gap-8 text-sm font-medium text-muted-foreground">
-          <a href="#" className="hover:text-primary transition-colors">Features</a>
-          <a href="#" className="hover:text-primary transition-colors">Preços</a>
-          <a href="#" className="hover:text-primary transition-colors">Documentação</a>
+          <Link href="/login" className="text-sm font-semibold text-foreground hover:text-primary transition-colors">Features</Link>
+          <Link href="/login" className="text-sm font-semibold text-foreground hover:text-primary transition-colors">Preços</Link>
+          <Link href="/login" className="text-sm font-semibold text-foreground hover:text-primary transition-colors">Documentação</Link>
           <Link 
-            href="/dashboard" 
-            className="bg-primary hover:bg-primary/90 text-primary-foreground px-5 py-2.5 rounded-full transition-all hover:shadow-lg hover:shadow-primary/30 flex items-center gap-2"
+            href="/login" 
+            className="rounded-full bg-primary px-6 py-2.5 text-sm font-bold text-primary-foreground shadow-lg shadow-primary/20 hover:bg-primary/90 transition-all flex items-center gap-2"
           >
             Entrar no App <ArrowRight className="h-4 w-4" />
           </Link>

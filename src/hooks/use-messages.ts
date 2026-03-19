@@ -1,12 +1,13 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import { supabase } from "@/lib/supabase"
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs"
 import { Database } from "@/types/database"
 
 type Message = Database['public']['Tables']['messages']['Row']
 
 export function useMessages(leadId: string | null) {
+  const supabase = createClientComponentClient<Database>()
   const [messages, setMessages] = useState<Message[]>([])
   const [loading, setLoading] = useState(false)
 

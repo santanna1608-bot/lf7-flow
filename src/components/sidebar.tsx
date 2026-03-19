@@ -1,5 +1,9 @@
 "use client"
 
+import { useEffect, useState } from "react"
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs"
+import { useRouter } from "next/navigation"
+
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { cn } from "@/lib/utils"
@@ -9,7 +13,8 @@ import {
   Kanban, 
   Settings, 
   Zap,
-  ChevronRight
+  ChevronRight,
+  LogOut
 } from "lucide-react"
 
 const menuItems = [
@@ -21,12 +26,43 @@ const menuItems = [
 
 export function Sidebar() {
   const pathname = usePathname()
+  const router = useRouter()
+  const [user, setUser] = useState<any>(null)
+  const supabase = createClientComponentClient()
+
+  useEffect(() => {
+    const getUser = async () => {
+      const { data: { session } } = await supabase.auth.getSession()
+      if (session) {
+        const { data: profile } = await supabase
+          .from('profiles')
+          .select('full_name, company_id, companies(name)')
+          .eq('user_id', session.user.id)
+          .single()
+        
+        setUser({
+          name: profile?.full_name || session.user.email?.split('@')[0],
+          email: session.user.email,
+          companyName: (profile as any)?.companies?.name || "LF7 AI Flow"
+        })
+      }
+    }
+    getUser()
+  }, [])
+
+  const handleLogout = async () => {
+    await supabase.auth.signOut()
+    router.push("/login")
+    router.refresh()
+  }
 
   return (
     <div className="flex h-full w-64 flex-col border-r bg-card text-card-foreground shadow-sm">
       <div className="flex h-16 items-center border-b px-6">
         <Zap className="mr-2 h-6 w-6 text-primary" />
-        <span className="text-xl font-bold tracking-tight text-primary">LF7 AI Flow</span>
+        <span className="text-xl font-bold tracking-tight text-primary">
+          {user?.companyName || "LF7 AI Flow"}
+        </span>
       </div>
       <div className="flex-1 overflow-y-auto py-4">
         <nav className="space-y-1 px-3">
@@ -51,16 +87,22 @@ export function Sidebar() {
           })}
         </nav>
       </div>
-      <div className="border-t p-4">
+      <div className="border-t p-4 space-y-3">
         <div className="flex items-center space-x-3 rounded-md bg-muted/50 p-2">
           <div className="h-8 w-8 rounded-full bg-primary/20 flex items-center justify-center font-bold text-primary">
-            S
+            {user?.name?.charAt(0).toUpperCase() || "U"}
           </div>
-          <div className="flex-1 overflow-hidden">
-            <p className="truncate text-sm font-medium">Sandeco</p>
-            <p className="truncate text-xs text-muted-foreground">sandeco@lf7.ai</p>
+          <div className="flex-1 overflow-hidden text-xs">
+            <p className="truncate font-medium">{user?.name || "Usuário"}</p>
+            <p className="truncate text-muted-foreground">{user?.email}</p>
           </div>
         </div>
+        <button 
+          onClick={handleLogout}
+          className="w-full flex items-center gap-2 px-3 py-2 text-sm font-medium text-destructive hover:bg-destructive/10 rounded-md transition-colors"
+        >
+          <LogOut className="h-4 w-4" /> Sair da Conta
+        </button>
       </div>
     </div>
   )
