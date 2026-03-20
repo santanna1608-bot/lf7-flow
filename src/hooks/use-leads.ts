@@ -11,30 +11,51 @@ export function useLeads() {
   const [leads, setLeads] = useState<Lead[]>([])
   const [loading, setLoading] = useState(true)
 
-  const fetchLeads = async () => {
-    setLoading(true)
-    const { data, error } = await supabase
-      .from('leads')
-      .select('*')
-      .order('created_at', { ascending: false })
+  const fetchLeads = async (mounted = true) => {
+    try {
+      const { data: { session } } = await supabase.auth.getSession()
+      if (!session || !mounted) return
 
-    if (!error && data) {
-      setLeads(data)
+      const { data: profile } = await supabase
+        .from('profiles')
+        .select('company_id')
+        .eq('user_id', session.user.id)
+        .single()
+
+      if (!profile?.company_id || !mounted) {
+        setLeads([])
+        return
+      }
+
+      const { data, error } = await supabase
+        .from('leads')
+        .select('*')
+        .eq('company_id', profile.company_id)
+        .order('created_at', { ascending: false })
+
+      if (!error && data && mounted) {
+        setLeads(data)
+      }
+    } catch (err) {
+      console.error(err)
+    } finally {
+      if (mounted) setLoading(false)
     }
-    setLoading(false)
   }
 
   useEffect(() => {
-    fetchLeads()
+    let mounted = true
+    fetchLeads(mounted)
 
     const channel = supabase
       .channel('leads-crm')
       .on('postgres_changes', { event: '*', schema: 'public', table: 'leads' }, () => {
-        fetchLeads()
+        fetchLeads(mounted)
       })
       .subscribe()
 
     return () => {
+      mounted = false
       supabase.removeChannel(channel)
     }
   }, [])
