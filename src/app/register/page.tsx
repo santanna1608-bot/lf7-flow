@@ -53,14 +53,24 @@ export default function RegisterPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-background px-4 py-12">
-      <div className="w-full max-w-lg space-y-8 p-8 rounded-3xl border bg-card/50 backdrop-blur-sm shadow-xl">
-        <div className="text-center">
-          <div className="inline-flex h-12 w-12 items-center justify-center rounded-xl bg-primary mb-4">
-            <Zap className="h-7 w-7 text-primary-foreground fill-current" />
+    <div className="min-h-screen flex items-center justify-center bg-[#05070a] px-4 py-12 relative overflow-hidden">
+      {/* Background Glows */}
+      <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-primary/20 blur-[120px] rounded-full" />
+      <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-secondary/10 blur-[120px] rounded-full" />
+
+      <div className="w-full max-w-lg z-10 bg-[#0a0c1a]/60 backdrop-blur-2xl p-10 rounded-[2.5rem] border border-white/10 shadow-2xl relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-br from-primary/10 to-secondary/10 -z-10" />
+        <div className="text-center mb-8">
+           <div className="flex flex-col items-center gap-0 mb-6">
+            <span className="text-5xl font-black tracking-tighter text-white uppercase italic leading-none">
+              evolua
+            </span>
+            <span className="text-[10px] font-black tracking-[0.4em] text-secondary uppercase -mt-2">
+              PROSPECT
+            </span>
           </div>
-          <h2 className="text-3xl font-bold tracking-tight">Começar com LF7 Flow</h2>
-          <p className="mt-2 text-sm text-muted-foreground">Configure sua empresa e comece a escalar com IA em minutos.</p>
+          <h2 className="text-3xl font-bold tracking-tight text-white">Criar sua Conta</h2>
+          <p className="mt-2 text-sm text-white/50">Configure sua empresa e comece em minutos.</p>
         </div>
 
         <form className="mt-8 space-y-5" onSubmit={handleRegister}>
@@ -69,7 +79,7 @@ export default function RegisterPage() {
               <label className="text-sm font-medium">Nome Completo</label>
               <input
                 required
-                className="mt-1 w-full h-11 rounded-xl border bg-background px-4 py-2 text-sm"
+                className="mt-1 w-full h-12 rounded-xl bg-[#e0e7ff] text-[#05070a] font-bold px-4 focus:outline-none focus:ring-2 focus:ring-secondary/50 transition-all placeholder:text-[#05070a]/40"
                 placeholder="Seu Nome"
                 value={formData.fullName}
                 onChange={(e) => setFormData({...formData, fullName: e.target.value})}
@@ -79,7 +89,7 @@ export default function RegisterPage() {
               <label className="text-sm font-medium">Nome da Empresa</label>
               <input
                 required
-                className="mt-1 w-full h-11 rounded-xl border bg-background px-4 py-2 text-sm"
+                className="mt-1 w-full h-12 rounded-xl bg-[#e0e7ff] text-[#05070a] font-bold px-4 focus:outline-none focus:ring-2 focus:ring-secondary/50 transition-all placeholder:text-[#05070a]/40"
                 placeholder="Minha Empresa SaaS"
                 value={formData.companyName}
                 onChange={(e) => setFormData({...formData, companyName: e.target.value})}
@@ -90,7 +100,7 @@ export default function RegisterPage() {
               <input
                 type="email"
                 required
-                className="mt-1 w-full h-11 rounded-xl border bg-background px-4 py-2 text-sm"
+                className="mt-1 w-full h-12 rounded-xl bg-[#e0e7ff] text-[#05070a] font-bold px-4 focus:outline-none focus:ring-2 focus:ring-secondary/50 transition-all placeholder:text-[#05070a]/40"
                 placeholder="nome@empresa.com"
                 value={formData.email}
                 onChange={(e) => setFormData({...formData, email: e.target.value})}
@@ -101,7 +111,7 @@ export default function RegisterPage() {
               <input
                 type="password"
                 required
-                className="mt-1 w-full h-11 rounded-xl border bg-background px-4 py-2 text-sm"
+                className="mt-1 w-full h-12 rounded-xl bg-[#e0e7ff] text-[#05070a] font-bold px-4 focus:outline-none focus:ring-2 focus:ring-secondary/50 transition-all placeholder:text-[#05070a]/40"
                 placeholder="Mínimo 6 caracteres"
                 value={formData.password}
                 onChange={(e) => setFormData({...formData, password: e.target.value})}
@@ -114,15 +124,15 @@ export default function RegisterPage() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full flex h-12 items-center justify-center rounded-full bg-primary text-primary-foreground font-bold shadow-lg shadow-primary/20 hover:bg-primary/90 transition-all active:scale-95"
+            className="w-full h-14 flex items-center justify-center rounded-2xl bg-gradient-to-r from-secondary to-primary text-white font-bold text-lg shadow-lg shadow-primary/20 hover:opacity-90 disabled:opacity-50 active:scale-[0.98]"
           >
-            {loading ? <Loader2 className="h-5 w-5 animate-spin" /> : "Criar Minha Conta"}
+            {loading ? <Loader2 className="h-6 w-6 animate-spin" /> : "Criar Minha Conta"}
             {!loading && <ArrowRight className="ml-2 h-5 w-5" />}
           </button>
 
-          <p className="text-center text-sm text-muted-foreground">
+          <p className="text-center text-sm font-medium text-white/40">
             Já tem uma conta?{" "}
-            <Link href="/login" className="font-semibold text-primary hover:underline">
+            <Link href="/login" className="font-bold text-secondary hover:underline underline-offset-4">
               Entrar agora
             </Link>
           </p>
