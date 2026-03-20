@@ -94,20 +94,78 @@ export default function DashboardPage() {
   const supabase = createClientComponentClient()
   const [userName, setUserName] = useState("Usuário")
   const [downloading, setDownloading] = useState(false)
+  const [dashboardStats, setDashboardStats] = useState<any[]>([])
+  const [loadingStats, setLoadingStats] = useState(true)
   
   useEffect(() => {
-    async function loadUser() {
+    async function loadDashboardData() {
+      setLoadingStats(true)
       const { data: { session } } = await supabase.auth.getSession()
-      if (session) {
-        const { data: profile } = await supabase
-          .from('profiles')
-          .select('full_name')
-          .eq('user_id', session.user.id)
-          .single()
-        if (profile?.full_name) setUserName(profile.full_name.split(' ')[0])
-      }
+      if (!session) return
+
+      // Obter perfil e company_id
+      const { data: profile } = await supabase
+        .from('profiles')
+        .select('full_name, company_id')
+        .eq('user_id', session.user.id)
+        .single()
+      
+      if (profile?.full_name) setUserName(profile.full_name.split(' ')[0])
+      if (!profile?.company_id) return
+
+      // Buscar Leads reais
+      const { data: leads } = await supabase
+        .from('leads')
+        .select('*')
+        .eq('company_id', profile.company_id)
+
+      const total = leads?.length || 0
+      const converted = leads?.filter(l => l.status === 'Agendado' || l.status === 'Qualificado').length || 0
+      const active = leads?.filter(l => l.status !== 'Perdido').length || 0
+      const retention = total > 0 ? 94.2 : 0 // Mock de retenção IA por enquanto
+
+      setDashboardStats([
+        {
+          name: "Total de Leads",
+          value: total.toLocaleString(),
+          change: "+12.5%",
+          trend: "up",
+          icon: Users,
+          color: "text-blue-600",
+          bg: "bg-blue-50"
+        },
+        {
+          name: "Conversas Ativas",
+          value: active.toLocaleString(),
+          change: "+18.2%",
+          trend: "up",
+          icon: MessageSquare,
+          color: "text-purple-600",
+          bg: "bg-purple-50"
+        },
+        {
+          name: "Taxa de Retenção IA",
+          value: `${retention}%`,
+          change: "+2.4%",
+          trend: "up",
+          icon: Target,
+          color: "text-emerald-600",
+          bg: "bg-emerald-50"
+        },
+        {
+          name: "Leads Convertidos",
+          value: converted.toLocaleString(),
+          change: "-4.1%",
+          trend: "down",
+          icon: TrendingUp,
+          color: "text-orange-600",
+          bg: "bg-orange-50"
+        }
+      ])
+      setLoadingStats(false)
     }
-    loadUser()
+
+    loadDashboardData()
   }, [])
 
   const handleDownloadReport = async () => {
@@ -190,7 +248,11 @@ export default function DashboardPage() {
 
       {/* Stats Grid */}
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-        {stats.map((stat) => (
+        {loadingStats ? (
+          [1, 2, 3, 4].map(i => (
+            <div key={i} className="h-32 bg-white rounded-3xl border border-slate-100 animate-pulse shadow-sm" />
+          ))
+        ) : dashboardStats.map((stat) => (
           <div key={stat.name} className="bg-white p-6 rounded-3xl shadow-sm border border-slate-100 relative group hover:shadow-md transition-all">
             <div className="flex items-center justify-between mb-8">
               <span className="text-sm font-semibold text-slate-500">{stat.name}</span>
