@@ -54,32 +54,34 @@ export default function adminUsersPage() {
       </div>
 
       {/* Stats Cards */}
-      <div className="grid gap-6 md:grid-cols-3">
-        <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 flex items-center gap-4 hover:shadow-md transition-shadow">
-          <div className="h-12 w-12 rounded-xl bg-primary/10 flex items-center justify-center text-primary">
-            <Users className="h-6 w-6" />
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="bg-white p-6 rounded-[2rem] border border-slate-100 shadow-sm flex items-center gap-4">
+          <div className="h-14 w-14 rounded-2xl bg-primary/5 flex items-center justify-center text-primary shadow-sm">
+            <Users className="h-7 w-7" />
           </div>
           <div>
-            <p className="text-sm font-medium text-slate-500 uppercase tracking-wider">Total de Usuários</p>
-            <h3 className="text-2xl font-bold">{users.length}</h3>
+            <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Total de Usuários</p>
+            <p className="text-2xl font-black text-slate-900 leading-none mt-1">{users.length}</p>
           </div>
         </div>
-        <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 flex items-center gap-4 hover:shadow-md transition-shadow">
-          <div className="h-12 w-12 rounded-xl bg-orange-100 flex items-center justify-center text-orange-600">
-            <ShieldCheck className="h-6 w-6" />
+
+        <div className="bg-white p-6 rounded-[2rem] border border-slate-100 shadow-sm flex items-center gap-4">
+          <div className="h-14 w-14 rounded-2xl bg-amber-50 flex items-center justify-center text-amber-500 shadow-sm">
+            <ShieldCheck className="h-7 w-7" />
           </div>
           <div>
-            <p className="text-sm font-medium text-slate-500 uppercase tracking-wider">Administradores</p>
-            <h3 className="text-2xl font-bold">{users.filter(u => u.role === 'admin').length}</h3>
+            <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Administradores</p>
+            <p className="text-2xl font-black text-slate-900 leading-none mt-1">{users.filter(u => u.role === 'admin' || u.role === 'super_admin').length}</p>
           </div>
         </div>
-        <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 flex items-center gap-4 hover:shadow-md transition-shadow">
-          <div className="h-12 w-12 rounded-xl bg-blue-100 flex items-center justify-center text-blue-600">
-            <Shield className="h-6 w-6" />
+
+        <div className="bg-white p-6 rounded-[2rem] border border-slate-100 shadow-sm flex items-center gap-4">
+          <div className="h-14 w-14 rounded-2xl bg-blue-50 flex items-center justify-center text-blue-500 shadow-sm">
+            <Shield className="h-7 w-7" />
           </div>
           <div>
-            <p className="text-sm font-medium text-slate-500 uppercase tracking-wider">Usuários Comuns</p>
-            <h3 className="text-2xl font-bold">{users.filter(u => u.role !== 'admin').length}</h3>
+            <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Usuários Comuns</p>
+            <p className="text-2xl font-black text-slate-900 leading-none mt-1">{users.filter(u => u.role !== 'admin' && u.role !== 'super_admin').length}</p>
           </div>
         </div>
       </div>
