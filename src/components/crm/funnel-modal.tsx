@@ -14,8 +14,7 @@ interface FunnelModalProps {
 export function FunnelModal({ isOpen, onClose, onSuccess }: FunnelModalProps) {
   const [name, setName] = useState("")
   const [stages, setStages] = useState<string[]>(["Novo Lead", "Qualificado", "Fechado"])
-  const [loading, setLoading] = useState(false)
-  const supabase = createClientComponentClient<Database>()
+  const supabase = createClientComponentClient()
 
   if (!isOpen) return null
 
@@ -48,7 +47,7 @@ export function FunnelModal({ isOpen, onClose, onSuccess }: FunnelModalProps) {
         .eq('user_id', session.user.id)
         .single()
 
-      if (!profile?.company_id) return
+      if (!profile || !('company_id' in profile) || !profile.company_id) return
 
       const { error } = await supabase
         .from('funnels')

@@ -14,7 +14,7 @@ export default function CRMPage() {
   const [funnels, setFunnels] = useState<Funnel[]>([])
   const [activeFunnel, setActiveFunnel] = useState<Funnel | null>(null)
   const [loading, setLoading] = useState(true)
-  const supabase = createClientComponentClient<Database>()
+  const supabase = createClientComponentClient()
 
   const fetchFunnels = async () => {
     try {
@@ -27,7 +27,7 @@ export default function CRMPage() {
         .eq('user_id', session.user.id)
         .single()
 
-      if (!profile?.company_id) return
+      if (!profile || !('company_id' in profile) || !profile.company_id) return
 
       const { data } = await supabase
         .from('funnels')
