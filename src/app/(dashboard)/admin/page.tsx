@@ -31,12 +31,20 @@ export default function SuperAdminDashboard() {
     fetchCompanies()
   }, [])
 
-  const filteredCompanies = companies.filter(company => 
+  const filteredCompanies = companies?.filter(company => 
     company.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
     company.id?.toLowerCase().includes(searchTerm.toLowerCase())
-  )
+  ) || []
 
-  if (loading) return <div className="p-8 animate-pulse text-center">Carregando painel global...</div>
+  // Somente mostrar loading total se for a primeira carga e não tivermos dados
+  if (loading && companies.length === 0) {
+    return (
+      <div className="flex flex-col items-center justify-center min-h-[60vh] gap-4 animate-pulse">
+        <div className="h-12 w-12 rounded-full border-4 border-primary/20 border-t-primary animate-spin" />
+        <p className="text-slate-400 font-bold text-sm uppercase tracking-widest">Sincronizando LF7 AI Flow...</p>
+      </div>
+    )
+  }
 
   return (
     <div className="max-w-7xl mx-auto space-y-10 pb-20">
