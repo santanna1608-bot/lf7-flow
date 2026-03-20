@@ -20,9 +20,6 @@ export default function Home() {
           <span className="text-2xl font-bold tracking-tight">LF7 AI Flow</span>
         </div>
         <div className="hidden md:flex items-center gap-8 text-sm font-medium text-muted-foreground">
-          <Link href="/login" className="text-sm font-semibold text-foreground hover:text-primary transition-colors">Features</Link>
-          <Link href="/login" className="text-sm font-semibold text-foreground hover:text-primary transition-colors">Preços</Link>
-          <Link href="/login" className="text-sm font-semibold text-foreground hover:text-primary transition-colors">Documentação</Link>
           <Link 
             href="/login" 
             className="rounded-full bg-primary px-6 py-2.5 text-sm font-bold text-primary-foreground shadow-lg shadow-primary/20 hover:bg-primary/90 transition-all flex items-center gap-2"
@@ -53,14 +50,11 @@ export default function Home() {
 
         <div className="flex flex-col sm:flex-row items-center gap-4 animate-in fade-in slide-in-from-bottom-16 duration-1000">
           <Link 
-            href="/dashboard" 
+            href="/login" 
             className="h-14 px-10 rounded-full bg-primary text-primary-foreground text-lg font-bold shadow-xl shadow-primary/25 hover:bg-primary/90 transition-all hover:-translate-y-1 flex items-center gap-3 active:scale-95"
           >
-            Começar Grátis <ArrowRight className="h-5 w-5" />
+            Entrar no App <ArrowRight className="h-5 w-5" />
           </Link>
-          <button className="h-14 px-10 rounded-full border bg-background/50 backdrop-blur-sm text-lg font-medium hover:bg-muted/50 transition-all active:scale-95">
-            Ver Demonstração
-          </button>
         </div>
 
         {/* Feature Highlights */}
