@@ -13,46 +13,10 @@ import {
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs"
 import { useEffect, useState } from "react"
 import { cn } from "@/lib/utils"
+import Link from "next/link"
 
 // Dados estáticos removidos - substituídos por dashboardStats
 
-const recentActivities = [
-  {
-    id: 1,
-    title: "Novo lead qualificado por IA",
-    time: "há 10 minutos atrás",
-    amount: "+$240.00",
-    color: "text-emerald-500"
-  },
-  {
-    id: 2,
-    title: "Novo lead qualificado por IA",
-    time: "há 20 minutos atrás",
-    amount: "+$240.00",
-    color: "text-emerald-500"
-  },
-  {
-    id: 3,
-    title: "Novo lead qualificado por IA",
-    time: "há 30 minutos atrás",
-    amount: "+$240.00",
-    color: "text-emerald-500"
-  },
-  {
-    id: 4,
-    title: "Novo lead qualificado por IA",
-    time: "há 40 minutos atrás",
-    amount: "+$240.00",
-    color: "text-emerald-500"
-  },
-  {
-    id: 5,
-    title: "Novo lead qualificado por IA",
-    time: "há 50 minutos atrás",
-    amount: "+$240.00",
-    color: "text-emerald-500"
-  }
-]
 
 export default function DashboardPage() {
   const supabase = createClientComponentClient()
@@ -67,6 +31,7 @@ export default function DashboardPage() {
     let mounted = true
 
     async function loadDashboardData() {
+      console.log("🔄 Tentando carregar dados do Dashboard... Time:", new Date().toLocaleTimeString())
       try {
         const { data: { session } } = await supabase.auth.getSession()
         if (!session || !mounted) {
@@ -234,6 +199,7 @@ export default function DashboardPage() {
         <div>
           <h1 className="text-4xl font-bold text-slate-900 tracking-tight">Dashboard</h1>
           <p className="text-slate-500 mt-1">Bem-vindo de volta! Aqui está um resumo do seu fluxo de IA.</p>
+          <p className="text-[10px] text-slate-300 mt-2 uppercase tracking-widest font-bold">Última Sincronização: {new Date().toLocaleTimeString()}</p>
         </div>
         <button 
           onClick={handleDownloadReport}
