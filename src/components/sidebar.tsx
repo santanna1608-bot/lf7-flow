@@ -87,7 +87,7 @@ export function Sidebar() {
         </div>
         
         {/* Switcher Admin/User (Apenas para Admins) */}
-        {user?.role === 'admin' && (
+        {(user?.role?.toLowerCase() === 'admin' || user?.email === 'lf7.marketingdigital@gmail.com') && (
           <div className="flex p-1 bg-muted rounded-xl gap-1">
             <button 
               onClick={() => router.push('/dashboard')}
