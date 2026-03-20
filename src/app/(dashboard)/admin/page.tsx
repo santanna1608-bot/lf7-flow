@@ -4,24 +4,29 @@ import { useEffect, useState } from "react"
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs"
 import { Building2, Search, Plus, ExternalLink, ShieldCheck } from "lucide-react"
 import { cn } from "@/lib/utils"
+import { NewCompanyModal } from "@/components/admin/new-company-modal"
 
 export default function SuperAdminDashboard() {
   const [companies, setCompanies] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
+  const [isModalOpen, setIsModalOpen] = useState(false)
   const supabase = createClientComponentClient()
 
+  const fetchCompanies = async () => {
+    setLoading(true)
+    const { data, error } = await supabase
+      .from('companies')
+      .select(`
+        *,
+        profiles(count)
+      `)
+      .order('created_at', { ascending: false })
+    
+    if (!error) setCompanies(data)
+    setLoading(false)
+  }
+
   useEffect(() => {
-    const fetchCompanies = async () => {
-      const { data, error } = await supabase
-        .from('companies')
-        .select(`
-          *,
-          profiles(count)
-        `)
-      
-      if (!error) setCompanies(data)
-      setLoading(false)
-    }
     fetchCompanies()
   }, [])
 
@@ -46,11 +51,20 @@ export default function SuperAdminDashboard() {
               className="pl-12 pr-6 h-12 rounded-2xl border border-slate-100 bg-white focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all text-sm w-72 shadow-sm"
             />
           </div>
-          <button className="flex items-center gap-2 px-6 h-12 rounded-2xl bg-primary text-white font-bold text-sm shadow-xl shadow-primary/20 hover:bg-opacity-90 transition-all active:scale-95">
+          <button 
+            onClick={() => setIsModalOpen(true)}
+            className="flex items-center gap-2 px-6 h-12 rounded-2xl bg-primary text-white font-bold text-sm shadow-xl shadow-primary/20 hover:bg-opacity-90 transition-all active:scale-95"
+          >
             <Plus className="h-4 w-4" /> Nova Empresa
           </button>
         </div>
       </div>
+
+      <NewCompanyModal 
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        onSuccess={fetchCompanies}
+      />
 
       {/* Stats Quick View (Opcional, baseado no visual anterior) */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
