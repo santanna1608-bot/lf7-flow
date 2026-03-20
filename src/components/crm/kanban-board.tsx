@@ -20,10 +20,13 @@ import { Database } from "@/types/database"
 
 type Lead = Database['public']['Tables']['leads']['Row']
 
-const DEFAULT_STAGES = ["Novo Lead", "Qualificado", "Agendado", "Fechado"]
+interface KanbanBoardProps {
+  activeFunnel: Database['public']['Tables']['funnels']['Row']
+}
 
-export function KanbanBoard() {
+export function KanbanBoard({ activeFunnel }: KanbanBoardProps) {
   const { leads, updateLeadStatus } = useLeads()
+  const stages = (activeFunnel.stages as string[]) || ["Novo Lead", "Qualificado", "Agendado", "Fechado"]
   const [activeLead, setActiveLead] = useState<Lead | null>(null)
   const [selectedLead, setSelectedLead] = useState<Lead | null>(null)
   const [searchTerm, setSearchTerm] = useState("")
@@ -86,7 +89,7 @@ export function KanbanBoard() {
         </div>
 
         <div className="flex flex-1 gap-6 overflow-x-auto pb-8 min-h-0">
-          {DEFAULT_STAGES.map((stage) => (
+          {stages.map((stage) => (
             <KanbanColumn
               key={stage}
               id={stage}
