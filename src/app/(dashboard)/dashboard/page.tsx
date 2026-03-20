@@ -1,14 +1,14 @@
 "use client"
+
 import { DashboardOverview } from "@/components/dashboard/overview-chart"
 import { 
   Users, 
   MessageSquare, 
   Target, 
   TrendingUp,
-  ShieldCheck,
-  Send,
-  AlertCircle,
-  PlayCircle
+  ArrowUpRight,
+  ArrowDownRight,
+  Download
 } from "lucide-react"
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs"
 import { useEffect, useState } from "react"
@@ -21,7 +21,7 @@ const stats = [
     trend: "up",
     icon: Users,
     color: "text-blue-600",
-    bg: "bg-blue-100"
+    bg: "bg-blue-50"
   },
   {
     name: "Conversas Ativas",
@@ -30,7 +30,7 @@ const stats = [
     trend: "up",
     icon: MessageSquare,
     color: "text-purple-600",
-    bg: "bg-purple-100"
+    bg: "bg-purple-50"
   },
   {
     name: "Taxa de Retenção IA",
@@ -38,8 +38,8 @@ const stats = [
     change: "+2.4%",
     trend: "up",
     icon: Target,
-    color: "text-green-600",
-    bg: "bg-green-100"
+    color: "text-emerald-600",
+    bg: "bg-emerald-50"
   },
   {
     name: "Leads Convertidos",
@@ -48,7 +48,45 @@ const stats = [
     trend: "down",
     icon: TrendingUp,
     color: "text-orange-600",
-    bg: "bg-orange-100"
+    bg: "bg-orange-50"
+  }
+]
+
+const recentActivities = [
+  {
+    id: 1,
+    title: "Novo lead qualificado por IA",
+    time: "há 10 minutos atrás",
+    amount: "+$240.00",
+    color: "text-emerald-500"
+  },
+  {
+    id: 2,
+    title: "Novo lead qualificado por IA",
+    time: "há 20 minutos atrás",
+    amount: "+$240.00",
+    color: "text-emerald-500"
+  },
+  {
+    id: 3,
+    title: "Novo lead qualificado por IA",
+    time: "há 30 minutos atrás",
+    amount: "+$240.00",
+    color: "text-emerald-500"
+  },
+  {
+    id: 4,
+    title: "Novo lead qualificado por IA",
+    time: "há 40 minutos atrás",
+    amount: "+$240.00",
+    color: "text-emerald-500"
+  },
+  {
+    id: 5,
+    title: "Novo lead qualificado por IA",
+    time: "há 50 minutos atrás",
+    amount: "+$240.00",
+    color: "text-emerald-500"
   }
 ]
 
@@ -72,52 +110,80 @@ export default function DashboardPage() {
   }, [])
 
   return (
-    <div className="space-y-10">
-      <div className="flex flex-col gap-1">
-        <h1 className="text-2xl font-medium text-slate-900">
-          Olá, {userName} 👋 <span className="text-slate-400">bem-vindo ao seu painel</span>
-        </h1>
+    <div className="space-y-8 max-w-[1400px] mx-auto pb-10">
+      {/* Header */}
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+          <h1 className="text-4xl font-bold text-slate-900 tracking-tight">Dashboard</h1>
+          <p className="text-slate-500 mt-1">Bem-vindo de volta! Aqui está um resumo do seu fluxo de IA.</p>
+        </div>
+        <button className="flex items-center gap-2 px-6 py-3 rounded-xl bg-[#2563eb] text-white font-bold text-sm shadow-xl shadow-blue-500/20 hover:bg-blue-700 transition-all active:scale-95">
+          Baixar Relatório
+        </button>
       </div>
 
+      {/* Stats Grid */}
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-        {/* Stats Cards */}
         {stats.map((stat) => (
-          <div key={stat.name} className="bg-white p-6 rounded-[2rem] shadow-sm border border-slate-100">
-            <div className="flex items-center justify-between mb-4">
-              <div className={`p-3 rounded-2xl ${stat.bg} ${stat.color}`}>
-                <stat.icon className="h-6 w-6" />
+          <div key={stat.name} className="bg-white p-6 rounded-3xl shadow-sm border border-slate-100 relative group hover:shadow-md transition-all">
+            <div className="flex items-center justify-between mb-8">
+              <span className="text-sm font-semibold text-slate-500">{stat.name}</span>
+              <div className={`p-2 rounded-xl ${stat.bg} ${stat.color}`}>
+                <stat.icon className="h-5 w-5" />
               </div>
-              <span className={`text-xs font-bold ${stat.trend === 'up' ? 'text-emerald-500' : 'text-rose-500'}`}>
-                {stat.change} <span className="text-slate-300 font-normal">vs mês anterior</span>
-              </span>
             </div>
             <div className="flex flex-col">
-              <span className="text-3xl font-bold text-slate-800">{stat.value}</span>
-              <span className="text-sm font-medium text-slate-400 mt-1">{stat.name}</span>
+              <span className="text-4xl font-bold text-slate-900">{stat.value}</span>
+              <div className="flex items-center gap-1 mt-2">
+                {stat.trend === 'up' ? (
+                  <ArrowUpRight className="h-4 w-4 text-emerald-500" />
+                ) : (
+                  <ArrowDownRight className="h-4 w-4 text-rose-500" />
+                )}
+                <span className={`text-sm font-bold ${stat.trend === 'up' ? 'text-emerald-500' : 'text-rose-500'}`}>
+                  {stat.change}
+                </span>
+                <span className="text-slate-400 text-sm ml-1">vs mês anterior</span>
+              </div>
             </div>
           </div>
         ))}
       </div>
 
-      <div className="grid gap-6 lg:grid-cols-2">
-        {/* Charts and activity can go here as before */}
-        <div className="bg-white p-8 rounded-[2.5rem] shadow-sm border border-slate-100">
+      {/* Main Content Grid */}
+      <div className="grid gap-8 lg:grid-cols-3">
+        {/* Chart Section */}
+        <div className="lg:col-span-2 bg-white p-8 rounded-[2.5rem] shadow-sm border border-slate-100">
            <div className="flex items-center justify-between mb-8">
-             <h3 className="font-bold text-slate-800">Leads por etapa (CRM)</h3>
-             <button className="text-xs font-bold text-slate-400 bg-slate-50 px-4 py-2 rounded-xl hover:bg-slate-100 transition-colors">Atualizar</button>
+             <h3 className="text-xl font-bold text-slate-800">Volume de Mensagens (IA vs User)</h3>
            </div>
-           <p className="text-xs text-slate-400 -mt-6 mb-8">Quantidade de leads em cada coluna do Kanban</p>
-           <div className="h-[250px] w-full bg-slate-50/50 rounded-2xl flex items-end p-6 gap-4 border border-dashed border-slate-200">
-              <div className="flex-1 bg-blue-500/20 rounded-t-lg h-[20%]" />
-              <div className="flex-1 bg-primary/20 rounded-t-lg h-[45%]" />
-              <div className="flex-1 bg-blue-500/20 rounded-t-lg h-[80%]" />
-              <div className="flex-1 bg-primary/20 rounded-t-lg h-[30%]" />
-           </div>
+           <DashboardOverview />
         </div>
 
-        <div className="bg-white p-8 rounded-[2.5rem] shadow-sm border border-slate-100 text-center">
-           <h3 className="font-bold text-slate-800 mb-8">Atividade Recente</h3>
-           <p className="text-sm text-slate-400 italic">Nenhuma atividade detectada recentemente.</p>
+        {/* Activity Section */}
+        <div className="bg-white p-8 rounded-[2.5rem] shadow-sm border border-slate-100 flex flex-col">
+           <h3 className="text-xl font-bold text-slate-800 mb-8 text-center">Atividade Recente</h3>
+           
+           <div className="space-y-6 flex-1">
+             {recentActivities.map((activity) => (
+               <div key={activity.id} className="flex items-center justify-between group">
+                 <div className="flex items-center gap-4">
+                   <div className="h-10 w-10 rounded-xl bg-blue-50 flex items-center justify-center text-blue-500">
+                     <MessageSquare className="h-5 w-5" />
+                   </div>
+                   <div className="flex flex-col">
+                     <span className="text-sm font-bold text-slate-800">{activity.title}</span>
+                     <span className="text-xs text-slate-400">{activity.time}</span>
+                   </div>
+                 </div>
+                 <span className={`text-sm font-bold ${activity.color}`}>{activity.amount}</span>
+               </div>
+             ))}
+           </div>
+
+           <button className="mt-10 text-sm font-bold text-blue-600 hover:text-blue-700 transition-colors text-center w-full">
+             Ver todas as atividades
+           </button>
         </div>
       </div>
     </div>
