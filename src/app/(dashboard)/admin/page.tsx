@@ -5,12 +5,15 @@ import { createClientComponentClient } from "@supabase/auth-helpers-nextjs"
 import { Building2, Search, Plus, ExternalLink, ShieldCheck } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { NewCompanyModal } from "@/components/admin/new-company-modal"
+import { ManageCompanyModal } from "@/components/admin/manage-company-modal"
 
 export default function SuperAdminDashboard() {
   const [companies, setCompanies] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
   const [searchTerm, setSearchTerm] = useState("")
   const [isModalOpen, setIsModalOpen] = useState(false)
+  const [isManageModalOpen, setIsManageModalOpen] = useState(false)
+  const [selectedCompany, setSelectedCompany] = useState<any | null>(null)
   const supabase = createClientComponentClient()
 
   const fetchCompanies = async () => {
@@ -82,6 +85,16 @@ export default function SuperAdminDashboard() {
         onSuccess={fetchCompanies}
       />
 
+      <ManageCompanyModal 
+        isOpen={isManageModalOpen}
+        onClose={() => {
+          setIsManageModalOpen(false)
+          setSelectedCompany(null)
+        }}
+        onSuccess={fetchCompanies}
+        company={selectedCompany}
+      />
+
       {/* Stats Quick View (Opcional, baseado no visual anterior) */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <div className="bg-white p-6 rounded-[2rem] border border-slate-100 shadow-sm">
@@ -140,7 +153,13 @@ export default function SuperAdminDashboard() {
               
               <div className="h-12 w-px bg-slate-100 hidden md:block"></div>
               
-              <button className="flex items-center gap-2 text-primary font-black hover:text-opacity-80 transition-colors text-sm group-hover:translate-x-1 duration-300">
+              <button 
+                onClick={() => {
+                  setSelectedCompany(company)
+                  setIsManageModalOpen(true)
+                }}
+                className="flex items-center gap-2 text-primary font-black hover:text-opacity-80 transition-colors text-sm group-hover:translate-x-1 duration-300"
+              >
                 Gerenciar <ExternalLink className="h-4 w-4" />
               </button>
             </div>
