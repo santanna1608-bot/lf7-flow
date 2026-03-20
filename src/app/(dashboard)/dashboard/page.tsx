@@ -32,7 +32,6 @@ export default function DashboardPage() {
     let mounted = true
 
     async function loadDashboardData() {
-      console.log("🔄 Tentando carregar dados do Dashboard... Time:", new Date().toLocaleTimeString())
       try {
         const { data: { session } } = await supabase.auth.getSession()
         if (!session || !mounted) {
@@ -208,7 +207,6 @@ export default function DashboardPage() {
         <div>
           <h1 className="text-4xl font-bold text-slate-900 tracking-tight">Dashboard</h1>
           <p className="text-slate-500 mt-1">Bem-vindo de volta! Aqui está um resumo do seu fluxo de IA.</p>
-          <p className="text-[10px] text-slate-300 mt-2 uppercase tracking-widest font-bold">Última Sincronização: {new Date().toLocaleTimeString()}</p>
         </div>
         <button 
           onClick={handleDownloadReport}
