@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react"
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs"
 import { Building2, Search, Plus, ExternalLink, ShieldCheck } from "lucide-react"
+import { cn } from "@/lib/utils"
 
 export default function SuperAdminDashboard() {
   const [companies, setCompanies] = useState<any[]>([])
