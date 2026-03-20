@@ -60,6 +60,8 @@ export default function DashboardPage() {
   const [downloading, setDownloading] = useState(false)
   const [dashboardStats, setDashboardStats] = useState<any[]>([])
   const [loadingStats, setLoadingStats] = useState(true)
+  const [chartData, setChartData] = useState<any[]>([])
+  const [activities, setActivities] = useState<any[]>([])
   
   useEffect(() => {
     let mounted = true
@@ -102,6 +104,52 @@ export default function DashboardPage() {
           { name: "Taxa de Retenção IA", value: `${retention}%`, change: "+0%", trend: "up", icon: Target, color: "text-emerald-600", bg: "bg-emerald-50" },
           { name: "Leads Convertidos", value: converted.toLocaleString(), change: "+0%", trend: "up", icon: TrendingUp, color: "text-orange-600", bg: "bg-orange-50" }
         ])
+
+        // Buscar dados do gráfico (últimos 7 dias)
+        const { data: msgs } = await supabase
+          .from('messages')
+          .select('role, created_at')
+          .eq('company_id', profile.company_id)
+          .gte('created_at', new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString())
+
+        if (mounted && msgs) {
+          const days = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb']
+          const chartMap: any = {}
+          
+          // Inicializa os últimos 7 dias
+          for (let i = 6; i >= 0; i--) {
+            const date = new Date(Date.now() - i * 24 * 60 * 60 * 1000)
+            const dayName = days[date.getDay()]
+            chartMap[dayName] = { name: dayName, ia: 0, user: 0 }
+          }
+
+          msgs.forEach(m => {
+            const dayName = days[new Date(m.created_at).getDay()]
+            if (chartMap[dayName]) {
+              if (m.role === 'assistant' || m.role === 'ia') chartMap[dayName].ia++
+              else chartMap[dayName].user++
+            }
+          })
+          setChartData(Object.values(chartMap))
+        }
+
+        // Buscar atividades recentes (últimos 5 leads)
+        const { data: recentLeads } = await supabase
+          .from('leads')
+          .select('*')
+          .eq('company_id', profile.company_id)
+          .order('created_at', { ascending: false })
+          .limit(5)
+
+        if (mounted && recentLeads) {
+          setActivities(recentLeads.map(lead => ({
+            id: lead.id,
+            title: lead.status === 'Qualificado' ? "Novo lead qualificado por IA" : "Novo lead no funil",
+            time: `há ${Math.floor((Date.now() - new Date(lead.created_at).getTime()) / 60000)} min atrás`,
+            amount: "+$240.00", // Fixado conforme design, ou pode ser dinâmico no futuro
+            color: lead.status === 'Qualificado' ? "text-emerald-500" : "text-blue-500"
+          })))
+        }
       } catch (error) {
         console.error("Dashboard error:", error)
       } finally {
@@ -239,7 +287,7 @@ export default function DashboardPage() {
            <div className="flex items-center justify-between mb-8">
              <h3 className="text-xl font-bold text-slate-800">Volume de Mensagens (IA vs User)</h3>
            </div>
-           <DashboardOverview />
+            <DashboardOverview data={chartData} />
         </div>
 
         {/* Activity Section */}
@@ -247,10 +295,13 @@ export default function DashboardPage() {
            <h3 className="text-xl font-bold text-slate-800 mb-8 text-center">Atividade Recente</h3>
            
            <div className="space-y-6 flex-1">
-             {recentActivities.map((activity) => (
+             {activities.length > 0 ? activities.map((activity) => (
                <div key={activity.id} className="flex items-center justify-between group">
                  <div className="flex items-center gap-4">
-                   <div className="h-10 w-10 rounded-xl bg-blue-50 flex items-center justify-center text-blue-500">
+                   <div className={cn(
+                     "h-10 w-10 rounded-xl flex items-center justify-center",
+                     activity.color.includes('emerald') ? "bg-emerald-50 text-emerald-500" : "bg-blue-50 text-blue-500"
+                   )}>
                      <MessageSquare className="h-5 w-5" />
                    </div>
                    <div className="flex flex-col">
@@ -260,12 +311,19 @@ export default function DashboardPage() {
                  </div>
                  <span className={`text-sm font-bold ${activity.color}`}>{activity.amount}</span>
                </div>
-             ))}
+             )) : (
+               <div className="text-center py-10 text-slate-400 text-sm italic">
+                 Nenhuma atividade recente.
+               </div>
+             )}
            </div>
 
-           <button className="mt-10 text-sm font-bold text-blue-600 hover:text-blue-700 transition-colors text-center w-full">
+           <Link 
+             href="/crm"
+             className="mt-10 text-sm font-bold text-blue-600 hover:text-blue-700 transition-colors text-center w-full"
+           >
              Ver todas as atividades
-           </button>
+           </Link>
         </div>
       </div>
     </div>

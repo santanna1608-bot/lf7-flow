@@ -10,25 +10,35 @@ import {
   Area
 } from 'recharts'
 
-const data = [
-  { name: 'Seg', mensagens: 400 },
-  { name: 'Ter', mensagens: 300 },
-  { name: 'Qua', mensagens: 200 },
-  { name: 'Qui', mensagens: 278 },
-  { name: 'Sex', mensagens: 189 },
-  { name: 'Sáb', mensagens: 239 },
-  { name: 'Dom', mensagens: 349 },
-]
+interface ChartData {
+  name: string
+  ia: number
+  user: number
+}
 
-export function DashboardOverview() {
+export function DashboardOverview({ data }: { data?: ChartData[] }) {
+  const chartData = data && data.length > 0 ? data : [
+    { name: 'Seg', ia: 0, user: 0 },
+    { name: 'Ter', ia: 0, user: 0 },
+    { name: 'Qua', ia: 0, user: 0 },
+    { name: 'Qui', ia: 0, user: 0 },
+    { name: 'Sex', ia: 0, user: 0 },
+    { name: 'Sáb', ia: 0, user: 0 },
+    { name: 'Dom', ia: 0, user: 0 },
+  ]
+
   return (
     <div className="h-[300px] w-full">
       <ResponsiveContainer width="100%" height="100%">
-        <AreaChart data={data} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
+        <AreaChart data={chartData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
           <defs>
-            <linearGradient id="colorMsg" x1="0" y1="0" x2="0" y2="1">
+            <linearGradient id="colorIA" x1="0" y1="0" x2="0" y2="1">
               <stop offset="5%" stopColor="#3b82f6" stopOpacity={0.2}/>
               <stop offset="95%" stopColor="#3b82f6" stopOpacity={0}/>
+            </linearGradient>
+            <linearGradient id="colorUser" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="5%" stopColor="#8b5cf6" stopOpacity={0.2}/>
+              <stop offset="95%" stopColor="#8b5cf6" stopOpacity={0}/>
             </linearGradient>
           </defs>
           <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
@@ -57,11 +67,21 @@ export function DashboardOverview() {
           />
           <Area 
             type="monotone" 
-            dataKey="mensagens" 
+            dataKey="ia" 
             stroke="#3b82f6" 
             strokeWidth={3}
             fillOpacity={1} 
-            fill="url(#colorMsg)" 
+            fill="url(#colorIA)" 
+            name="IA"
+          />
+          <Area 
+            type="monotone" 
+            dataKey="user" 
+            stroke="#8b5cf6" 
+            strokeWidth={3}
+            fillOpacity={1} 
+            fill="url(#colorUser)" 
+            name="Usuário"
           />
         </AreaChart>
       </ResponsiveContainer>
