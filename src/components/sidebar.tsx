@@ -15,7 +15,8 @@ import {
   Zap,
   ChevronRight,
   LogOut,
-  ShieldCheck
+  ShieldCheck,
+  User
 } from "lucide-react"
 
 const menuItems = [
