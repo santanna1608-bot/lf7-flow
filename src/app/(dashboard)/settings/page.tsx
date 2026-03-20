@@ -190,7 +190,7 @@ export default function SettingsPage() {
             <Zap className="h-6 w-6 text-primary" />
           </div>
           <div className="space-y-2">
-            <h4 className="text-lg font-bold">Resumo da Integração</h4>
+            <h4 className="text-lg font-bold text-slate-900">Resumo da Integração</h4>
             <p className="text-sm text-muted-foreground max-w-2xl">
               1. No n8n, crie um fluxo que receba mensagens da Evolution API.<br/>
               2. Adicione um nó HTTP Request apontando para o seu Webhook URL.<br/>
