@@ -7,7 +7,7 @@ import { Database } from "@/types/database"
 type Lead = Database['public']['Tables']['leads']['Row']
 
 export function useLeads() {
-  const supabase = createClientComponentClient<Database>()
+  const supabase = createClientComponentClient()
   const [leads, setLeads] = useState<Lead[]>([])
   const [loading, setLoading] = useState(true)
 
@@ -22,7 +22,7 @@ export function useLeads() {
         .eq('user_id', session.user.id)
         .single()
 
-      if (!profile?.company_id || !mounted) {
+      if (!profile || !('company_id' in profile) || !profile.company_id || !mounted) {
         setLeads([])
         return
       }

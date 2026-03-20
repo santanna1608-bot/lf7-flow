@@ -14,6 +14,7 @@ interface FunnelModalProps {
 export function FunnelModal({ isOpen, onClose, onSuccess }: FunnelModalProps) {
   const [name, setName] = useState("")
   const [stages, setStages] = useState<string[]>(["Novo Lead", "Qualificado", "Fechado"])
+  const [loading, setLoading] = useState(false)
   const supabase = createClientComponentClient()
 
   if (!isOpen) return null
