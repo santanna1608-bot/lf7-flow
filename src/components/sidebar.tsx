@@ -52,6 +52,9 @@ export function Sidebar() {
       }
     }
     getUser()
+
+    window.addEventListener('profile-updated', getUser)
+    return () => window.removeEventListener('profile-updated', getUser)
   }, [])
 
   const handleLogout = async () => {
@@ -95,8 +98,12 @@ export function Sidebar() {
           href="/profile"
           className="flex items-center space-x-3 p-2 rounded-lg hover:bg-accent transition-colors group"
         >
-           <div className="h-8 w-8 rounded-full bg-muted flex items-center justify-center text-muted-foreground group-hover:bg-primary/10 group-hover:text-primary transition-colors">
-             <User className="h-4 w-4" />
+           <div className="h-8 w-8 rounded-full bg-muted border border-slate-200 flex items-center justify-center text-muted-foreground group-hover:bg-primary/10 group-hover:text-primary transition-colors overflow-hidden">
+             {user?.avatarUrl ? (
+               <img src={user.avatarUrl} alt="Avatar" className="h-full w-full object-cover" />
+             ) : (
+               <User className="h-4 w-4" />
+             )}
            </div>
            <div className="flex-1 overflow-hidden">
              <p className="text-sm font-medium leading-none truncate">{user?.name || "Meu Perfil"}</p>
