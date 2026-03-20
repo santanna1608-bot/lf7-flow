@@ -52,6 +52,14 @@ export function Sidebar() {
       }
     }
     getUser()
+
+    // Ouvir atualizações de perfil de outros componentes
+    const handleProfileUpdate = () => getUser()
+    window.addEventListener('profile-updated', handleProfileUpdate)
+    
+    return () => {
+      window.removeEventListener('profile-updated', handleProfileUpdate)
+    }
   }, [])
 
   const handleLogout = async () => {

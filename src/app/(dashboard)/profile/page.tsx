@@ -85,6 +85,9 @@ export default function ProfilePage() {
         alert("Um e-mail de confirmação foi enviado para o novo endereço.")
       }
 
+      // Notificar Sidebar para atualizar nome e foto
+      window.dispatchEvent(new Event('profile-updated'))
+
       setSuccess(true)
       setTimeout(() => setSuccess(false), 3000)
     } catch (error: any) {
@@ -123,6 +126,9 @@ export default function ProfilePage() {
         .from('profiles')
         .update({ avatar_url: publicUrl })
         .eq('user_id', session.user.id)
+
+      // Notificar Sidebar
+      window.dispatchEvent(new Event('profile-updated'))
 
     } catch (error: any) {
       alert("Erro no upload: " + error.message)
