@@ -62,74 +62,64 @@ export default function DashboardPage() {
   const [loadingStats, setLoadingStats] = useState(true)
   
   useEffect(() => {
+    let mounted = true
+
     async function loadDashboardData() {
-      setLoadingStats(true)
-      const { data: { session } } = await supabase.auth.getSession()
-      if (!session) return
-
-      // Obter perfil e company_id
-      const { data: profile } = await supabase
-        .from('profiles')
-        .select('full_name, company_id')
-        .eq('user_id', session.user.id)
-        .single()
-      
-      if (profile?.full_name) setUserName(profile.full_name.split(' ')[0])
-      if (!profile?.company_id) return
-
-      // Buscar Leads reais
-      const { data: leads } = await supabase
-        .from('leads')
-        .select('*')
-        .eq('company_id', profile.company_id)
-
-      const total = leads?.length || 0
-      const converted = leads?.filter(l => l.status === 'Agendado' || l.status === 'Qualificado').length || 0
-      const active = leads?.filter(l => l.status !== 'Perdido').length || 0
-      const retention = total > 0 ? 94.2 : 0 // Mock de retenção IA por enquanto
-
-      setDashboardStats([
-        {
-          name: "Total de Leads",
-          value: total.toLocaleString(),
-          change: "+12.5%",
-          trend: "up",
-          icon: Users,
-          color: "text-blue-600",
-          bg: "bg-blue-50"
-        },
-        {
-          name: "Conversas Ativas",
-          value: active.toLocaleString(),
-          change: "+18.2%",
-          trend: "up",
-          icon: MessageSquare,
-          color: "text-purple-600",
-          bg: "bg-purple-50"
-        },
-        {
-          name: "Taxa de Retenção IA",
-          value: `${retention}%`,
-          change: "+2.4%",
-          trend: "up",
-          icon: Target,
-          color: "text-emerald-600",
-          bg: "bg-emerald-50"
-        },
-        {
-          name: "Leads Convertidos",
-          value: converted.toLocaleString(),
-          change: "-4.1%",
-          trend: "down",
-          icon: TrendingUp,
-          color: "text-orange-600",
-          bg: "bg-orange-50"
+      try {
+        const { data: { session } } = await supabase.auth.getSession()
+        if (!session || !mounted) {
+          setLoadingStats(false)
+          return
         }
-      ])
-      setLoadingStats(false)
+
+        // Obter perfil
+        const { data: profile } = await supabase
+          .from('profiles')
+          .select('full_name, company_id')
+          .eq('user_id', session.user.id)
+          .single()
+        
+        if (!mounted) return
+        if (profile?.full_name) setUserName(profile.full_name.split(' ')[0])
+        
+        let leadsData = []
+        if (profile?.company_id) {
+          const { data: leads } = await supabase
+            .from('leads')
+            .select('*')
+            .eq('company_id', profile.company_id)
+          leadsData = leads || []
+        }
+
+        const total = leadsData.length
+        const converted = leadsData.filter(l => l.status === 'Agendado' || l.status === 'Qualificado').length
+        const active = leadsData.filter(l => l.status !== 'Perdido').length
+        const retention = total > 0 ? 94.2 : 0
+
+        setDashboardStats([
+          { name: "Total de Leads", value: total.toLocaleString(), change: "+0%", trend: "up", icon: Users, color: "text-blue-600", bg: "bg-blue-50" },
+          { name: "Conversas Ativas", value: active.toLocaleString(), change: "+0%", trend: "up", icon: MessageSquare, color: "text-purple-600", bg: "bg-purple-50" },
+          { name: "Taxa de Retenção IA", value: `${retention}%`, change: "+0%", trend: "up", icon: Target, color: "text-emerald-600", bg: "bg-emerald-50" },
+          { name: "Leads Convertidos", value: converted.toLocaleString(), change: "+0%", trend: "up", icon: TrendingUp, color: "text-orange-600", bg: "bg-orange-50" }
+        ])
+      } catch (error) {
+        console.error("Dashboard error:", error)
+      } finally {
+        if (mounted) setLoadingStats(false)
+      }
     }
 
     loadDashboardData()
+    
+    // Timeout de segurança: desliga o loading após 5s se travar
+    const timer = setTimeout(() => {
+      if (mounted) setLoadingStats(false)
+    }, 5000)
+
+    return () => {
+      mounted = false
+      clearTimeout(timer)
+    }
   }, [])
 
   const handleDownloadReport = async () => {
