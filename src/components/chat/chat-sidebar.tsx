@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import { supabase } from "@/lib/supabase"
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs"
 import { Database } from "@/types/database"
 import { cn } from "@/lib/utils"
 import { Search, User } from "lucide-react"
@@ -16,28 +16,54 @@ interface ChatSidebarProps {
 export function ChatSidebar({ onSelectLead, selectedLeadId }: ChatSidebarProps) {
   const [leads, setLeads] = useState<Lead[]>([])
   const [search, setSearch] = useState("")
+  const [loading, setLoading] = useState(true)
+  const supabase = createClientComponentClient()
 
   useEffect(() => {
+    let mounted = true
+
     const fetchLeads = async () => {
-      const { data } = await supabase
-        .from('leads')
-        .select('*')
-        .order('last_message_at', { ascending: false })
-      
-      if (data) setLeads(data)
+      try {
+        setLoading(true)
+        const { data: { session } } = await supabase.auth.getSession()
+        if (!session || !mounted) return
+
+        const { data: profile } = await supabase
+          .from('profiles')
+          .select('company_id')
+          .eq('user_id', session.user.id)
+          .single()
+
+        if (!profile?.company_id || !mounted) {
+          setLeads([])
+          return
+        }
+
+        const { data, error } = await supabase
+          .from('leads')
+          .select('*')
+          .eq('company_id', profile.company_id)
+          .order('last_message_at', { ascending: false })
+        
+        if (data && mounted) setLeads(data)
+      } catch (err) {
+        console.error(err)
+      } finally {
+        if (mounted) setLoading(false)
+      }
     }
 
     fetchLeads()
 
-    // Realtime para atualizar a lista de leads quando houver novas interações
     const channel = supabase
-      .channel('leads-list')
+      .channel('leads-chat-list')
       .on('postgres_changes', { event: '*', schema: 'public', table: 'leads' }, () => {
         fetchLeads()
       })
       .subscribe()
 
     return () => {
+      mounted = false
       supabase.removeChannel(channel)
     }
   }, [])
