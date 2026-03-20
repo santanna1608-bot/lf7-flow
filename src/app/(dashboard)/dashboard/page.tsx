@@ -104,12 +104,16 @@ export default function DashboardPage() {
         }
 
         // Buscar atividades recentes (últimos 5 leads)
-        const { data: recentLeads } = await supabase
-          .from('leads')
-          .select('*')
-          .eq('company_id', profile.company_id)
-          .order('created_at', { ascending: false })
-          .limit(5)
+        let recentLeads: any[] | null = []
+        if (profile?.company_id) {
+          const { data } = await supabase
+            .from('leads')
+            .select('*')
+            .eq('company_id', profile.company_id)
+            .order('created_at', { ascending: false })
+            .limit(5)
+          recentLeads = data
+        }
 
         if (mounted && recentLeads) {
           setActivities(recentLeads.map(lead => ({
@@ -202,7 +206,7 @@ export default function DashboardPage() {
       {/* Header */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-          <h1 className="text-4xl font-bold text-slate-900 tracking-tight">Dashboard V4</h1>
+          <h1 className="text-4xl font-bold text-slate-900 tracking-tight">Dashboard</h1>
           <p className="text-slate-500 mt-1">Bem-vindo de volta! Aqui está um resumo do seu fluxo de IA.</p>
           <p className="text-[10px] text-slate-300 mt-2 uppercase tracking-widest font-bold">Última Sincronização: {new Date().toLocaleTimeString()}</p>
         </div>
