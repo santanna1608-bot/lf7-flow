@@ -52,14 +52,6 @@ export function Sidebar() {
       }
     }
     getUser()
-
-    // Ouvir atualizações de perfil de outros componentes
-    const handleProfileUpdate = () => getUser()
-    window.addEventListener('profile-updated', handleProfileUpdate)
-    
-    return () => {
-      window.removeEventListener('profile-updated', handleProfileUpdate)
-    }
   }, [])
 
   const handleLogout = async () => {
@@ -68,24 +60,12 @@ export function Sidebar() {
     router.refresh()
   }
 
-  const logoUrl = "https://framerusercontent.com/images/8rFk2V1QG1u1R1X1R1X1R1X1R1.png" // Placeholder ou similar
-
   return (
-    <div className="flex h-full w-64 flex-col border-r border-white/5 bg-[#05070a] text-white shadow-2xl relative">
-      <div className="absolute inset-0 bg-gradient-to-b from-primary/5 to-transparent pointer-events-none" />
-      <div className="flex h-20 items-center justify-center border-b border-white/5 px-6">
+    <div className="flex h-full w-64 flex-col border-r bg-background">
+      <div className="flex h-20 items-center justify-center border-b px-6">
         <div className="flex items-center gap-2">
-          <div className="h-8 w-8 rounded-lg bg-gradient-to-br from-secondary to-primary flex items-center justify-center">
-            <Zap className="h-5 w-5 text-white fill-current" />
-          </div>
-          <div className="flex flex-col items-center gap-0">
-            <span className="text-xl font-black tracking-tighter text-white uppercase italic leading-none">
-              LF7 AI
-            </span>
-            <span className="text-[7px] font-black tracking-[0.4em] text-secondary uppercase -mt-1 ml-1">
-              FLOW
-            </span>
-          </div>
+          <Zap className="h-6 w-6 text-primary" />
+          <h2 className="text-xl font-bold tracking-tight">LF7 AI Flow</h2>
         </div>
       </div>
       <div className="flex-1 overflow-y-auto py-4">
@@ -99,59 +79,32 @@ export function Sidebar() {
                 className={cn(
                   "group flex items-center rounded-md px-3 py-2 text-sm font-medium transition-colors",
                   isActive 
-                    ? "bg-[#7c3aed] text-white shadow-lg shadow-primary/20" 
-                    : "text-white/50 hover:bg-white/5 hover:text-white"
+                    ? "bg-primary text-primary-foreground" 
+                    : "text-muted-foreground hover:bg-accent hover:text-accent-foreground"
                 )}
               >
-                <item.icon className={cn("mr-3 h-5 w-5", isActive ? "text-primary-foreground" : "text-muted-foreground group-hover:text-accent-foreground")} />
+                <item.icon className="mr-3 h-5 w-5" />
                 {item.name}
-                {isActive && <ChevronRight className="ml-auto h-4 w-4" />}
               </Link>
             )
           })}
         </nav>
-
-        {user?.role === 'super_admin' && (
-          <div className="mt-8 px-3">
-            <p className="px-3 text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2">Administração Global</p>
-            <Link
-              href="/admin"
-              className={cn(
-                "group flex items-center rounded-md px-3 py-2 text-sm font-medium transition-colors",
-                pathname === '/admin' 
-                  ? "bg-primary/20 text-primary border border-primary/20 shadow-sm" 
-                  : "text-muted-foreground hover:bg-accent hover:text-accent-foreground"
-              )}
-            >
-              <ShieldCheck className="mr-3 h-5 w-5" />
-              Painel Global
-            </Link>
-          </div>
-        )}
       </div>
       <div className="border-t p-4 space-y-3">
-        <Link 
-          href="/profile"
-          className="flex items-center space-x-3 rounded-md hover:bg-muted/50 p-2 transition-all active:scale-95 group border border-transparent hover:border-border"
-        >
-          <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-primary-foreground transition-all flex-shrink-0 overflow-hidden">
-            {user?.avatarUrl ? (
-              <img src={user.avatarUrl} alt="Avatar" className="h-full w-full object-cover" />
-            ) : (
-              <User className="h-4 w-4" />
-            )}
-          </div>
-          <div className="flex-1 overflow-hidden">
-            <p className="text-sm font-medium leading-none truncate">{user?.name || "Meu Perfil"}</p>
-            <p className="text-xs text-muted-foreground truncate">Minha Conta</p>
-          </div>
-          <ChevronRight className="h-4 w-4 text-muted-foreground transition-transform group-hover:translate-x-1" />
-        </Link>
+        <div className="flex items-center space-x-3 p-2">
+           <div className="h-8 w-8 rounded-full bg-muted flex items-center justify-center text-muted-foreground">
+             <User className="h-4 w-4" />
+           </div>
+           <div className="flex-1 overflow-hidden">
+             <p className="text-sm font-medium leading-none truncate">{user?.name || "Meu Perfil"}</p>
+             <p className="text-xs text-muted-foreground truncate">{user?.email}</p>
+           </div>
+        </div>
         <button 
           onClick={handleLogout}
-          className="w-full h-11 flex items-center justify-center gap-2 text-sm font-black text-white bg-gradient-to-r from-[#00d2ff] via-[#9240ff] to-[#7c3aed] rounded-xl shadow-lg shadow-primary/20 hover:scale-[1.02] transition-all active:scale-95"
+          className="w-full flex h-10 items-center justify-center gap-2 rounded-lg bg-primary text-primary-foreground font-medium hover:bg-primary/90 transition-colors"
         >
-          <LogOut className="h-4 w-4" /> Sair da Conta
+          <LogOut className="h-4 w-4" /> Sair
         </button>
       </div>
     </div>
