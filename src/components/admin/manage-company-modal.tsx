@@ -17,7 +17,8 @@ export function ManageCompanyModal({ isOpen, onClose, onSuccess, company }: Mana
     name: "",
     account_status: "ativo",
     asaas_customer_id: "",
-    negotiated_value: 0
+    negotiated_value: 0,
+    subscription_start_date: ""
   })
   const [loading, setLoading] = useState(false)
   const [deleting, setDeleting] = useState(false)
@@ -29,7 +30,10 @@ export function ManageCompanyModal({ isOpen, onClose, onSuccess, company }: Mana
         name: company.name || "",
         account_status: company.account_status || "ativo",
         asaas_customer_id: company.asaas_customer_id || "",
-        negotiated_value: company.negotiated_value || 0
+        negotiated_value: company.negotiated_value || 0,
+        subscription_start_date: company.subscription_start_date 
+          ? new Date(company.subscription_start_date).toISOString().split('T')[0] 
+          : new Date().toISOString().split('T')[0]
       })
     }
   }, [company])
@@ -46,7 +50,8 @@ export function ManageCompanyModal({ isOpen, onClose, onSuccess, company }: Mana
         name: formData.name,
         account_status: formData.account_status,
         asaas_customer_id: formData.asaas_customer_id,
-        negotiated_value: Number(formData.negotiated_value)
+        negotiated_value: Number(formData.negotiated_value),
+        subscription_start_date: formData.subscription_start_date
       })
       .eq('id', company.id)
 
@@ -140,6 +145,16 @@ export function ManageCompanyModal({ isOpen, onClose, onSuccess, company }: Mana
                   onChange={(e) => setFormData({...formData, asaas_customer_id: e.target.value})}
                 />
               </div>
+            </div>
+
+            <div className="space-y-2 col-span-2">
+              <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Data de Início do Contrato</label>
+              <input
+                type="date"
+                className="w-full px-5 h-12 rounded-xl border border-slate-100 bg-slate-50 focus:outline-none focus:ring-4 focus:ring-primary/10 transition-all text-slate-900 font-bold shadow-sm"
+                value={formData.subscription_start_date}
+                onChange={(e) => setFormData({...formData, subscription_start_date: e.target.value})}
+              />
             </div>
           </div>
 

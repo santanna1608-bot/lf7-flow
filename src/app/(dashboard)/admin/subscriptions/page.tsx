@@ -156,8 +156,10 @@ export default function adminSubscriptionsPage() {
                       </div>
                     </td>
                     <td className="px-6 py-4 text-right">
-                      <p className="text-sm text-slate-600">
-                        {new Date(company.created_at).toLocaleDateString()}
+                      <p className="text-sm text-slate-600 font-medium">
+                        {company.subscription_start_date 
+                          ? new Date(company.subscription_start_date).toLocaleDateString()
+                          : new Date(company.created_at).toLocaleDateString()}
                       </p>
                     </td>
                   </tr>
