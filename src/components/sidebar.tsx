@@ -32,7 +32,8 @@ const userMenuItems = [
 const adminMenuItems = [
   { name: "Empresas", href: "/admin", icon: Building2 },
   { name: "Usuários", href: "/admin/users", icon: Users },
-  { name: "Assinaturas", href: "/admin/subscriptions", icon: CreditCard },
+  { name: "Financeiro", href: "/admin/financial", icon: CreditCard },
+  { name: "Assinaturas", href: "/admin/subscriptions", icon: Zap },
 ]
 
 export function Sidebar() {
