@@ -93,6 +93,7 @@ const recentActivities = [
 export default function DashboardPage() {
   const supabase = createClientComponentClient()
   const [userName, setUserName] = useState("Usuário")
+  const [downloading, setDownloading] = useState(false)
   
   useEffect(() => {
     async function loadUser() {
@@ -109,6 +110,63 @@ export default function DashboardPage() {
     loadUser()
   }, [])
 
+  const handleDownloadReport = async () => {
+    setDownloading(true)
+    try {
+      const { data: { session } } = await supabase.auth.getSession()
+      if (!session) return
+
+      // Obter o perfil para pegar o company_id
+      const { data: profile } = await supabase
+        .from('profiles')
+        .select('company_id')
+        .eq('user_id', session.user.id)
+        .single()
+
+      if (!profile?.company_id) return
+
+      // Buscar leads da empresa
+      const { data: leads, error } = await supabase
+        .from('leads')
+        .select('name, phone, status, created_at')
+        .eq('company_id', profile.company_id)
+        .order('created_at', { ascending: false })
+
+      if (error || !leads) {
+        alert('Erro ao gerar relatório. Tente novamente.')
+        return
+      }
+
+      // Gerar CSV
+      const headers = ['Nome', 'Telefone', 'Status', 'Data de Cadastro']
+      const csvRows = [
+        '\uFEFF' + headers.join(';'), // Adiciona BOM para Excel ler acentos
+        ...leads.map(lead => [
+          `"${lead.name || ''}"`,
+          `"${lead.phone || ''}"`,
+          `"${lead.status || ''}"`,
+          `"${new Date(lead.created_at).toLocaleDateString('pt-BR')}"`
+        ].join(';'))
+      ]
+      const csvString = csvRows.join('\n')
+
+      // Download do Arquivo
+      const blob = new Blob([csvString], { type: 'text/csv;charset=utf-8;' })
+      const url = window.URL.createObjectURL(blob)
+      const a = document.createElement('a')
+      a.setAttribute('hidden', '')
+      a.setAttribute('href', url)
+      a.setAttribute('download', `relatorio_leads_${new Date().toISOString().split('T')[0]}.csv`)
+      document.body.appendChild(a)
+      a.click()
+      document.body.removeChild(a)
+    } catch (err) {
+      console.error(err)
+    } finally {
+      setDownloading(false)
+    }
+  }
+
   return (
     <div className="space-y-8 max-w-[1400px] mx-auto pb-10">
       {/* Header */}
@@ -117,8 +175,16 @@ export default function DashboardPage() {
           <h1 className="text-4xl font-bold text-slate-900 tracking-tight">Dashboard</h1>
           <p className="text-slate-500 mt-1">Bem-vindo de volta! Aqui está um resumo do seu fluxo de IA.</p>
         </div>
-        <button className="flex items-center gap-2 px-6 py-3 rounded-xl bg-[#2563eb] text-white font-bold text-sm shadow-xl shadow-blue-500/20 hover:bg-blue-700 transition-all active:scale-95">
-          Baixar Relatório
+        <button 
+          onClick={handleDownloadReport}
+          disabled={downloading}
+          className={cn(
+            "flex items-center gap-2 px-6 py-3 rounded-xl bg-[#2563eb] text-white font-bold text-sm shadow-xl shadow-blue-500/20 hover:bg-blue-700 transition-all active:scale-95 disabled:opacity-50 disabled:cursor-wait",
+            downloading && "animate-pulse"
+          )}
+        >
+          {downloading ? "Gerando..." : "Baixar Relatório"}
+          <Download className="h-4 w-4" />
         </button>
       </div>
 
