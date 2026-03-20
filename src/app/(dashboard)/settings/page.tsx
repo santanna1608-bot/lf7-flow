@@ -137,7 +137,7 @@ export default function SettingsPage() {
             </div>
             <div className="mt-6 flex items-center gap-2 text-xs text-primary">
               <ExternalLink className="h-3 w-3" />
-              <a href="https://docs.n8n.io/integrations/builtin/app-nodes/n8n-nodes-base.httprequest/" target="_blank" rel="noopener noreferrer" className="hover:underline"> Ver documentação do n8n</a>
+              <a href="https://docs.n8n.io/integrations/builtin/core-nodes/n8n-nodes-base.httprequest/" target="_blank" rel="noopener noreferrer" className="hover:underline"> Ver documentação do n8n</a>
             </div>
           </div>
         </div>
