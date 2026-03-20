@@ -1,10 +1,11 @@
 "use client"
 
+import { useState, useRef, useEffect } from "react"
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs"
 import { useMessages } from "@/hooks/use-messages"
 import { Database } from "@/types/database"
 import { cn } from "@/lib/utils"
 import { Bot, Send, User } from "lucide-react"
-import { useRef, useEffect } from "react"
 
 type Lead = Database['public']['Tables']['leads']['Row']
 
@@ -14,13 +15,47 @@ interface ChatWindowProps {
 
 export function ChatWindow({ lead }: ChatWindowProps) {
   const { messages, loading } = useMessages(lead?.id || null)
+  const [newMessage, setNewMessage] = useState("")
+  const [sending, setSending] = useState(false)
   const scrollRef = useRef<HTMLDivElement>(null)
+  const supabase = createClientComponentClient()
 
   useEffect(() => {
     if (scrollRef.current) {
       scrollRef.current.scrollTop = scrollRef.current.scrollHeight
     }
   }, [messages])
+
+  const handleSendMessage = async (e?: React.FormEvent) => {
+    e?.preventDefault()
+    if (!newMessage.trim() || !lead || sending) return
+
+    setSending(true)
+    try {
+      const { error: msgError } = await supabase
+        .from('messages')
+        .insert({
+          content: newMessage.trim(),
+          role: 'user',
+          lead_id: lead.id,
+          company_id: lead.company_id
+        })
+
+      if (msgError) throw msgError
+
+      // Atualizar last_message_at no lead
+      await supabase
+        .from('leads')
+        .update({ last_message_at: new Date().toISOString() })
+        .eq('id', lead.id)
+
+      setNewMessage("")
+    } catch (err) {
+      console.error('Erro ao enviar mensagem:', err)
+    } finally {
+      setSending(false)
+    }
+  }
 
   if (!lead) {
     return (
@@ -91,24 +126,30 @@ export function ChatWindow({ lead }: ChatWindowProps) {
         ))}
       </div>
 
-      <div className="p-4 border-t bg-card">
+      <form onSubmit={handleSendMessage} className="p-4 border-t bg-card">
         <div className="flex items-center gap-2">
           <div className="relative flex-1">
             <input
               type="text"
               placeholder="IA está ativa... Digite para intervir (opcional)"
-              className="w-full rounded-full border bg-muted px-4 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-primary disabled:opacity-50"
-              disabled
+              className="w-full rounded-full border bg-muted px-4 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-primary"
+              value={newMessage}
+              onChange={(e) => setNewMessage(e.target.value)}
+              disabled={sending}
             />
           </div>
-          <button className="h-9 w-9 flex items-center justify-center rounded-full bg-primary text-primary-foreground opacity-50 cursor-not-allowed">
+          <button 
+            type="submit"
+            disabled={!newMessage.trim() || sending}
+            className="h-9 w-9 flex items-center justify-center rounded-full bg-primary text-primary-foreground shadow-lg shadow-primary/20 hover:bg-primary/90 transition-all active:scale-95 disabled:opacity-50"
+          >
             <Send className="h-4 w-4" />
           </button>
         </div>
         <p className="mt-2 text-[10px] text-center text-muted-foreground">
           Modo Monitoramento: A IA responde automaticamente com base nas configurações do n8n.
         </p>
-      </div>
+      </form>
     </div>
   )
 }
