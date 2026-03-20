@@ -2,10 +2,9 @@
 
 import { useEffect, useState } from "react"
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs"
-import { useRouter } from "next/navigation"
+import { useRouter, usePathname } from "next/navigation"
 
 import Link from "next/link"
-import { usePathname } from "next/navigation"
 import { cn } from "@/lib/utils"
 import { 
   LayoutDashboard, 
@@ -16,14 +15,24 @@ import {
   ChevronRight,
   LogOut,
   ShieldCheck,
-  User
+  User,
+  Building2,
+  Users,
+  CreditCard,
+  Crown
 } from "lucide-react"
 
-const menuItems = [
+const userMenuItems = [
   { name: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
   { name: "Live Chat", href: "/chat", icon: MessageSquare },
   { name: "CRM Kanban", href: "/crm", icon: Kanban },
   { name: "Integrações", href: "/settings", icon: Settings },
+]
+
+const adminMenuItems = [
+  { name: "Empresas", href: "/admin", icon: Building2 },
+  { name: "Usuários", href: "/admin/users", icon: Users },
+  { name: "Assinaturas", href: "/admin/subscriptions", icon: CreditCard },
 ]
 
 export function Sidebar() {
@@ -31,6 +40,9 @@ export function Sidebar() {
   const router = useRouter()
   const [user, setUser] = useState<any>(null)
   const supabase = createClientComponentClient()
+  
+  // O modo é definido pela URL atual
+  const isAdminView = pathname.startsWith('/admin')
 
   useEffect(() => {
     const getUser = async () => {
@@ -63,17 +75,51 @@ export function Sidebar() {
     router.refresh()
   }
 
+  const currentMenuItems = isAdminView ? adminMenuItems : userMenuItems
+
   return (
     <div className="flex h-full w-64 flex-col border-r bg-background">
-      <div className="flex h-20 items-center justify-center border-b px-6">
-        <div className="flex items-center gap-2">
+      {/* Header do Sidebar */}
+      <div className="p-6 border-b flex flex-col gap-4">
+        <div className="flex items-center gap-2 justify-center">
           <Zap className="h-6 w-6 text-primary" />
           <h2 className="text-xl font-bold tracking-tight">LF7 AI Flow</h2>
         </div>
+        
+        {/* Switcher Admin/User (Apenas para Admins) */}
+        {user?.role === 'admin' && (
+          <div className="flex p-1 bg-muted rounded-xl gap-1">
+            <button 
+              onClick={() => router.push('/dashboard')}
+              className={cn(
+                "flex-1 px-2 py-1.5 text-[10px] font-bold rounded-lg transition-all uppercase tracking-wider",
+                !isAdminView ? "bg-white shadow-sm text-primary" : "text-muted-foreground hover:bg-background/50"
+              )}
+            >
+              Cliente
+            </button>
+            <button 
+              onClick={() => router.push('/admin')}
+              className={cn(
+                "flex-1 px-2 py-1.5 text-[10px] font-bold rounded-lg transition-all uppercase tracking-wider flex items-center justify-center gap-1",
+                isAdminView ? "bg-white shadow-sm text-primary" : "text-muted-foreground hover:bg-background/50"
+              )}
+            >
+              <Crown className="h-2.5 w-2.5" /> Admin
+            </button>
+          </div>
+        )}
       </div>
+
+      {/* Menu Body */}
       <div className="flex-1 overflow-y-auto py-4">
+        {isAdminView && (
+          <div className="px-6 mb-4">
+            <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-[0.2em]">Super Admin</span>
+          </div>
+        )}
         <nav className="space-y-1 px-3">
-          {menuItems.map((item) => {
+          {currentMenuItems.map((item) => {
             const isActive = pathname === item.href
             return (
               <Link
@@ -82,17 +128,19 @@ export function Sidebar() {
                 className={cn(
                   "group flex items-center rounded-md px-3 py-2 text-sm font-medium transition-colors",
                   isActive 
-                    ? "bg-primary text-primary-foreground" 
+                    ? "bg-primary text-primary-foreground shadow-lg shadow-primary/20" 
                     : "text-muted-foreground hover:bg-accent hover:text-accent-foreground"
                 )}
               >
-                <item.icon className="mr-3 h-5 w-5" />
+                <item.icon className={cn("mr-3 h-5 w-5", isActive ? "text-white" : "text-muted-foreground group-hover:text-primary transition-colors")} />
                 {item.name}
               </Link>
             )
           })}
         </nav>
       </div>
+
+      {/* Footer do Sidebar */}
       <div className="border-t p-4 space-y-3">
         <Link 
           href="/profile"
@@ -112,7 +160,7 @@ export function Sidebar() {
         </Link>
         <button 
           onClick={handleLogout}
-          className="w-full flex h-10 items-center justify-center gap-2 rounded-lg bg-primary text-primary-foreground font-medium hover:bg-primary/90 transition-colors"
+          className="w-full flex h-10 items-center justify-center gap-2 rounded-lg bg-primary text-primary-foreground font-medium hover:bg-primary/90 transition-colors shadow-lg shadow-primary/10"
         >
           <LogOut className="h-4 w-4" /> Sair
         </button>
