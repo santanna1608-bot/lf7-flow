@@ -77,7 +77,7 @@ export default function CRMPage() {
                 <button
                   key={funnel.id}
                   onClick={() => setActiveFunnel(funnel)}
-                  className="w-full text-left px-3 py-2 text-xs font-medium rounded-lg hover:bg-primary/5 hover:text-primary transition-colors"
+                  className="w-full text-left px-3 py-2 text-xs font-bold text-slate-700 rounded-lg hover:bg-primary/5 hover:text-primary transition-colors"
                 >
                   {funnel.name}
                 </button>
