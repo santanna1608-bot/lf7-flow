@@ -43,11 +43,11 @@ export default function LoginPage() {
       <div className="w-full max-w-md z-10">
         <div className="text-center mb-12">
           <div className="inline-flex flex-col items-center gap-1">
-            <span className="text-6xl font-black tracking-tighter text-white uppercase italic leading-none">
-              evolua
+            <span className="text-4xl font-black tracking-tighter text-white uppercase italic leading-none">
+              LF7 AI
             </span>
             <span className="text-[12px] font-black tracking-[0.4em] text-secondary uppercase -mt-2">
-              PROSPECT
+              FLOW
             </span>
           </div>
         </div>
@@ -111,9 +111,6 @@ export default function LoginPage() {
             <div className="flex flex-col gap-3 text-center text-sm font-medium">
               <Link href="#" className="text-white/40 hover:text-white transition-colors underline decoration-secondary/30 underline-offset-4">
                 Esqueceu a senha? <span className="text-secondary">Clique aqui</span>
-              </Link>
-              <Link href="/register" className="text-white/40 hover:text-white transition-colors">
-                Problemas no login? <span className="text-secondary underline decoration-secondary/30 underline-offset-4">Suporte</span>
               </Link>
             </div>
           </form>

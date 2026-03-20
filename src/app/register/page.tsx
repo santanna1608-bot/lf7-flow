@@ -62,11 +62,11 @@ export default function RegisterPage() {
         <div className="absolute inset-0 bg-gradient-to-br from-primary/10 to-secondary/10 -z-10" />
         <div className="text-center mb-8">
            <div className="flex flex-col items-center gap-0 mb-6">
-            <span className="text-5xl font-black tracking-tighter text-white uppercase italic leading-none">
-              evolua
+            <span className="text-4xl font-black tracking-tighter text-white uppercase italic leading-none">
+              LF7 AI
             </span>
             <span className="text-[10px] font-black tracking-[0.4em] text-secondary uppercase -mt-2">
-              PROSPECT
+              FLOW
             </span>
           </div>
           <h2 className="text-3xl font-bold tracking-tight text-white">Criar sua Conta</h2>

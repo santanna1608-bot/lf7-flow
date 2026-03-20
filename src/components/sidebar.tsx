@@ -79,11 +79,11 @@ export function Sidebar() {
             <Zap className="h-5 w-5 text-white fill-current" />
           </div>
           <div className="flex flex-col items-center gap-0">
-            <span className="text-2xl font-black tracking-tighter text-white uppercase italic leading-none">
-              EVOLUA
+            <span className="text-xl font-black tracking-tighter text-white uppercase italic leading-none">
+              LF7 AI
             </span>
             <span className="text-[7px] font-black tracking-[0.4em] text-secondary uppercase -mt-1 ml-1">
-              PROSPECT
+              FLOW
             </span>
           </div>
         </div>
