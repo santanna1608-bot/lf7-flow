@@ -78,43 +78,46 @@ export default function adminFinancialPage() {
       </div>
 
       {/* Stats Cards */}
-      <div className="grid gap-6 md:grid-cols-4">
-        <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 flex items-center gap-4 hover:shadow-md transition-shadow">
-          <div className="h-12 w-12 rounded-xl bg-primary/10 flex items-center justify-center text-primary">
-            <Building2 className="h-6 w-6" />
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="bg-white p-6 rounded-[2rem] border border-slate-100 shadow-sm flex items-center gap-4">
+          <div className="h-14 w-14 rounded-2xl bg-primary/5 flex items-center justify-center text-primary shadow-sm">
+            <Building2 className="h-7 w-7" />
           </div>
           <div>
-            <p className="text-xs font-bold text-slate-500 uppercase tracking-wider">Empresas</p>
-            <h3 className="text-2xl font-bold">{companies.length}</h3>
+            <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Empresas</p>
+            <p className="text-2xl font-black text-slate-900 leading-none mt-1">{companies.length}</p>
           </div>
         </div>
-        <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 flex items-center gap-4 hover:shadow-md transition-shadow">
-          <div className="h-12 w-12 rounded-xl bg-emerald-100 flex items-center justify-center text-emerald-600">
-            <CheckCircle2 className="h-6 w-6" />
+
+        <div className="bg-white p-6 rounded-[2rem] border border-slate-100 shadow-sm flex items-center gap-4">
+          <div className="h-14 w-14 rounded-2xl bg-emerald-50 flex items-center justify-center text-emerald-500 shadow-sm">
+            <CheckCircle2 className="h-7 w-7" />
           </div>
           <div>
-            <p className="text-xs font-bold text-slate-500 uppercase tracking-wider">Ativas</p>
-            <h3 className="text-2xl font-bold">{companies.filter(c => c.account_status === 'ativo').length}</h3>
+            <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Ativas</p>
+            <p className="text-2xl font-black text-slate-900 leading-none mt-1">{companies.filter(c => c.account_status === 'ativo').length}</p>
           </div>
         </div>
-        <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 flex items-center gap-4 hover:shadow-md transition-shadow">
-          <div className="h-12 w-12 rounded-xl bg-red-100 flex items-center justify-center text-red-600">
-            <AlertCircle className="h-6 w-6" />
+
+        <div className="bg-white p-6 rounded-[2rem] border border-slate-100 shadow-sm flex items-center gap-4">
+          <div className="h-14 w-14 rounded-2xl bg-red-50 flex items-center justify-center text-red-500 shadow-sm">
+            <AlertCircle className="h-7 w-7" />
           </div>
           <div>
-            <p className="text-xs font-bold text-slate-500 uppercase tracking-wider">Bloqueadas</p>
-            <h3 className="text-2xl font-bold">{companies.filter(c => c.account_status === 'bloqueado').length}</h3>
+            <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Bloqueadas</p>
+            <p className="text-2xl font-black text-slate-900 leading-none mt-1">{companies.filter(c => c.account_status === 'bloqueado').length}</p>
           </div>
         </div>
-        <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 flex items-center gap-4 hover:shadow-md transition-shadow">
-          <div className="h-12 w-12 rounded-xl bg-blue-100 flex items-center justify-center text-blue-600">
-            <DollarSign className="h-6 w-6" />
+
+        <div className="bg-white p-6 rounded-[2rem] border border-slate-100 shadow-sm flex items-center gap-4">
+          <div className="h-14 w-14 rounded-2xl bg-blue-50 flex items-center justify-center text-blue-500 shadow-sm">
+            <DollarSign className="h-7 w-7" />
           </div>
           <div>
-            <p className="text-xs font-bold text-slate-500 uppercase tracking-wider">MRR Estimado</p>
-            <h3 className="text-2xl font-bold">
-              {formatter.format(companies.reduce((acc, curr) => acc + (Number(curr.negotiated_value) || 0), 0))}
-            </h3>
+            <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">MRR Estimado</p>
+            <p className="text-2xl font-black text-slate-900 leading-none mt-1">
+              {formatter.format(companies.filter(c => c.account_status === 'ativo').reduce((acc, curr) => acc + (Number(curr.negotiated_value) || 0), 0))}
+            </p>
           </div>
         </div>
       </div>

@@ -54,32 +54,34 @@ export default function adminSubscriptionsPage() {
       </div>
 
       {/* Stats Cards */}
-      <div className="grid gap-6 md:grid-cols-3">
-        <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 flex items-center gap-4 hover:shadow-md transition-shadow">
-          <div className="h-12 w-12 rounded-xl bg-primary/10 flex items-center justify-center text-primary">
-            <Building2 className="h-6 w-6" />
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="bg-white p-6 rounded-[2rem] border border-slate-100 shadow-sm flex items-center gap-4">
+          <div className="h-14 w-14 rounded-2xl bg-primary/5 flex items-center justify-center text-primary shadow-sm">
+            <Building2 className="h-7 w-7" />
           </div>
           <div>
-            <p className="text-sm font-medium text-slate-500 uppercase tracking-wider">Total de Empresas</p>
-            <h3 className="text-2xl font-bold">{stats.total}</h3>
+            <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Total de Empresas</p>
+            <p className="text-2xl font-black text-slate-900 leading-none mt-1">{stats.total}</p>
           </div>
         </div>
-        <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 flex items-center gap-4 hover:shadow-md transition-shadow">
-          <div className="h-12 w-12 rounded-xl bg-amber-100 flex items-center justify-center text-amber-600">
-            <Crown className="h-6 w-6" />
+
+        <div className="bg-white p-6 rounded-[2rem] border border-slate-100 shadow-sm flex items-center gap-4">
+          <div className="h-14 w-14 rounded-2xl bg-amber-50 flex items-center justify-center text-amber-500 shadow-sm">
+            <Crown className="h-7 w-7" />
           </div>
           <div>
-            <p className="text-sm font-medium text-slate-500 uppercase tracking-wider">Planos Pagos</p>
-            <h3 className="text-2xl font-bold">{stats.premium}</h3>
+            <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Planos Pagos</p>
+            <p className="text-2xl font-black text-slate-900 leading-none mt-1">{stats.premium}</p>
           </div>
         </div>
-        <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 flex items-center gap-4 hover:shadow-md transition-shadow">
-          <div className="h-12 w-12 rounded-xl bg-slate-100 flex items-center justify-center text-slate-600">
-            <Zap className="h-6 w-6" />
+
+        <div className="bg-white p-6 rounded-[2rem] border border-slate-100 shadow-sm flex items-center gap-4">
+          <div className="h-14 w-14 rounded-2xl bg-blue-50 flex items-center justify-center text-blue-500 shadow-sm">
+            <Zap className="h-7 w-7" />
           </div>
           <div>
-            <p className="text-sm font-medium text-slate-500 uppercase tracking-wider">Planos Gratuitos</p>
-            <h3 className="text-2xl font-bold">{stats.free}</h3>
+            <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Planos Gratuitos</p>
+            <p className="text-2xl font-black text-slate-900 leading-none mt-1">{stats.free}</p>
           </div>
         </div>
       </div>
