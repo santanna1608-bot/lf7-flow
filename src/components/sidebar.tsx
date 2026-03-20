@@ -19,7 +19,8 @@ import {
   Building2,
   Users,
   CreditCard,
-  Crown
+  Crown,
+  X
 } from "lucide-react"
 
 const userMenuItems = [
@@ -36,11 +37,16 @@ const adminMenuItems = [
   { name: "Assinaturas", href: "/admin/subscriptions", icon: Zap },
 ]
 
-export function Sidebar() {
+export function Sidebar({ onClose }: { onClose?: () => void }) {
   const pathname = usePathname()
   const router = useRouter()
   const [user, setUser] = useState<any>(null)
   const supabase = createClientComponentClient()
+
+  // Fechar sidebar ao mudar de rota em mobile
+  useEffect(() => {
+    if (onClose) onClose()
+  }, [pathname])
   
   // O modo é definido pela URL atual
   const isAdminView = pathname.startsWith('/admin')
@@ -82,9 +88,19 @@ export function Sidebar() {
     <div className="flex h-full w-64 flex-col border-r bg-background">
       {/* Header do Sidebar */}
       <div className="p-6 border-b flex flex-col gap-4">
-        <div className="flex items-center gap-2 justify-center">
-          <Zap className="h-6 w-6 text-primary" />
-          <h2 className="text-xl font-bold tracking-tight">LF7 AI Flow</h2>
+        <div className="flex items-center gap-2 justify-between">
+          <div className="flex items-center gap-2">
+            <Zap className="h-6 w-6 text-primary" />
+            <h2 className="text-xl font-bold tracking-tight">LF7 AI Flow</h2>
+          </div>
+          {onClose && (
+            <button 
+              onClick={onClose}
+              className="lg:hidden p-2 text-slate-400 hover:text-slate-600 hover:bg-slate-100 rounded-lg transition-all"
+            >
+              <X className="h-5 w-5" />
+            </button>
+          )}
         </div>
         
         {/* Switcher Admin/User (Apenas para Admins) */}

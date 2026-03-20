@@ -5,15 +5,16 @@ import { createClientComponentClient } from "@supabase/auth-helpers-nextjs"
 import { useMessages } from "@/hooks/use-messages"
 import { Database } from "@/types/database"
 import { cn } from "@/lib/utils"
-import { Bot, Send, User } from "lucide-react"
+import { Bot, Send, User, ChevronLeft } from "lucide-react"
 
 type Lead = Database['public']['Tables']['leads']['Row']
 
 interface ChatWindowProps {
   lead: Lead | null
+  onBack?: () => void
 }
 
-export function ChatWindow({ lead }: ChatWindowProps) {
+export function ChatWindow({ lead, onBack }: ChatWindowProps) {
   const { messages, loading } = useMessages(lead?.id || null)
   const [newMessage, setNewMessage] = useState("")
   const [sending, setSending] = useState(false)
@@ -69,8 +70,16 @@ export function ChatWindow({ lead }: ChatWindowProps) {
 
   return (
     <div className="flex h-full flex-col">
-      <div className="flex items-center justify-between border-b px-6 py-4 bg-card">
+      <div className="flex items-center justify-between border-b px-4 md:px-6 py-4 bg-card">
         <div className="flex items-center gap-3">
+          {onBack && (
+            <button 
+              onClick={onBack}
+              className="md:hidden p-2 -ml-2 text-slate-500 hover:bg-slate-100 rounded-full transition-colors"
+            >
+              <ChevronLeft className="h-6 w-6" />
+            </button>
+          )}
           <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold">
             {lead.name.charAt(0)}
           </div>
