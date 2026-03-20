@@ -60,17 +60,18 @@ export function useLeads() {
     }
   }, [])
 
-  const updateLeadStatus = async (leadId: string, newStatus: string) => {
-    const { error } = await (supabase.from('leads') as any)
-      .update({ status: newStatus })
+  const updateLead = async (leadId: string, updates: Partial<Lead>) => {
+    const { error } = await supabase
+      .from('leads')
+      .update(updates)
       .eq('id', leadId)
 
     if (error) {
-      console.error("Erro ao atualizar status do lead:", error)
+      console.error("Erro ao atualizar lead:", error)
       return false
     }
     return true
   }
 
-  return { leads, loading, updateLeadStatus }
+  return { leads, loading, updateLead }
 }

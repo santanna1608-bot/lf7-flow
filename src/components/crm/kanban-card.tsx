@@ -10,9 +10,10 @@ type Lead = Database['public']['Tables']['leads']['Row']
 interface KanbanCardProps {
   lead: Lead
   onClick?: (lead: Lead) => void
+  onUpdate?: (leadId: string, updates: Partial<Lead>) => void
 }
 
-export function KanbanCard({ lead, onClick }: KanbanCardProps) {
+export function KanbanCard({ lead, onClick, onUpdate }: KanbanCardProps) {
   const { attributes, listeners, setNodeRef, transform, isDragging } = useDraggable({
     id: lead.id,
     data: lead
@@ -38,10 +39,18 @@ export function KanbanCard({ lead, onClick }: KanbanCardProps) {
         <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center">
           <User className="h-4 w-4 text-primary" />
         </div>
-        <div className="flex -space-x-2">
-          {/* Mock avatars for visual flair */}
-          <div className="h-5 w-5 rounded-full border-2 border-background bg-blue-500" />
-          <div className="h-5 w-5 rounded-full border-2 border-background bg-indigo-500" />
+        <div className="flex -space-x-2 items-center">
+          <label className="relative inline-flex items-center cursor-pointer" onClick={(e) => e.stopPropagation()}>
+            <input 
+              type="checkbox" 
+              className="sr-only peer"
+              checked={lead.ai_enabled ?? true}
+              onChange={(e) => {
+                onUpdate?.(lead.id, { ai_enabled: e.target.checked })
+              }}
+            />
+            <div className="w-9 h-5 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-primary shadow-inner"></div>
+          </label>
         </div>
       </div>
       

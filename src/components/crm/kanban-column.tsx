@@ -13,9 +13,11 @@ interface KanbanColumnProps {
   title: string
   leads: Lead[]
   onCardClick?: (lead: Lead) => void
+  onCardUpdate?: (leadId: string, updates: Partial<Lead>) => void
+  onAddLead?: (status: string) => void
 }
 
-export function KanbanColumn({ id, title, leads, onCardClick }: KanbanColumnProps) {
+export function KanbanColumn({ id, title, leads, onCardClick, onCardUpdate, onAddLead }: KanbanColumnProps) {
   const { setNodeRef, isOver } = useDroppable({
     id: id,
   })
@@ -32,7 +34,10 @@ export function KanbanColumn({ id, title, leads, onCardClick }: KanbanColumnProp
           </span>
         </div>
         <div className="flex items-center gap-1">
-          <button className="rounded-md p-1 hover:bg-muted text-muted-foreground">
+          <button 
+            onClick={() => onAddLead?.(id)}
+            className="rounded-md p-1 hover:bg-muted text-muted-foreground"
+          >
             <Plus className="h-4 w-4" />
           </button>
           <button className="rounded-md p-1 hover:bg-muted text-muted-foreground">
@@ -49,7 +54,12 @@ export function KanbanColumn({ id, title, leads, onCardClick }: KanbanColumnProp
         )}
       >
         {leads.map((lead) => (
-          <KanbanCard key={lead.id} lead={lead} onClick={onCardClick} />
+          <KanbanCard 
+            key={lead.id} 
+            lead={lead} 
+            onClick={onCardClick} 
+            onUpdate={onCardUpdate}
+          />
         ))}
         {leads.length === 0 && (
           <div className="flex h-32 flex-col items-center justify-center rounded-lg border border-dashed text-center p-4">

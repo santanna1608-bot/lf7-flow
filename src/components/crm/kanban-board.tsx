@@ -15,6 +15,7 @@ import { Search } from "lucide-react"
 import { KanbanColumn } from "./kanban-column"
 import { KanbanCard } from "./kanban-card"
 import { LeadModal } from "./lead-modal"
+import { LeadCreateModal } from "./lead-create-modal"
 import { useLeads } from "@/hooks/use-leads"
 import { Database } from "@/types/database"
 
@@ -25,10 +26,12 @@ interface KanbanBoardProps {
 }
 
 export function KanbanBoard({ activeFunnel }: KanbanBoardProps) {
-  const { leads, updateLeadStatus } = useLeads()
+  const { leads, updateLead } = useLeads()
   const stages = (activeFunnel.stages as string[]) || ["Novo Lead", "Qualificado", "Agendado", "Fechado"]
   const [activeLead, setActiveLead] = useState<Lead | null>(null)
   const [selectedLead, setSelectedLead] = useState<Lead | null>(null)
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false)
+  const [createLeadStatus, setCreateLeadStatus] = useState("")
   const [searchTerm, setSearchTerm] = useState("")
   
   const sensors = useSensors(
@@ -52,7 +55,7 @@ export function KanbanBoard({ activeFunnel }: KanbanBoardProps) {
     const newStatus = over.id as string
 
     if (activeLead && activeLead.status !== newStatus) {
-      await updateLeadStatus(leadId, newStatus)
+      await updateLead(leadId, { status: newStatus })
     }
     
     setActiveLead(null)
@@ -96,6 +99,11 @@ export function KanbanBoard({ activeFunnel }: KanbanBoardProps) {
               title={stage}
               leads={filteredLeads.filter((lead) => lead.status === stage)}
               onCardClick={setSelectedLead}
+              onCardUpdate={updateLead}
+              onAddLead={(status) => {
+                setCreateLeadStatus(status)
+                setIsCreateModalOpen(true)
+              }}
             />
           ))}
         </div>
@@ -104,6 +112,16 @@ export function KanbanBoard({ activeFunnel }: KanbanBoardProps) {
       <LeadModal 
         lead={selectedLead} 
         onClose={() => setSelectedLead(null)} 
+        onUpdate={updateLead}
+      />
+
+      <LeadCreateModal
+        isOpen={isCreateModalOpen}
+        onClose={() => setIsCreateModalOpen(false)}
+        onSuccess={() => {}}
+        initialStatus={createLeadStatus}
+        companyId={activeFunnel.company_id}
+        funnelId={activeFunnel.id}
       />
 
       <DragOverlay dropAnimation={{
