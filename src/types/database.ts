@@ -88,6 +88,7 @@ export interface Database {
           company_id: string
           last_message_at: string | null
           created_at: string | null
+          ai_enabled: boolean | null
         }
         Insert: {
           id?: string
@@ -98,6 +99,7 @@ export interface Database {
           company_id: string
           last_message_at?: string | null
           created_at?: string | null
+          ai_enabled?: boolean | null
         }
         Update: {
           id?: string
@@ -108,6 +110,7 @@ export interface Database {
           company_id?: string
           last_message_at?: string | null
           created_at?: string | null
+          ai_enabled?: boolean | null
         }
       }
       messages: {
