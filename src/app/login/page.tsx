@@ -4,13 +4,14 @@ import { useState } from "react"
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs"
 import { useRouter } from "next/navigation"
 import Link from "next/link"
-import { Zap, Loader2 } from "lucide-react"
+import { Zap, Loader2, User, Lock, Eye, EyeOff } from "lucide-react"
 
 export default function LoginPage() {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const [showPassword, setShowPassword] = useState(false)
   const router = useRouter()
   const supabase = createClientComponentClient()
 
@@ -34,63 +35,89 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-background px-4">
-      <div className="w-full max-w-md space-y-8 p-8 rounded-3xl border bg-card/50 backdrop-blur-sm shadow-xl">
-        <div className="text-center">
-          <div className="inline-flex h-12 w-12 items-center justify-center rounded-xl bg-primary mb-4 shadow-lg shadow-primary/20">
-            <Zap className="h-7 w-7 text-primary-foreground fill-current" />
+    <div className="min-h-screen flex items-center justify-center bg-[#020408] px-4 relative overflow-hidden">
+      {/* Background Glows */}
+      <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-primary/20 blur-[120px] rounded-full" />
+      <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-secondary/10 blur-[120px] rounded-full" />
+
+      <div className="w-full max-w-md z-10">
+        <div className="text-center mb-12">
+          <div className="inline-flex flex-col items-center gap-1">
+            <span className="text-5xl font-black tracking-tighter text-white italic leading-none">
+              evolua
+            </span>
+            <span className="text-[10px] font-bold tracking-[0.3em] text-secondary uppercase -mt-1">
+              PROSPECT
+            </span>
           </div>
-          <h2 className="text-3xl font-bold tracking-tight">LF7 AI Flow</h2>
-          <p className="mt-2 text-sm text-muted-foreground">Bem-vindo de volta! Entre na sua conta para gerenciar seu fluxo.</p>
         </div>
 
-        <form className="mt-8 space-y-6" onSubmit={handleLogin}>
-          <div className="space-y-4">
-            <div>
-              <label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-                E-mail
-              </label>
-              <input
-                type="email"
-                required
-                className="mt-1 flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-                placeholder="seu@email.com"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-              />
-            </div>
-            <div>
-              <label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-                Senha
-              </label>
-              <input
-                type="password"
-                required
-                className="mt-1 flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-                placeholder="••••••••"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-              />
-            </div>
+        <div className="bg-[#0a0c1a]/80 backdrop-blur-xl p-10 rounded-[2.5rem] border border-white/5 shadow-2xl shadow-primary/10 relative">
+          <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-secondary/5 rounded-[2.5rem] -z-10" />
+          
+          <div className="mb-8">
+            <h2 className="text-2xl font-bold text-white">Entrar</h2>
+            <p className="text-sm text-white/50 mt-1">Insira suas credenciais</p>
           </div>
 
-          {error && <p className="text-sm text-destructive font-medium bg-destructive/10 p-3 rounded-lg text-center">{error}</p>}
+          <form className="space-y-6" onSubmit={handleLogin}>
+            <div className="space-y-4">
+              <div className="relative group">
+                <div className="absolute left-4 top-1/2 -translate-y-1/2 text-white/20 group-focus-within:text-secondary transition-colors">
+                  <User className="h-5 w-5" />
+                </div>
+                <input
+                  type="email"
+                  required
+                  className="w-full h-14 pl-12 pr-4 rounded-2xl bg-[#eff6ff] text-[#0a0c1a] font-medium focus:outline-none focus:ring-2 focus:ring-secondary/50 transition-all placeholder:text-[#0a0c1a]/30"
+                  placeholder="Seu e-mail"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                />
+              </div>
 
-          <button
-            type="submit"
-            disabled={loading}
-            className="w-full flex h-11 items-center justify-center rounded-full bg-primary text-primary-foreground font-bold transition-all hover:bg-primary/90 disabled:opacity-50 active:scale-95"
-          >
-            {loading ? <Loader2 className="h-5 w-5 animate-spin" /> : "Entrar"}
-          </button>
+              <div className="relative group">
+                <div className="absolute left-4 top-1/2 -translate-y-1/2 text-white/20 group-focus-within:text-primary transition-colors">
+                  <Lock className="h-5 w-5" />
+                </div>
+                <input
+                  type={showPassword ? "text" : "password"}
+                  required
+                  className="w-full h-14 pl-12 pr-12 rounded-2xl bg-[#eff6ff] text-[#0a0c1a] font-medium focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all placeholder:text-[#0a0c1a]/30"
+                  placeholder="Sua senha"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                />
+                <button 
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-4 top-1/2 -translate-y-1/2 text-[#0a0c1a]/30 hover:text-[#0a0c1a]/60 transition-colors"
+                >
+                  {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
+                </button>
+              </div>
+            </div>
 
-          <p className="text-center text-sm text-muted-foreground">
-            Ainda não tem conta?{" "}
-            <Link href="/register" className="font-semibold text-primary hover:underline">
-              Cadastre sua Empresa
-            </Link>
-          </p>
-        </form>
+            {error && <p className="text-sm text-destructive font-medium bg-destructive/10 p-4 rounded-2xl text-center">{error}</p>}
+
+            <button
+              type="submit"
+              disabled={loading}
+              className="w-full h-14 flex items-center justify-center rounded-2xl bg-gradient-to-r from-secondary to-primary text-white font-bold text-lg shadow-lg shadow-primary/20 transition-all hover:opacity-90 disabled:opacity-50 active:scale-[0.98]"
+            >
+              {loading ? <Loader2 className="h-6 w-6 animate-spin" /> : "Entrar"}
+            </button>
+
+            <div className="flex flex-col gap-3 text-center text-sm font-medium">
+              <Link href="#" className="text-white/40 hover:text-white transition-colors underline decoration-secondary/30 underline-offset-4">
+                Esqueceu a senha? <span className="text-secondary">Clique aqui</span>
+              </Link>
+              <Link href="/register" className="text-white/40 hover:text-white transition-colors">
+                Problemas no login? <span className="text-secondary underline decoration-secondary/30 underline-offset-4">Suporte</span>
+              </Link>
+            </div>
+          </form>
+        </div>
       </div>
     </div>
   )

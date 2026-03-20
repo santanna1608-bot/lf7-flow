@@ -68,13 +68,19 @@ export function Sidebar() {
     router.refresh()
   }
 
+  const logoUrl = "https://framerusercontent.com/images/8rFk2V1QG1u1R1X1R1X1R1X1R1.png" // Placeholder ou similar
+
   return (
-    <div className="flex h-full w-64 flex-col border-r bg-card text-card-foreground shadow-sm">
-      <div className="flex h-16 items-center border-b px-6">
-        <Zap className="mr-2 h-6 w-6 text-primary" />
-        <span className="text-xl font-bold tracking-tight text-primary">
-          {user?.companyName || "LF7 AI Flow"}
-        </span>
+    <div className="flex h-full w-64 flex-col border-r border-white/5 bg-[#0a0c1a] text-white shadow-2xl">
+      <div className="flex h-20 items-center justify-center border-b border-white/5 px-6">
+        <div className="flex items-center gap-2">
+          <div className="h-8 w-8 rounded-lg bg-gradient-to-br from-secondary to-primary flex items-center justify-center">
+            <Zap className="h-5 w-5 text-white fill-current" />
+          </div>
+          <span className="text-xl font-black tracking-tighter bg-gradient-to-r from-white to-white/70 bg-clip-text text-transparent italic">
+            EVOLUA
+          </span>
+        </div>
       </div>
       <div className="flex-1 overflow-y-auto py-4">
         <nav className="space-y-1 px-3">
@@ -137,7 +143,7 @@ export function Sidebar() {
         </Link>
         <button 
           onClick={handleLogout}
-          className="w-full flex items-center gap-2 px-3 py-2 text-sm font-medium text-destructive hover:bg-destructive/10 rounded-md transition-colors"
+          className="w-full h-11 flex items-center justify-center gap-2 text-sm font-bold text-white bg-gradient-to-r from-secondary to-primary rounded-xl shadow-lg shadow-primary/20 hover:opacity-90 transition-all active:scale-95"
         >
           <LogOut className="h-4 w-4" /> Sair da Conta
         </button>
