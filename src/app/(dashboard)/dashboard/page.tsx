@@ -12,45 +12,9 @@ import {
 } from "lucide-react"
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs"
 import { useEffect, useState } from "react"
+import { cn } from "@/lib/utils"
 
-const stats = [
-  {
-    name: "Total de Leads",
-    value: "1,284",
-    change: "+12.5%",
-    trend: "up",
-    icon: Users,
-    color: "text-blue-600",
-    bg: "bg-blue-50"
-  },
-  {
-    name: "Conversas Ativas",
-    value: "573",
-    change: "+18.2%",
-    trend: "up",
-    icon: MessageSquare,
-    color: "text-purple-600",
-    bg: "bg-purple-50"
-  },
-  {
-    name: "Taxa de Retenção IA",
-    value: "94.2%",
-    change: "+2.4%",
-    trend: "up",
-    icon: Target,
-    color: "text-emerald-600",
-    bg: "bg-emerald-50"
-  },
-  {
-    name: "Leads Convertidos",
-    value: "42",
-    change: "-4.1%",
-    trend: "down",
-    icon: TrendingUp,
-    color: "text-orange-600",
-    bg: "bg-orange-50"
-  }
-]
+// Dados estáticos removidos - substituídos por dashboardStats
 
 const recentActivities = [
   {
