@@ -37,7 +37,7 @@ export function Sidebar() {
       if (session) {
         const { data: profile } = await supabase
           .from('profiles')
-          .select('full_name, role, company_id, companies(name)')
+          .select('full_name, role, avatar_url, company_id, companies(name)')
           .eq('user_id', session.user.id)
           .single()
         
@@ -45,6 +45,7 @@ export function Sidebar() {
           name: profile?.full_name || session.user.email?.split('@')[0],
           email: session.user.email,
           role: profile?.role,
+          avatarUrl: profile?.avatar_url,
           companyName: (profile as any)?.companies?.name || "LF7 AI Flow"
         })
       }
@@ -108,15 +109,23 @@ export function Sidebar() {
         )}
       </div>
       <div className="border-t p-4 space-y-3">
-        <div className="flex items-center space-x-3 rounded-md bg-muted/50 p-2">
-          <div className="h-8 w-8 rounded-full bg-primary/20 flex items-center justify-center font-bold text-primary">
-            {user?.name?.charAt(0).toUpperCase() || "U"}
+        <Link 
+          href="/profile"
+          className="flex items-center space-x-3 rounded-md hover:bg-muted/50 p-2 transition-all active:scale-95 group border border-transparent hover:border-border"
+        >
+          <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-primary-foreground transition-all flex-shrink-0 overflow-hidden">
+            {user?.avatarUrl ? (
+              <img src={user.avatarUrl} alt="Avatar" className="h-full w-full object-cover" />
+            ) : (
+              <User className="h-4 w-4" />
+            )}
           </div>
-          <div className="flex-1 overflow-hidden text-xs">
-            <p className="truncate font-medium">{user?.name || "Usuário"}</p>
-            <p className="truncate text-muted-foreground">{user?.email}</p>
+          <div className="flex-1 overflow-hidden">
+            <p className="text-sm font-medium leading-none truncate">{user?.name || "Meu Perfil"}</p>
+            <p className="text-xs text-muted-foreground truncate">Minha Conta</p>
           </div>
-        </div>
+          <ChevronRight className="h-4 w-4 text-muted-foreground transition-transform group-hover:translate-x-1" />
+        </Link>
         <button 
           onClick={handleLogout}
           className="w-full flex items-center gap-2 px-3 py-2 text-sm font-medium text-destructive hover:bg-destructive/10 rounded-md transition-colors"
