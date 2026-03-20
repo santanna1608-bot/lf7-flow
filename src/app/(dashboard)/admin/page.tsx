@@ -9,6 +9,7 @@ import { NewCompanyModal } from "@/components/admin/new-company-modal"
 export default function SuperAdminDashboard() {
   const [companies, setCompanies] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
+  const [searchTerm, setSearchTerm] = useState("")
   const [isModalOpen, setIsModalOpen] = useState(false)
   const supabase = createClientComponentClient()
 
@@ -30,6 +31,11 @@ export default function SuperAdminDashboard() {
     fetchCompanies()
   }, [])
 
+  const filteredCompanies = companies.filter(company => 
+    company.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    company.id?.toLowerCase().includes(searchTerm.toLowerCase())
+  )
+
   if (loading) return <div className="p-8 animate-pulse text-center">Carregando painel global...</div>
 
   return (
@@ -48,7 +54,9 @@ export default function SuperAdminDashboard() {
             <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
             <input 
               placeholder="Buscar por nome ou ID..."
-              className="pl-12 pr-6 h-12 rounded-2xl border border-slate-100 bg-white focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all text-sm w-72 shadow-sm"
+              className="pl-12 pr-6 h-12 rounded-2xl border border-slate-100 bg-white focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all text-sm w-72 shadow-sm text-slate-900"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
             />
           </div>
           <button 
@@ -84,7 +92,7 @@ export default function SuperAdminDashboard() {
 
       {/* Companies List */}
       <div className="grid gap-6">
-        {companies.map((company) => (
+        {filteredCompanies.map((company) => (
           <div 
             key={company.id} 
             className="bg-white border border-slate-100 rounded-[2.5rem] p-8 flex flex-col md:flex-row items-center justify-between shadow-sm hover:shadow-md transition-all group"

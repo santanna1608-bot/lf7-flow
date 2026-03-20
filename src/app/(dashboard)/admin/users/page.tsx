@@ -92,7 +92,7 @@ export default function adminUsersPage() {
             <input
               type="text"
               placeholder="Buscar por nome, cargo ou empresa..."
-              className="w-full pl-10 pr-4 py-2 rounded-xl border border-slate-200 bg-white focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all shadow-sm"
+              className="w-full pl-10 pr-4 py-2 rounded-xl border border-slate-200 bg-white focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all shadow-sm text-slate-900"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
