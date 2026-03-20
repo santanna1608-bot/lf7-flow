@@ -48,15 +48,33 @@ export default function ProfilePage() {
       const { data: { session } } = await supabase.auth.getSession()
       if (!session) return
 
-      // Atualizar Perfil no Banco
+      // Buscar dados da empresa se o usuário não tiver perfil
+      let companyIdToUse = null
+      const { data: existingProfile } = await supabase
+        .from('profiles')
+        .select('company_id')
+        .eq('user_id', session.user.id)
+        .single()
+
+      if (existingProfile?.company_id) {
+        companyIdToUse = existingProfile.company_id
+      } else {
+        // Fallback para a primeira empresa (caso o trigger tenha falhado no passado)
+        const { data: firstCompany } = await supabase.from('companies').select('id').limit(1).single()
+        companyIdToUse = firstCompany?.id
+      }
+
+      // Upsert do Perfil (Insere se não existir, atualiza se existir)
       const { error: profileError } = await supabase
         .from('profiles')
-        .update({
+        .upsert({
+          user_id: session.user.id,
           full_name: profile.fullName,
           phone: profile.phone,
-          avatar_url: profile.avatarUrl
-        })
-        .eq('user_id', session.user.id)
+          avatar_url: profile.avatarUrl,
+          company_id: companyIdToUse,
+          role: 'admin' // Garante que novos perfis manuais tenham role
+        }, { onConflict: 'user_id' })
 
       if (profileError) throw profileError
 
