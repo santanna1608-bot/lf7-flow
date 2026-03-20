@@ -1,9 +1,10 @@
 "use client"
 
-import { DashboardOverview } from "@/components/dashboard/overview-chart"
+import { StatsChart } from "@/components/dashboard/stats-chart"
 import { 
   Users, 
   MessageSquare, 
+  UserPlus,
   Target, 
   TrendingUp,
   ArrowUpRight,
@@ -197,7 +198,7 @@ export default function DashboardPage() {
       {/* Header */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-          <h1 className="text-4xl font-bold text-slate-900 tracking-tight">Dashboard</h1>
+          <h1 className="text-4xl font-bold text-slate-900 tracking-tight">Dashboard V4</h1>
           <p className="text-slate-500 mt-1">Bem-vindo de volta! Aqui está um resumo do seu fluxo de IA.</p>
           <p className="text-[10px] text-slate-300 mt-2 uppercase tracking-widest font-bold">Última Sincronização: {new Date().toLocaleTimeString()}</p>
         </div>
@@ -253,7 +254,7 @@ export default function DashboardPage() {
            <div className="flex items-center justify-between mb-8">
              <h3 className="text-xl font-bold text-slate-800">Volume de Mensagens (IA vs User)</h3>
            </div>
-            <DashboardOverview data={chartData} />
+             <StatsChart data={chartData} />
         </div>
 
         {/* Activity Section */}
@@ -268,7 +269,7 @@ export default function DashboardPage() {
                      "h-10 w-10 rounded-xl flex items-center justify-center",
                      activity.color.includes('emerald') ? "bg-emerald-50 text-emerald-500" : "bg-blue-50 text-blue-500"
                    )}>
-                     <MessageSquare className="h-5 w-5" />
+                      <UserPlus className="h-5 w-5" />
                    </div>
                    <div className="flex flex-col">
                      <span className="text-sm font-bold text-slate-800">{activity.title}</span>

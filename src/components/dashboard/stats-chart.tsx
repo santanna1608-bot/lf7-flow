@@ -16,7 +16,7 @@ interface ChartData {
   user: number
 }
 
-export function DashboardOverview({ data }: { data?: ChartData[] }) {
+export function StatsChart({ data }: { data?: ChartData[] }) {
   const chartData = data && data.length > 0 ? data : [
     { name: 'Seg', ia: 0, user: 0 },
     { name: 'Ter', ia: 0, user: 0 },
