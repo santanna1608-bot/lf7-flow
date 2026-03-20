@@ -35,82 +35,71 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-[#05070a] px-4 relative overflow-hidden">
-      {/* Background Glows */}
-      <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-primary/20 blur-[120px] rounded-full" />
-      <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-secondary/10 blur-[120px] rounded-full" />
-
-      <div className="w-full max-w-md z-10">
-        <div className="text-center mb-12">
-          <div className="inline-flex flex-col items-center gap-1">
-            <span className="text-4xl font-black tracking-tighter text-white uppercase italic leading-none">
-              LF7 AI
-            </span>
-            <span className="text-[12px] font-black tracking-[0.4em] text-secondary uppercase -mt-2">
-              FLOW
-            </span>
+    <div className="min-h-screen flex items-center justify-center bg-slate-900 px-4">
+      <div className="w-full max-w-md">
+        <div className="text-center mb-8">
+          <div className="inline-flex items-center gap-2 mb-4">
+            <Zap className="h-8 w-8 text-primary fill-current" />
+            <h1 className="text-3xl font-bold tracking-tight">LF7 AI Flow</h1>
           </div>
+          <p className="text-muted-foreground">Bem-vindo de volta! Entre na sua conta para gerenciar seu fluxo.</p>
         </div>
 
-        <div className="bg-[#0a0c1a]/60 backdrop-blur-2xl p-10 rounded-[2.5rem] border border-white/10 shadow-2xl relative overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-br from-primary/10 to-secondary/10 -z-10" />
-          
-          <div className="mb-8">
-            <h2 className="text-2xl font-bold text-white">Entrar</h2>
-            <p className="text-sm text-white/50 mt-1">Insira suas credenciais</p>
-          </div>
-
+        <div className="bg-card p-8 rounded-2xl border shadow-xl">
           <form className="space-y-6" onSubmit={handleLogin}>
-            <div className="space-y-4">
-              <div className="relative group">
-                <div className="absolute left-4 top-1/2 -translate-y-1/2 text-white/20 group-focus-within:text-secondary transition-colors">
-                  <User className="h-5 w-5" />
-                </div>
+            <div className="space-y-2">
+              <label className="text-sm font-medium">E-mail</label>
+              <div className="relative">
+                <User className="absolute left-3 top-3 h-5 w-5 text-muted-foreground" />
                 <input
                   type="email"
                   required
-                  className="w-full h-14 pl-12 pr-4 rounded-2xl bg-[#e0e7ff] text-[#05070a] font-bold focus:outline-none focus:ring-2 focus:ring-secondary/50 transition-all placeholder:text-[#05070a]/40"
-                  placeholder="santanna1608@gmail.com"
+                  className="w-full pl-10 pr-4 py-2 rounded-lg border bg-background"
+                  placeholder="nome@empresa.com"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                 />
               </div>
+            </div>
 
-              <div className="relative group">
-                <div className="absolute left-4 top-1/2 -translate-y-1/2 text-white/20 group-focus-within:text-primary transition-colors">
-                  <Lock className="h-5 w-5" />
-                </div>
+            <div className="space-y-2">
+              <label className="text-sm font-medium">Senha</label>
+              <div className="relative">
+                <Lock className="absolute left-3 top-3 h-5 w-5 text-muted-foreground" />
                 <input
                   type={showPassword ? "text" : "password"}
                   required
-                  className="w-full h-14 pl-12 pr-12 rounded-2xl bg-[#e0e7ff] text-[#05070a] font-bold focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all placeholder:text-[#05070a]/40"
-                  placeholder="••••••••••••••••"
+                  className="w-full pl-10 pr-12 py-2 rounded-lg border bg-background"
+                  placeholder="••••••••"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                 />
                 <button 
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-4 top-1/2 -translate-y-1/2 text-[#05070a]/30 hover:text-[#05070a]/60 transition-colors text-xs font-bold"
+                  className="absolute right-3 top-3 text-muted-foreground hover:text-foreground"
                 >
-                  {showPassword ? "esconder" : "mostrar"}
+                  {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
                 </button>
               </div>
             </div>
 
-            {error && <p className="text-sm text-destructive font-medium bg-destructive/10 p-4 rounded-2xl text-center">{error}</p>}
+            {error && <p className="text-sm text-destructive bg-destructive/10 p-3 rounded-lg text-center">{error}</p>}
 
             <button
               type="submit"
               disabled={loading}
-              className="w-full h-14 flex items-center justify-center rounded-2xl bg-gradient-to-r from-secondary to-primary text-white font-bold text-lg shadow-lg shadow-primary/20 transition-all hover:opacity-90 disabled:opacity-50 active:scale-[0.98]"
+              className="w-full flex h-11 items-center justify-center rounded-lg bg-primary text-primary-foreground font-bold hover:bg-primary/90 transition-colors"
             >
-              {loading ? <Loader2 className="h-6 w-6 animate-spin" /> : "Entrar"}
+              {loading ? <Loader2 className="h-5 w-5 animate-spin" /> : "Entrar"}
             </button>
 
-            <div className="flex flex-col gap-3 text-center text-sm font-medium">
-              <Link href="#" className="text-white/40 hover:text-white transition-colors underline decoration-secondary/30 underline-offset-4">
-                Esqueceu a senha? <span className="text-secondary">Clique aqui</span>
+            <div className="flex flex-col gap-3 text-center text-sm">
+              <Link href="#" className="text-muted-foreground hover:text-primary transition-colors">
+                Esqueceu a senha?
+              </Link>
+              <Link href="/register" className="text-muted-foreground hover:text-primary transition-colors">
+                Ainda não tem conta? <span className="text-primary font-semibold">Cadastre sua Empresa</span>
               </Link>
             </div>
           </form>
