@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react"
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs"
-import { Building2, Search, Plus, ExternalLink, ShieldCheck } from "lucide-react"
+import { Building2, Search, Plus, ExternalLink, ShieldCheck, CheckCircle2, AlertCircle, DollarSign } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { NewCompanyModal } from "@/components/admin/new-company-modal"
 import { ManageCompanyModal } from "@/components/admin/manage-company-modal"
@@ -38,6 +38,16 @@ export default function SuperAdminDashboard() {
     company.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
     company.id?.toLowerCase().includes(searchTerm.toLowerCase())
   ) || []
+
+  // Cálculos de Estatísticas
+  const stats = {
+    total: companies.length,
+    active: companies.filter(c => c.account_status === 'ativo').length,
+    blocked: companies.filter(c => c.account_status === 'bloqueado').length,
+    mrr: companies
+      .filter(c => c.account_status === 'ativo')
+      .reduce((acc, c) => acc + (Number(c.negotiated_value) || 0), 0)
+  }
 
   // Somente mostrar loading total se for a primeira carga e não tivermos dados
   if (loading && companies.length === 0) {
@@ -95,19 +105,48 @@ export default function SuperAdminDashboard() {
         company={selectedCompany}
       />
 
-      {/* Stats Quick View (Opcional, baseado no visual anterior) */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div className="bg-white p-6 rounded-[2rem] border border-slate-100 shadow-sm">
-          <p className="text-xs font-bold text-slate-400 uppercase tracking-wider">Total de Empresas</p>
-          <p className="text-3xl font-black text-slate-900 mt-2">{companies.length}</p>
+      {/* Stats Quick View */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="bg-white p-6 rounded-[2rem] border border-slate-100 shadow-sm flex items-center gap-4">
+          <div className="h-14 w-14 rounded-2xl bg-primary/5 flex items-center justify-center text-primary">
+            <Building2 className="h-7 w-7" />
+          </div>
+          <div>
+            <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Empresas</p>
+            <p className="text-2xl font-black text-slate-900 leading-none mt-1">{stats.total}</p>
+          </div>
         </div>
-        <div className="bg-white p-6 rounded-[2rem] border border-slate-100 shadow-sm">
-          <p className="text-xs font-bold text-slate-400 uppercase tracking-wider">Planos Ativos</p>
-          <p className="text-3xl font-black text-slate-900 mt-2">{companies.filter(c => c.plan_type !== 'FREE').length}</p>
+
+        <div className="bg-white p-6 rounded-[2rem] border border-slate-100 shadow-sm flex items-center gap-4">
+          <div className="h-14 w-14 rounded-2xl bg-emerald-50 flex items-center justify-center text-emerald-500">
+            <CheckCircle2 className="h-7 w-7" />
+          </div>
+          <div>
+            <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Ativas</p>
+            <p className="text-2xl font-black text-slate-900 leading-none mt-1">{stats.active}</p>
+          </div>
         </div>
-        <div className="bg-white p-6 rounded-[2rem] border border-slate-100 shadow-sm">
-          <p className="text-xs font-bold text-slate-400 uppercase tracking-wider">Usuários Globais</p>
-          <p className="text-3xl font-black text-slate-900 mt-2">157</p>
+
+        <div className="bg-white p-6 rounded-[2rem] border border-slate-100 shadow-sm flex items-center gap-4">
+          <div className="h-14 w-14 rounded-2xl bg-red-50 flex items-center justify-center text-red-500">
+            <AlertCircle className="h-7 w-7" />
+          </div>
+          <div>
+            <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Bloqueadas</p>
+            <p className="text-2xl font-black text-slate-900 leading-none mt-1">{stats.blocked}</p>
+          </div>
+        </div>
+
+        <div className="bg-white p-6 rounded-[2rem] border border-slate-100 shadow-sm flex items-center gap-4">
+          <div className="h-14 w-14 rounded-2xl bg-blue-50 flex items-center justify-center text-blue-500">
+            <DollarSign className="h-7 w-7" />
+          </div>
+          <div>
+            <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">MRR Estimado</p>
+            <p className="text-2xl font-black text-slate-900 leading-none mt-1">
+              {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(stats.mrr)}
+            </p>
+          </div>
         </div>
       </div>
 
@@ -147,7 +186,12 @@ export default function SuperAdminDashboard() {
                 </div>
                 <div className="text-center">
                   <p className="text-[10px] font-bold text-slate-400 uppercase tracking-tighter">Status</p>
-                  <p className="text-lg font-black text-emerald-500">Online</p>
+                  <p className={cn(
+                    "text-lg font-black",
+                    company.account_status === 'bloqueado' ? "text-red-500" : "text-emerald-500"
+                  )}>
+                    {company.account_status === 'bloqueado' ? 'Bloqueado' : 'Online'}
+                  </p>
                 </div>
               </div>
               
