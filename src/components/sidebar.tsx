@@ -71,15 +71,21 @@ export function Sidebar() {
   const logoUrl = "https://framerusercontent.com/images/8rFk2V1QG1u1R1X1R1X1R1X1R1.png" // Placeholder ou similar
 
   return (
-    <div className="flex h-full w-64 flex-col border-r border-white/5 bg-[#0a0c1a] text-white shadow-2xl">
+    <div className="flex h-full w-64 flex-col border-r border-white/5 bg-[#05070a] text-white shadow-2xl relative">
+      <div className="absolute inset-0 bg-gradient-to-b from-primary/5 to-transparent pointer-events-none" />
       <div className="flex h-20 items-center justify-center border-b border-white/5 px-6">
         <div className="flex items-center gap-2">
           <div className="h-8 w-8 rounded-lg bg-gradient-to-br from-secondary to-primary flex items-center justify-center">
             <Zap className="h-5 w-5 text-white fill-current" />
           </div>
-          <span className="text-xl font-black tracking-tighter bg-gradient-to-r from-white to-white/70 bg-clip-text text-transparent italic">
-            EVOLUA
-          </span>
+          <div className="flex flex-col items-center gap-0">
+            <span className="text-2xl font-black tracking-tighter text-white uppercase italic leading-none">
+              EVOLUA
+            </span>
+            <span className="text-[7px] font-black tracking-[0.4em] text-secondary uppercase -mt-1 ml-1">
+              PROSPECT
+            </span>
+          </div>
         </div>
       </div>
       <div className="flex-1 overflow-y-auto py-4">
@@ -93,8 +99,8 @@ export function Sidebar() {
                 className={cn(
                   "group flex items-center rounded-md px-3 py-2 text-sm font-medium transition-colors",
                   isActive 
-                    ? "bg-primary text-primary-foreground shadow-sm" 
-                    : "text-muted-foreground hover:bg-accent hover:text-accent-foreground"
+                    ? "bg-[#7c3aed] text-white shadow-lg shadow-primary/20" 
+                    : "text-white/50 hover:bg-white/5 hover:text-white"
                 )}
               >
                 <item.icon className={cn("mr-3 h-5 w-5", isActive ? "text-primary-foreground" : "text-muted-foreground group-hover:text-accent-foreground")} />
@@ -143,7 +149,7 @@ export function Sidebar() {
         </Link>
         <button 
           onClick={handleLogout}
-          className="w-full h-11 flex items-center justify-center gap-2 text-sm font-bold text-white bg-gradient-to-r from-secondary to-primary rounded-xl shadow-lg shadow-primary/20 hover:opacity-90 transition-all active:scale-95"
+          className="w-full h-11 flex items-center justify-center gap-2 text-sm font-black text-white bg-gradient-to-r from-[#00d2ff] via-[#9240ff] to-[#7c3aed] rounded-xl shadow-lg shadow-primary/20 hover:scale-[1.02] transition-all active:scale-95"
         >
           <LogOut className="h-4 w-4" /> Sair da Conta
         </button>

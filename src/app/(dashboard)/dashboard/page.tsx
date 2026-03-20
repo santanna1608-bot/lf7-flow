@@ -1,3 +1,4 @@
+"use client"
 import { DashboardOverview } from "@/components/dashboard/overview-chart"
 import { 
   Users, 

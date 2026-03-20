@@ -35,7 +35,7 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-[#020408] px-4 relative overflow-hidden">
+    <div className="min-h-screen flex items-center justify-center bg-[#05070a] px-4 relative overflow-hidden">
       {/* Background Glows */}
       <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-primary/20 blur-[120px] rounded-full" />
       <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-secondary/10 blur-[120px] rounded-full" />
@@ -43,17 +43,17 @@ export default function LoginPage() {
       <div className="w-full max-w-md z-10">
         <div className="text-center mb-12">
           <div className="inline-flex flex-col items-center gap-1">
-            <span className="text-5xl font-black tracking-tighter text-white italic leading-none">
+            <span className="text-6xl font-black tracking-tighter text-white uppercase italic leading-none">
               evolua
             </span>
-            <span className="text-[10px] font-bold tracking-[0.3em] text-secondary uppercase -mt-1">
+            <span className="text-[12px] font-black tracking-[0.4em] text-secondary uppercase -mt-2">
               PROSPECT
             </span>
           </div>
         </div>
 
-        <div className="bg-[#0a0c1a]/80 backdrop-blur-xl p-10 rounded-[2.5rem] border border-white/5 shadow-2xl shadow-primary/10 relative">
-          <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-secondary/5 rounded-[2.5rem] -z-10" />
+        <div className="bg-[#0a0c1a]/60 backdrop-blur-2xl p-10 rounded-[2.5rem] border border-white/10 shadow-2xl relative overflow-hidden">
+          <div className="absolute inset-0 bg-gradient-to-br from-primary/10 to-secondary/10 -z-10" />
           
           <div className="mb-8">
             <h2 className="text-2xl font-bold text-white">Entrar</h2>
@@ -69,8 +69,8 @@ export default function LoginPage() {
                 <input
                   type="email"
                   required
-                  className="w-full h-14 pl-12 pr-4 rounded-2xl bg-[#eff6ff] text-[#0a0c1a] font-medium focus:outline-none focus:ring-2 focus:ring-secondary/50 transition-all placeholder:text-[#0a0c1a]/30"
-                  placeholder="Seu e-mail"
+                  className="w-full h-14 pl-12 pr-4 rounded-2xl bg-[#e0e7ff] text-[#05070a] font-bold focus:outline-none focus:ring-2 focus:ring-secondary/50 transition-all placeholder:text-[#05070a]/40"
+                  placeholder="santanna1608@gmail.com"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                 />
@@ -83,17 +83,17 @@ export default function LoginPage() {
                 <input
                   type={showPassword ? "text" : "password"}
                   required
-                  className="w-full h-14 pl-12 pr-12 rounded-2xl bg-[#eff6ff] text-[#0a0c1a] font-medium focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all placeholder:text-[#0a0c1a]/30"
-                  placeholder="Sua senha"
+                  className="w-full h-14 pl-12 pr-12 rounded-2xl bg-[#e0e7ff] text-[#05070a] font-bold focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all placeholder:text-[#05070a]/40"
+                  placeholder="••••••••••••••••"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                 />
                 <button 
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-4 top-1/2 -translate-y-1/2 text-[#0a0c1a]/30 hover:text-[#0a0c1a]/60 transition-colors"
+                  className="absolute right-4 top-1/2 -translate-y-1/2 text-[#05070a]/30 hover:text-[#05070a]/60 transition-colors text-xs font-bold"
                 >
-                  {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
+                  {showPassword ? "esconder" : "mostrar"}
                 </button>
               </div>
             </div>
