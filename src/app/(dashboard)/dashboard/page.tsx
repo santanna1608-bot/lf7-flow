@@ -71,12 +71,16 @@ export default function DashboardPage() {
           { name: "Leads Convertidos", value: converted.toLocaleString(), change: "+0%", trend: "up", icon: TrendingUp, color: "text-orange-600", bg: "bg-orange-50" }
         ])
 
-        // Buscar dados do gráfico (últimos 7 dias)
-        const { data: msgs } = await supabase
-          .from('messages')
-          .select('role, created_at')
-          .eq('company_id', profile.company_id)
-          .gte('created_at', new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString())
+        // Buscar mensagens para o gráfico
+        let msgs: any[] | null = []
+        if (profile?.company_id) {
+          const { data } = await supabase
+            .from('messages')
+            .select('role, created_at')
+            .eq('company_id', profile.company_id)
+            .gte('created_at', new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString())
+          msgs = data
+        }
 
         if (mounted && msgs) {
           const days = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb']
