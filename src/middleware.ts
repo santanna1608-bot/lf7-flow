@@ -15,10 +15,12 @@ export async function middleware(req: NextRequest) {
     return NextResponse.redirect(new URL('/login', req.url))
   }
 
-  // Se houver sessão e o usuário tentar acessar login/registro
+  /* 
+  // Removido temporariamente para que o usuário consiga ver a página de login mesmo se estiver com sessão ativa.
   if (session && (req.nextUrl.pathname === '/login' || req.nextUrl.pathname === '/register')) {
     return NextResponse.redirect(new URL('/dashboard', req.url))
   }
+  */
 
   return res
 }
