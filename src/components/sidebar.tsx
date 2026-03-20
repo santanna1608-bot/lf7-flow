@@ -91,15 +91,18 @@ export function Sidebar() {
         </nav>
       </div>
       <div className="border-t p-4 space-y-3">
-        <div className="flex items-center space-x-3 p-2">
-           <div className="h-8 w-8 rounded-full bg-muted flex items-center justify-center text-muted-foreground">
+        <Link 
+          href="/profile"
+          className="flex items-center space-x-3 p-2 rounded-lg hover:bg-accent transition-colors group"
+        >
+           <div className="h-8 w-8 rounded-full bg-muted flex items-center justify-center text-muted-foreground group-hover:bg-primary/10 group-hover:text-primary transition-colors">
              <User className="h-4 w-4" />
            </div>
            <div className="flex-1 overflow-hidden">
              <p className="text-sm font-medium leading-none truncate">{user?.name || "Meu Perfil"}</p>
-             <p className="text-xs text-muted-foreground truncate">Minha Conta</p>
+             <p className="text-xs text-muted-foreground truncate group-hover:text-primary transition-colors">Minha Conta</p>
            </div>
-        </div>
+        </Link>
         <button 
           onClick={handleLogout}
           className="w-full flex h-10 items-center justify-center gap-2 rounded-lg bg-primary text-primary-foreground font-medium hover:bg-primary/90 transition-colors"
