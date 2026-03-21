@@ -15,13 +15,15 @@ export async function POST(req: Request) {
     const supabase = createRouteHandlerClient({ cookies })
 
     // Valida a API Key usando a função RPC (bypassa RLS com SECURITY DEFINER)
-    const { data: companyId, error: rpcError } = await supabase
+    const { data: rpcData, error: rpcError } = await supabase
       .rpc('get_company_by_api_key', { p_api_key: apiKey })
 
-    if (rpcError || !companyId) {
-      console.error('RPC Error:', rpcError)
-      return NextResponse.json({ error: 'API Key inválida ou erro interno no banco' }, { status: 401 })
+    if (rpcError || !rpcData || !Array.isArray(rpcData) || rpcData.length === 0) {
+      console.error('RPC Error:', rpcError, 'Data:', rpcData)
+      return NextResponse.json({ error: 'API Key inválida' }, { status: 401 })
     }
+
+    const companyId = rpcData[0].company_id
 
     // Normalização de Payloads (Aceita formato plano ou estruturado)
     let leadData = body.lead || (body.phone ? { name: body.name, phone: body.phone } : null)
