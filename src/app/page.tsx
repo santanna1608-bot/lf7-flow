@@ -129,8 +129,8 @@ export default function Home() {
           </div>
           
           <div className="flex gap-12 text-sm font-bold text-slate-500 uppercase tracking-widest">
-            <Link href="#" className="hover:text-white transition-colors">Termos de Uso</Link>
-            <Link href="#" className="hover:text-white transition-colors">Política de Privacidade</Link>
+            <Link href="/termos" className="hover:text-white transition-colors">Termos de Uso</Link>
+            <Link href="/privacidade" className="hover:text-white transition-colors">Política de Privacidade</Link>
           </div>
           
           <div className="text-center space-y-2">
