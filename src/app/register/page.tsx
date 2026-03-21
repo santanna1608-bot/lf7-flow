@@ -33,7 +33,8 @@ export default function RegisterPage() {
             full_name: formData.fullName,
             company_name: formData.companyName,
             role: 'admin'
-          }
+          },
+          emailRedirectTo: `${window.location.origin}/dashboard`
         }
       })
 
