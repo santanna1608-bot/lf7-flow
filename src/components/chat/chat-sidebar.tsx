@@ -4,7 +4,7 @@ import { useEffect, useState } from "react"
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs"
 import { Database } from "@/types/database"
 import { cn } from "@/lib/utils"
-import { Search, User } from "lucide-react"
+import { Search, User, MoreVertical, MessageSquarePlus, CircleDashed } from "lucide-react"
 
 type Lead = Database['public']['Tables']['leads']['Row']
 
@@ -17,22 +17,26 @@ export function ChatSidebar({ onSelectLead, selectedLeadId }: ChatSidebarProps) 
   const [leads, setLeads] = useState<Lead[]>([])
   const [search, setSearch] = useState("")
   const [loading, setLoading] = useState(true)
+  const [userAvatar, setUserAvatar] = useState<string | null>(null)
   const supabase = createClientComponentClient()
 
   useEffect(() => {
     let mounted = true
 
-    const fetchLeads = async () => {
+    const fetchInitialData = async () => {
       try {
         setLoading(true)
         const { data: { session } } = await supabase.auth.getSession()
         if (!session || !mounted) return
 
+        // Buscar avatar do usuário logado
         const { data: profile } = await supabase
           .from('profiles')
-          .select('company_id')
+          .select('company_id, avatar_url')
           .eq('user_id', session.user.id)
           .single()
+
+        if (profile?.avatar_url) setUserAvatar(profile.avatar_url)
 
         if (!profile?.company_id || !mounted) {
           setLeads([])
@@ -53,12 +57,12 @@ export function ChatSidebar({ onSelectLead, selectedLeadId }: ChatSidebarProps) 
       }
     }
 
-    fetchLeads()
+    fetchInitialData()
 
     const channel = supabase
       .channel('leads-chat-list')
       .on('postgres_changes', { event: '*', schema: 'public', table: 'leads' }, () => {
-        fetchLeads()
+        fetchInitialData()
       })
       .subscribe()
 
@@ -74,44 +78,86 @@ export function ChatSidebar({ onSelectLead, selectedLeadId }: ChatSidebarProps) 
   )
 
   return (
-    <div className="flex h-full w-80 flex-col border-r bg-card">
-      <div className="p-4 border-b">
-        <h2 className="text-xl font-semibold mb-4">Conversas</h2>
-        <div className="relative">
-          <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+    <div className="flex h-full w-full flex-col bg-white border-r border-[#e9edef]">
+      {/* WhatsApp Header: Perfil do Usuário e Ações */}
+      <div className="h-[60px] bg-[#f0f2f5] px-4 flex items-center justify-between shrink-0">
+        <div className="h-10 w-10 rounded-full bg-slate-200 overflow-hidden border border-slate-300">
+           {userAvatar ? (
+             <img src={userAvatar} alt="Meu Perfil" className="h-full w-full object-cover" />
+           ) : (
+             <div className="h-full w-full flex items-center justify-center text-slate-400">
+                <User className="h-6 w-6" />
+             </div>
+           )}
+        </div>
+        <div className="flex items-center gap-4 text-[#54656f]">
+           <button className="p-2 hover:bg-black/5 rounded-full transition-colors">
+              <CircleDashed className="h-6 w-6" />
+           </button>
+           <button className="p-2 hover:bg-black/5 rounded-full transition-colors">
+              <MessageSquarePlus className="h-6 w-6" />
+           </button>
+           <button className="p-2 hover:bg-black/5 rounded-full transition-colors">
+              <MoreVertical className="h-6 w-6" />
+           </button>
+        </div>
+      </div>
+
+      {/* Busca Estilo WhatsApp */}
+      <div className="p-2 border-b border-[#e9edef] shrink-0">
+        <div className="relative flex items-center group">
+          <div className="absolute left-3 text-[#54656f] group-focus-within:text-primary transition-colors">
+            <Search className="h-4 w-4" />
+          </div>
           <input
             type="text"
-            placeholder="Buscar lead..."
-            className="w-full rounded-md border bg-muted px-8 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-primary"
+            placeholder="Pesquisar ou começar uma nova conversa"
+            className="w-full rounded-lg bg-[#f0f2f5] pl-12 pr-4 py-1.5 text-sm focus:outline-none placeholder:text-[#667781] text-[#3b4a54]"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
           />
         </div>
       </div>
-      <div className="flex-1 overflow-y-auto">
-        {filteredLeads.map((lead) => (
-          <button
-            key={lead.id}
-            onClick={() => onSelectLead(lead)}
-            className={cn(
-              "flex w-full items-center gap-3 p-4 text-left transition-colors hover:bg-accent",
-              selectedLeadId === lead.id && "bg-accent"
-            )}
-          >
-            <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center">
-              <User className="h-6 w-6 text-primary" />
-            </div>
-            <div className="flex-1 overflow-hidden">
-              <div className="flex items-center justify-between">
-                <p className="truncate font-medium">{lead.name}</p>
-                <span className="text-[10px] text-muted-foreground">
-                  {lead.last_message_at ? new Date(lead.last_message_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : ''}
-                </span>
+
+      {/* Lista de Conversas */}
+      <div className="flex-1 overflow-y-auto bg-white">
+        {loading && leads.length === 0 ? (
+          <div className="p-8 text-center text-slate-400 text-sm animate-pulse">Carregando conversas...</div>
+        ) : filteredLeads.length === 0 ? (
+          <div className="p-8 text-center text-slate-400 text-sm">Nenhuma conversa encontrada.</div>
+        ) : (
+          filteredLeads.map((lead) => (
+            <button
+              key={lead.id}
+              onClick={() => onSelectLead(lead)}
+              className={cn(
+                "flex w-full items-center gap-3 px-4 py-3 text-left transition-all border-b border-[#f0f2f5] relative overflow-hidden",
+                selectedLeadId === lead.id ? "bg-[#f0f2f5]" : "hover:bg-[#f5f6f6]"
+              )}
+            >
+              <div className="h-12 w-12 rounded-full bg-[#dfe5e7] flex items-center justify-center shrink-0 overflow-hidden relative border border-slate-200">
+                {lead.name.charAt(0).toUpperCase()}
+                <User className="h-8 w-8 text-[#919191] absolute opacity-20" />
               </div>
-              <p className="truncate text-xs text-muted-foreground">{lead.phone || 'Sem telefone'}</p>
-            </div>
-          </button>
-        ))}
+              <div className="flex-1 min-w-0 py-1">
+                <div className="flex items-center justify-between mb-0.5">
+                  <p className="truncate font-semibold text-[#111b21] text-[17px] leading-tight">{lead.name}</p>
+                  <span className={cn(
+                    "text-[12px] whitespace-nowrap ml-2 font-medium",
+                    selectedLeadId === lead.id ? "text-[#54656f]" : "text-[#667781]"
+                  )}>
+                    {lead.last_message_at ? new Date(lead.last_message_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : ''}
+                  </span>
+                </div>
+                <div className="flex items-center gap-1">
+                  <p className="truncate text-sm text-[#667781] leading-tight">
+                    {lead.phone || 'Sem telefone'}
+                  </p>
+                </div>
+              </div>
+            </button>
+          ))
+        )}
       </div>
     </div>
   )
