@@ -40,7 +40,7 @@ export async function POST(req: Request) {
     const { data: existingLead, error: leadSearchError } = await supabase
       .from('leads')
       .select('id')
-      .eq('company_id', company.id)
+      .eq('company_id', companyId)
       .eq('phone', leadData.phone)
       .maybeSingle()
 
@@ -60,7 +60,7 @@ export async function POST(req: Request) {
       const { data: newLead, error: createLeadError } = await supabase
         .from('leads')
         .insert({
-          company_id: company.id,
+          company_id: companyId,
           name: leadData.name || 'Sem nome',
           phone: leadData.phone,
           status: 'novo',
