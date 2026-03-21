@@ -55,15 +55,6 @@ export default function Home() {
             Ver Demonstração
           </Link>
 
-          {/* Floating Kanban Visual */}
-          <div className="relative w-full max-w-6xl mx-auto group animate-in zoom-in duration-1000">
-            <div className="absolute inset-0 bg-[#8a2be2]/20 blur-[100px] rounded-full -z-10 animate-pulse" />
-            <img 
-              src="/images/kanban-floating.png" 
-              alt="Representação do Painel CRM Kanban" 
-              className="w-full object-contain drop-shadow-[0_20px_50px_rgba(0,0,0,0.5)] transition-transform duration-700 group-hover:scale-[1.02]"
-            />
-          </div>
         </div>
       </section>
 
@@ -114,66 +105,6 @@ export default function Home() {
               <p className="text-slate-500 font-semibold text-sm leading-relaxed">
                 Métricas reais em tempo real. Saiba a taxa de conversão da sua IA e a velocidade de resposta do seu time.
               </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* 4. Seção de Testemunhos (Fundo Claro) */}
-      <section className="bg-white py-32 px-6 border-t border-slate-100">
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-20">
-            <h2 className="text-4xl md:text-5xl font-black tracking-tighter text-[#0a0e1b] mb-6">Casos de Sucesso</h2>
-            <p className="text-xl text-slate-500 max-w-2xl mx-auto font-semibold">Empresas que escalaram sua operação com profissionalismo.</p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
-            <div className="p-10 rounded-3xl bg-[#f9fafc] border border-slate-100 shadow-sm hover:shadow-md transition-all">
-              <div className="flex gap-1 text-amber-400 mb-6">
-                 {[...Array(5)].map((_, i) => <Star key={i} className="h-4 w-4 fill-current" />)}
-              </div>
-              <p className="text-slate-600 font-semibold italic mb-8 leading-relaxed">
-                "O LF7 AI Flow transformou nossa triagem inicial. Agora só focamos em fechar leads que já chegam pré-qualificados pela IA."
-              </p>
-              <div className="flex items-center gap-4">
-                <div className="h-12 w-12 rounded-full bg-slate-200" />
-                <div>
-                   <p className="font-black text-[#0a0e1b]">Dra. Ana Andrade</p>
-                   <p className="text-xs font-black text-[#8a2be2] uppercase tracking-widest">Odontologia Especializada</p>
-                </div>
-              </div>
-            </div>
-
-            <div className="p-10 rounded-3xl bg-[#f9fafc] border border-slate-100 shadow-sm hover:shadow-md transition-all">
-              <div className="flex gap-1 text-amber-400 mb-6">
-                 {[...Array(5)].map((_, i) => <Star key={i} className="h-4 w-4 fill-current" />)}
-              </div>
-              <p className="text-slate-600 font-semibold italic mb-8 leading-relaxed">
-                "A visualização no Kanban mudou o jogo para nossa imobiliária. Nenhum lead fica sem resposta mais, a escala é real."
-              </p>
-              <div className="flex items-center gap-4">
-                <div className="h-12 w-12 rounded-full bg-slate-200" />
-                <div>
-                   <p className="font-black text-[#0a0e1b]">Marcos Castro</p>
-                   <p className="text-xs font-black text-[#8a2be2] uppercase tracking-widest">Diretor Comercial</p>
-                </div>
-              </div>
-            </div>
-
-            <div className="p-10 rounded-3xl bg-[#f9fafc] border border-slate-100 shadow-sm hover:shadow-md transition-all">
-              <div className="flex gap-1 text-amber-400 mb-6">
-                 {[...Array(5)].map((_, i) => <Star key={i} className="h-4 w-4 fill-current" />)}
-              </div>
-              <p className="text-slate-600 font-semibold italic mb-8 leading-relaxed">
-                "Atendimento 24/7 sem aumentar equipe. A IA faz a primeira triagem e meu time jurídico recebe tudo organizado."
-              </p>
-              <div className="flex items-center gap-4">
-                <div className="h-12 w-12 rounded-full bg-slate-200" />
-                <div>
-                   <p className="font-black text-[#0a0e1b]">Dr. Ricardo Lemos</p>
-                   <p className="text-xs font-black text-[#8a2be2] uppercase tracking-widest">Lemos & Associados</p>
-                </div>
-              </div>
             </div>
           </div>
         </div>
