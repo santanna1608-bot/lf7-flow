@@ -89,6 +89,7 @@ export interface Database {
           last_message_at: string | null
           created_at: string | null
           ai_enabled: boolean | null
+          notes: string | null
         }
         Insert: {
           id?: string
@@ -100,6 +101,7 @@ export interface Database {
           last_message_at?: string | null
           created_at?: string | null
           ai_enabled?: boolean | null
+          notes?: string | null
         }
         Update: {
           id?: string
@@ -111,6 +113,7 @@ export interface Database {
           last_message_at?: string | null
           created_at?: string | null
           ai_enabled?: boolean | null
+          notes?: string | null
         }
       }
       messages: {

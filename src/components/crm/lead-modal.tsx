@@ -16,6 +16,7 @@ export function LeadModal({ lead, onClose, onUpdate }: LeadModalProps) {
   const [name, setName] = useState(lead?.name || "")
   const [phone, setPhone] = useState(lead?.phone || "")
   const [aiEnabled, setAiEnabled] = useState(lead?.ai_enabled ?? true)
+  const [notes, setNotes] = useState(lead?.notes || "")
   const [loading, setLoading] = useState(false)
 
   // Update local state when lead changes
@@ -24,6 +25,7 @@ export function LeadModal({ lead, onClose, onUpdate }: LeadModalProps) {
       setName(lead.name)
       setPhone(lead.phone || "")
       setAiEnabled(lead.ai_enabled ?? true)
+      setNotes(lead.notes || "")
     }
   }, [lead])
 
@@ -35,7 +37,8 @@ export function LeadModal({ lead, onClose, onUpdate }: LeadModalProps) {
     const success = await onUpdate(lead.id, {
       name: name.trim(),
       phone: phone.trim() || null,
-      ai_enabled: aiEnabled
+      ai_enabled: aiEnabled,
+      notes: notes.trim() || null
     })
     if (success) onClose()
     setLoading(false)
@@ -128,6 +131,8 @@ export function LeadModal({ lead, onClose, onUpdate }: LeadModalProps) {
             <textarea 
               className="w-full h-32 rounded-lg border bg-muted/50 p-3 text-sm focus:outline-none focus:ring-1 focus:ring-primary"
               placeholder="Adicione uma nota sobre este lead..."
+              value={notes}
+              onChange={e => setNotes(e.target.value)}
             />
             <div className="flex gap-2 pt-4">
               <button 
