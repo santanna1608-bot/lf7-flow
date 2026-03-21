@@ -14,21 +14,21 @@ export async function POST(req: Request) {
     const apiKey = authHeader.split(' ')[1]
     const supabase = createRouteHandlerClient({ cookies })
 
-    // Valida a API Key e busca a empresa vinculada
-    const { data: company, error: companyError } = await supabase
-      .from('companies')
-      .select('id')
-      .eq('api_key_internal', apiKey)
-      .single()
+    // Valida a API Key usando a função RPC (bypassa RLS com SECURITY DEFINER)
+    const { data: companyId, error: rpcError } = await supabase
+      .rpc('get_company_by_api_key', { p_api_key: apiKey })
 
-    if (companyError || !company) {
-      return NextResponse.json({ error: 'API Key inválida' }, { status: 401 })
+    if (rpcError || !companyId) {
+      console.error('RPC Error:', rpcError)
+      return NextResponse.json({ error: 'API Key inválida ou erro interno no banco' }, { status: 401 })
     }
 
-    const { lead: leadData, message: messageData } = body
+    // Normalização de Payloads (Aceita formato plano ou estruturado)
+    let leadData = body.lead || (body.phone ? { name: body.name, phone: body.phone } : null)
+    let messageData = body.message || (body.content ? { content: body.content, role: body.role } : null)
 
-    if (!leadData || !messageData) {
-      return NextResponse.json({ error: 'Dados incompletos (lead e message são obrigatórios)' }, { status: 400 })
+    if (!leadData) {
+      return NextResponse.json({ error: 'Dados do lead são obrigatórios (phone e name)' }, { status: 400 })
     }
 
     // 1. Criar ou atualizar o lead
@@ -69,17 +69,19 @@ export async function POST(req: Request) {
       leadId = newLead.id
     }
 
-    // 2. Inserir a mensagem
-    const { error: msgError } = await supabase
-      .from('messages')
-      .insert({
-        company_id: company.id,
-        lead_id: leadId,
-        content: messageData.content,
-        role: messageData.role || 'assistant'
-      })
+    // 2. Inserir a mensagem (se houver)
+    if (messageData && messageData.content) {
+      const { error: msgError } = await supabase
+        .from('messages')
+        .insert({
+          company_id: companyId,
+          lead_id: leadId,
+          content: messageData.content,
+          role: messageData.role || 'assistant'
+        })
 
-    if (msgError) throw msgError
+      if (msgError) throw msgError
+    }
 
     return NextResponse.json({ success: true, leadId })
 
