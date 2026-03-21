@@ -14,6 +14,7 @@ import {
 import { Search, Filter, LayoutGrid, List } from "lucide-react"
 import { KanbanColumn } from "./kanban-column"
 import { KanbanCard } from "./kanban-card"
+import { LeadList } from "./lead-list"
 import { LeadModal } from "./lead-modal"
 import { LeadCreateModal } from "./lead-create-modal"
 import { useLeads } from "@/hooks/use-leads"
@@ -34,6 +35,7 @@ export function KanbanBoard({ activeFunnel }: KanbanBoardProps) {
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false)
   const [createLeadStatus, setCreateLeadStatus] = useState("")
   const [searchTerm, setSearchTerm] = useState("")
+  const [viewMode, setViewMode] = useState<"grid" | "list">("grid")
   
   const sensors = useSensors(
     useSensor(PointerSensor, {
@@ -88,8 +90,24 @@ export function KanbanBoard({ activeFunnel }: KanbanBoardProps) {
           
           <div className="flex items-center gap-4">
             <div className="hidden md:flex items-center gap-2 bg-slate-100/50 p-1.5 rounded-xl border border-slate-200/50">
-               <button className="p-2 rounded-lg bg-white shadow-sm text-primary"><LayoutGrid className="h-4 w-4" /></button>
-               <button className="p-2 rounded-lg text-slate-400 hover:text-slate-600"><List className="h-4 w-4" /></button>
+               <button 
+                 onClick={() => setViewMode("grid")}
+                 className={cn(
+                   "p-2 rounded-lg transition-all",
+                   viewMode === "grid" ? "bg-white shadow-sm text-primary" : "text-slate-400 hover:text-slate-600"
+                 )}
+               >
+                 <LayoutGrid className="h-4 w-4" />
+               </button>
+               <button 
+                 onClick={() => setViewMode("list")}
+                 className={cn(
+                   "p-2 rounded-lg transition-all",
+                   viewMode === "list" ? "bg-white shadow-sm text-primary" : "text-slate-400 hover:text-slate-600"
+                 )}
+               >
+                 <List className="h-4 w-4" />
+               </button>
             </div>
             
             <div className="h-10 w-[1px] bg-slate-200/60" />
@@ -103,22 +121,32 @@ export function KanbanBoard({ activeFunnel }: KanbanBoardProps) {
           </div>
         </div>
 
-        <div className="flex flex-1 gap-8 overflow-x-auto pb-10 min-h-0 scrollbar-thin scrollbar-thumb-slate-200 scrollbar-track-transparent">
-          {stages.map((stage) => (
-            <KanbanColumn
-              key={stage}
-              id={stage}
-              title={stage}
-              leads={filteredLeads.filter((lead) => lead.status === stage)}
+        {viewMode === "grid" ? (
+          <div className="flex flex-1 gap-8 overflow-x-auto pb-10 min-h-0 scrollbar-thin scrollbar-thumb-slate-200 scrollbar-track-transparent">
+            {stages.map((stage) => (
+              <KanbanColumn
+                key={stage}
+                id={stage}
+                title={stage}
+                leads={filteredLeads.filter((lead) => lead.status === stage)}
+                onCardClick={setSelectedLead}
+                onCardUpdate={updateLead}
+                onAddLead={(status) => {
+                  setCreateLeadStatus(status)
+                  setIsCreateModalOpen(true)
+                }}
+              />
+            ))}
+          </div>
+        ) : (
+          <div className="flex-1 overflow-auto pb-10">
+            <LeadList 
+              leads={filteredLeads} 
               onCardClick={setSelectedLead}
               onCardUpdate={updateLead}
-              onAddLead={(status) => {
-                setCreateLeadStatus(status)
-                setIsCreateModalOpen(true)
-              }}
             />
-          ))}
-        </div>
+          </div>
+        )}
       </div>
 
       <LeadModal 
