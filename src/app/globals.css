@@ -35,11 +35,11 @@
     --radius: 0.75rem;
 
     /* Custom variables for the new theme */
-    --sidebar-bg: 245 40% 7%;
+    --sidebar-bg: 224 45% 7%; /* #0a0e1b roughly */
     --sidebar-fg: 210 40% 98%;
-    --login-bg: 230 40% 4%;
-    --gradient-start: 189 94% 43%;
-    --gradient-end: 262 83% 58%;
+    --login-bg: 224 45% 7%;
+    --gradient-start: 180 100% 50%; /* #00ffff Cyan */
+    --gradient-end: 271 76% 53%;   /* #8a2be2 Purple */
   }
 }
 
@@ -54,11 +54,13 @@
 
 @layer utilities {
   .bg-premium-gradient {
-    background: linear-gradient(135deg, hsl(var(--gradient-start)), hsl(var(--gradient-end)));
+    background: linear-gradient(135deg, #00ffff 0%, #8a2be2 100%);
   }
   
   .bg-login-gradient {
-    background: radial-gradient(circle at top right, hsl(var(--sidebar-bg)), hsl(var(--login-bg)));
+    background: radial-gradient(circle at top right, rgba(138, 43, 226, 0.15), transparent 40%),
+                radial-gradient(circle at bottom left, rgba(0, 255, 255, 0.1), transparent 40%),
+                #0a0e1b;
   }
 
   .text-gradient {
@@ -75,6 +77,6 @@
   }
 
   .glass-card {
-    @apply bg-white/5 backdrop-blur-lg border border-white/10;
+    @apply bg-white/5 backdrop-blur-xl border border-white/10;
   }
 }
