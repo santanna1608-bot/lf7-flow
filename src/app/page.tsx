@@ -1,5 +1,5 @@
 import Link from "next/link"
-import { ArrowRight, Bot, Zap, Shield, BarChart3, CheckCircle2, MessageSquare, Plus, Star, ArrowUpRight } from "lucide-react"
+import { ArrowRight, Bot, Zap, Shield, BarChart3, CheckCircle2, MessageSquare, Plus, Star, ArrowUpRight, TrendingUp } from "lucide-react"
 
 export default function Home() {
   return (
