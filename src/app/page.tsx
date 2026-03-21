@@ -24,9 +24,9 @@ export default function Home() {
             <Link 
               href="https://wa.me/5521981062423" 
               target="_blank"
-              className="px-6 py-2 rounded-full bg-premium-gradient text-white text-sm font-black shadow-lg hover:opacity-90 transition-all flex items-center gap-2"
+              className="px-6 py-2 rounded-full bg-[#25D366] text-white text-sm font-black shadow-lg hover:bg-[#20ba5a] transition-all flex items-center gap-2"
             >
-              Falar com Especialista <Phone className="h-4 w-4 fill-current" />
+              Falar com Especialista <MessageSquare className="h-4 w-4 fill-current" />
             </Link>
           </div>
         </div>
