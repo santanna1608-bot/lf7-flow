@@ -22,7 +22,7 @@ export default function Home() {
               Login
             </Link>
             <Link 
-              href="https://wa.me/your-number" 
+              href="https://wa.me/5521981062423" 
               target="_blank"
               className="px-6 py-2 rounded-full bg-premium-gradient text-white text-sm font-black shadow-lg hover:opacity-90 transition-all flex items-center gap-2"
             >
