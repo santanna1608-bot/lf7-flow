@@ -50,9 +50,9 @@ export default function Home() {
 
           <Link 
             href="/login" 
-            className="h-16 px-12 rounded-2xl bg-premium-gradient text-white text-xl font-black shadow-2xl hover:scale-105 transition-all mb-20 animate-in fade-in slide-in-from-bottom-16 duration-1000"
+            className="h-16 px-12 rounded-2xl bg-premium-gradient text-white text-xl font-black shadow-2xl hover:scale-105 transition-all mb-20 animate-in fade-in slide-in-from-bottom-16 duration-1000 flex items-center gap-3"
           >
-            Ver Demonstração
+            Acessar Painel <ArrowRight className="h-6 w-6" />
           </Link>
 
         </div>
