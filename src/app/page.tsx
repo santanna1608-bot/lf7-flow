@@ -58,52 +58,60 @@ export default function Home() {
         </div>
       </section>
 
-      {/* 3. Seção de Funcionalidades (Features - Fundo Claro) */}
-      <section className="bg-[#f9fafc] py-32 px-6 relative z-10 transition-colors duration-500">
+      {/* 3. Seção de Funcionalidades (Features - Fundo Escuro Coeso) */}
+      <section className="bg-[#0a0e1b] py-32 px-6 relative overflow-hidden border-t border-white/5">
+        {/* Adicionando glows de fundo para profundidade */}
+        <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-primary/10 blur-[150px] rounded-full -z-10" />
+        <div className="absolute bottom-1/4 right-1/4 w-[500px] h-[500px] bg-[#00ffff]/5 blur-[150px] rounded-full -z-10" />
+        
         <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-20">
-            <h2 className="text-4xl md:text-6xl font-black tracking-tighter text-[#0a0e1b] mb-6">Controle e Eficiência para sua Prospecção</h2>
+          <div className="text-center mb-20 animate-in fade-in slide-in-from-bottom-8 duration-1000">
+            <h2 className="text-4xl md:text-6xl font-black tracking-tighter text-white mb-6">Controle Total do seu Fluxo</h2>
             <div className="h-1.5 w-24 bg-premium-gradient mx-auto rounded-full" />
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            <div className="p-10 rounded-3xl bg-white border border-[#0a0e1b]/5 shadow-sm hover:shadow-xl hover:-translate-y-2 transition-all group">
-              <div className="h-14 w-14 rounded-2xl bg-[#8a2be2]/10 flex items-center justify-center text-[#8a2be2] mb-8 group-hover:bg-premium-gradient group-hover:text-white transition-all shadow-md">
+            <div className="p-10 rounded-[2.5rem] bg-white/5 backdrop-blur-xl border border-white/10 shadow-2xl hover:bg-white/[0.08] hover:-translate-y-2 transition-all group relative overflow-hidden">
+              <div className="absolute top-0 right-0 w-32 h-32 bg-primary/10 blur-3xl -mr-16 -mt-16 group-hover:bg-primary/20 transition-all" />
+              <div className="h-14 w-14 rounded-2xl bg-primary/10 flex items-center justify-center text-primary mb-8 group-hover:bg-premium-gradient group-hover:text-white transition-all shadow-lg border border-primary/20">
                 <Bot className="h-8 w-8" />
               </div>
-              <h3 className="text-xl font-black text-[#0a0e1b] mb-4">Agentes de IA Inteligentes</h3>
-              <p className="text-slate-500 font-semibold text-sm leading-relaxed">
-                Controle total sobre seus agentes. Pause, ative ou ajuste a personalidade da IA conforme a necessidade da sua operação.
+              <h3 className="text-xl font-black text-white mb-4">Agentes de IA</h3>
+              <p className="text-slate-400 font-medium text-sm leading-relaxed">
+                Controle total sobre seus agentes. Pause, ative ou ajuste a personalidade da IA conforme sua necessidade.
               </p>
             </div>
 
-            <div className="p-10 rounded-3xl bg-white border border-[#0a0e1b]/5 shadow-sm hover:shadow-xl hover:-translate-y-2 transition-all group">
-              <div className="h-14 w-14 rounded-2xl bg-[#00ffff]/10 flex items-center justify-center text-[#00ffff] mb-8 group-hover:bg-premium-gradient group-hover:text-white transition-all shadow-md">
+            <div className="p-10 rounded-[2.5rem] bg-white/5 backdrop-blur-xl border border-white/10 shadow-2xl hover:bg-white/[0.08] hover:-translate-y-2 transition-all group relative overflow-hidden">
+              <div className="absolute top-0 right-0 w-32 h-32 bg-[#00ffff]/10 blur-3xl -mr-16 -mt-16 group-hover:bg-[#00ffff]/20 transition-all" />
+              <div className="h-14 w-14 rounded-2xl bg-[#00ffff]/10 flex items-center justify-center text-[#00ffff] mb-8 group-hover:bg-premium-gradient group-hover:text-white transition-all shadow-lg border border-[#00ffff]/20">
                 <Zap className="h-8 w-8" />
               </div>
-              <h3 className="text-xl font-black text-[#0a0e1b] mb-4">CRM Kanban Integrado</h3>
-              <p className="text-slate-500 font-semibold text-sm leading-relaxed">
-                Visualize seu funil de vendas com clareza. Mova leads entre etapas de prospecção, qualificação e fechamento.
+              <h3 className="text-xl font-black text-white mb-4">CRM Kanban</h3>
+              <p className="text-slate-400 font-medium text-sm leading-relaxed">
+                Visualize seu funil com clareza. Mova leads entre etapas de prospecção e fechamento de forma intuitiva.
               </p>
             </div>
 
-            <div className="p-10 rounded-3xl bg-white border border-[#0a0e1b]/5 shadow-sm hover:shadow-xl hover:-translate-y-2 transition-all group">
-              <div className="h-14 w-14 rounded-2xl bg-indigo-500/10 flex items-center justify-center text-indigo-500 mb-8 group-hover:bg-premium-gradient group-hover:text-white transition-all shadow-md">
+            <div className="p-10 rounded-[2.5rem] bg-white/5 backdrop-blur-xl border border-white/10 shadow-2xl hover:bg-white/[0.08] hover:-translate-y-2 transition-all group relative overflow-hidden">
+              <div className="absolute top-0 right-0 w-32 h-32 bg-indigo-500/10 blur-3xl -mr-16 -mt-16 group-hover:bg-indigo-500/20 transition-all" />
+              <div className="h-14 w-14 rounded-2xl bg-indigo-500/10 flex items-center justify-center text-indigo-500 mb-8 group-hover:bg-premium-gradient group-hover:text-white transition-all shadow-lg border border-indigo-500/20">
                 <MessageSquare className="h-8 w-8" />
               </div>
-              <h3 className="text-xl font-black text-[#0a0e1b] mb-4">Live Chat & Handoff</h3>
-              <p className="text-slate-500 font-semibold text-sm leading-relaxed">
-                Intervenha nas conversas da IA sempre que necessário. Transição suave entre automação e atendimento humano.
+              <h3 className="text-xl font-black text-white mb-4">Live Chat</h3>
+              <p className="text-slate-400 font-medium text-sm leading-relaxed">
+                Intervenha nas conversas da IA sempre que necessário. Transição suave entre automação e humano.
               </p>
             </div>
 
-            <div className="p-10 rounded-3xl bg-white border border-[#0a0e1b]/5 shadow-sm hover:shadow-xl hover:-translate-y-2 transition-all group">
-              <div className="h-14 w-14 rounded-2xl bg-[#8a2be2]/10 flex items-center justify-center text-[#8a2be2] mb-8 group-hover:bg-premium-gradient group-hover:text-white transition-all shadow-md">
+            <div className="p-10 rounded-[2.5rem] bg-white/5 backdrop-blur-xl border border-white/10 shadow-2xl hover:bg-white/[0.08] hover:-translate-y-2 transition-all group relative overflow-hidden">
+              <div className="absolute top-0 right-0 w-32 h-32 bg-primary/10 blur-3xl -mr-16 -mt-16 group-hover:bg-primary/20 transition-all" />
+              <div className="h-14 w-14 rounded-2xl bg-primary/10 flex items-center justify-center text-primary mb-8 group-hover:bg-premium-gradient group-hover:text-white transition-all shadow-lg border border-primary/20">
                 <BarChart3 className="h-8 w-8" />
               </div>
-              <h3 className="text-xl font-black text-[#0a0e1b] mb-4">Dashboard Performance</h3>
-              <p className="text-slate-500 font-semibold text-sm leading-relaxed">
-                Métricas reais em tempo real. Saiba a taxa de conversão da sua IA e a velocidade de resposta do seu time.
+              <h3 className="text-xl font-black text-white mb-4">Performance</h3>
+              <p className="text-slate-400 font-medium text-sm leading-relaxed">
+                Métricas em tempo real. Saiba a taxa de conversão da sua IA e a velocidade de resposta do seu time.
               </p>
             </div>
           </div>
