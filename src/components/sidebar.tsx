@@ -107,12 +107,14 @@ export function Sidebar({ onClose }: { onClose?: () => void }) {
         
         {/* Switcher Admin/User (Apenas para Admins) */}
         {(user?.role?.toLowerCase() === 'admin' || user?.email === 'lf7.marketingdigital@gmail.com') && (
-          <div className="flex p-1 bg-muted rounded-xl gap-1">
+          <div className="flex p-1 bg-black/40 rounded-xl gap-1 border border-white/5">
             <button 
               onClick={() => router.push('/dashboard')}
               className={cn(
-                "flex-1 px-2 py-1.5 text-[10px] font-bold rounded-lg transition-all uppercase tracking-wider",
-                !isAdminView ? "bg-white/10 shadow-sm text-white" : "text-slate-400 hover:bg-white/5"
+                "flex-1 px-2 py-1.5 text-[10px] font-black rounded-lg transition-all uppercase tracking-[0.15em]",
+                !isAdminView 
+                  ? "bg-premium-gradient text-white shadow-lg shadow-primary/20" 
+                  : "text-slate-500 hover:text-white hover:bg-white/5"
               )}
             >
               Cliente
@@ -120,11 +122,13 @@ export function Sidebar({ onClose }: { onClose?: () => void }) {
             <button 
               onClick={() => router.push('/admin')}
               className={cn(
-                "flex-1 px-2 py-1.5 text-[10px] font-bold rounded-lg transition-all uppercase tracking-wider flex items-center justify-center gap-1",
-                isAdminView ? "bg-white/10 shadow-sm text-white" : "text-slate-400 hover:bg-white/5"
+                "flex-1 px-2 py-1.5 text-[10px] font-black rounded-lg transition-all uppercase tracking-[0.15em] flex items-center justify-center gap-1.5",
+                isAdminView 
+                  ? "bg-premium-gradient text-white shadow-lg shadow-primary/20" 
+                  : "text-slate-500 hover:text-white hover:bg-white/5"
               )}
             >
-              <Crown className="h-2.5 w-2.5" /> Admin
+              <Crown className="h-3 w-3" /> Admin
             </button>
           </div>
         )}
