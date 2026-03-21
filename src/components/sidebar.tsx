@@ -167,19 +167,22 @@ export function Sidebar({ onClose }: { onClose?: () => void }) {
       <div className="border-t p-4 space-y-3">
         <Link 
           href="/profile"
-          className="flex items-center space-x-3 p-2 rounded-lg hover:bg-accent transition-colors group"
+          className="flex items-center space-x-3 p-3 rounded-2xl bg-white/5 border border-white/5 hover:bg-white/10 hover:border-white/10 transition-all group"
         >
-           <div className="h-8 w-8 rounded-full bg-white/10 border border-white/10 flex items-center justify-center text-slate-400 group-hover:bg-primary/20 group-hover:text-white transition-colors overflow-hidden">
-             {user?.avatarUrl ? (
-               <img src={user.avatarUrl} alt="Avatar" className="h-full w-full object-cover" />
-             ) : (
-               <User className="h-4 w-4" />
-             )}
+           <div className="h-10 w-10 rounded-full bg-premium-gradient p-[2px] shadow-lg shadow-primary/20">
+             <div className="h-full w-full rounded-full bg-[#0a0e1b] flex items-center justify-center overflow-hidden">
+               {user?.avatarUrl ? (
+                 <img src={user.avatarUrl} alt="Avatar" className="h-full w-full object-cover" />
+               ) : (
+                 <User className="h-5 w-5 text-slate-400" />
+               )}
+             </div>
            </div>
            <div className="flex-1 overflow-hidden">
-             <p className="text-sm font-medium leading-none truncate">{user?.name || "Meu Perfil"}</p>
-             <p className="text-xs text-muted-foreground truncate group-hover:text-primary transition-colors">Minha Conta</p>
+             <p className="text-sm font-black leading-none truncate text-white mb-1.5">{user?.name || "Meu Perfil"}</p>
+             <p className="text-[10px] text-secondary font-black uppercase tracking-widest truncate group-hover:text-white transition-colors">Minha Conta</p>
            </div>
+           <ChevronRight className="h-4 w-4 text-slate-600 group-hover:text-white transition-colors" />
         </Link>
         <button 
           onClick={handleLogout}
