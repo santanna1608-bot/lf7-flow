@@ -39,13 +39,13 @@ export default function Home() {
       <section className="bg-login-gradient pt-40 pb-32 px-6 relative overflow-hidden flex flex-col items-center text-center border-b border-white/5">
         <div className="max-w-7xl mx-auto w-full flex flex-col items-center">
           <h1 className="text-5xl md:text-[5.5rem] font-black tracking-tighter text-white mb-8 leading-[1.1] animate-in fade-in slide-in-from-bottom-8 duration-1000">
-            Escale sua Prospecção no <br className="hidden md:block" />
-            WhatsApp com o <span className="text-gradient">LF7 AI Flow</span>
+            Seja bem vindo ao <br className="hidden md:block" />
+            <span className="text-gradient">LF7 AI Flow</span>
           </h1>
           
           <p className="text-xl md:text-2xl text-slate-400 mb-14 max-w-4xl font-semibold animate-in fade-in slide-in-from-bottom-12 duration-1000">
-            A automação com IA que você controla para gerenciar leads <br className="hidden md:block" />
-            e fechar mais vendas de forma profissional e escalável.
+            Acesse seu painel exclusivo para gerenciar leads <br className="hidden md:block" />
+            e acompanhar a performance dos seus agentes de IA.
           </p>
 
           <Link 
