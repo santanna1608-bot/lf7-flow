@@ -42,8 +42,9 @@ export function KanbanCard({ lead, onClick, onUpdate }: KanbanCardProps) {
       {...attributes}
       onClick={() => onClick?.(lead)}
       className={cn(
-        "group cursor-grab rounded-2xl border border-slate-100 bg-white p-5 shadow-[0_2px_10px_rgba(0,0,0,0.02)] transition-all hover:shadow-[0_10px_30px_rgba(0,0,0,0.06)] hover:-translate-y-1 active:cursor-grabbing relative overflow-hidden",
-        isDragging && "opacity-50 ring-2 ring-primary/20 scale-95"
+        "group cursor-grab rounded-2xl border border-slate-100 bg-white p-5 shadow-[0_2px_10px_rgba(0,0,0,0.02)] relative overflow-hidden",
+        !isDragging && "transition-all hover:shadow-[0_10px_30px_rgba(0,0,0,0.06)] hover:-translate-y-1",
+        isDragging && "opacity-50 ring-2 ring-primary/20 scale-95 cursor-grabbing"
       )}
     >
       {/* Borda lateral de status */}

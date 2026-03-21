@@ -40,7 +40,7 @@ export function KanbanBoard({ activeFunnel }: KanbanBoardProps) {
   const sensors = useSensors(
     useSensor(PointerSensor, {
       activationConstraint: {
-        distance: 8,
+        distance: 10,
       },
     })
   )
