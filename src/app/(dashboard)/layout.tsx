@@ -27,7 +27,7 @@ export default function DashboardLayout({
 
         {/* Sidebar responsivo */}
         <div className={cn(
-          "fixed inset-y-0 left-0 z-50 transform transition-transform duration-300 ease-in-out lg:relative lg:translate-x-0 w-64",
+          "fixed inset-y-0 left-0 z-50 transform transition-transform duration-300 ease-in-out lg:relative lg:translate-x-0 w-64 border-r border-border",
           isSidebarOpen ? "translate-x-0" : "-translate-x-full"
         )}>
           <Sidebar onClose={() => setIsSidebarOpen(false)} />
@@ -35,20 +35,20 @@ export default function DashboardLayout({
 
         <div className="flex-1 flex flex-col overflow-hidden relative">
           {/* Header Mobile */}
-          <header className="lg:hidden flex items-center justify-between px-6 h-16 bg-white border-b shadow-sm z-30">
+          <header className="lg:hidden flex items-center justify-between px-6 h-16 bg-background/80 backdrop-blur-md border-b border-border shadow-sm z-30 sticky top-0">
             <div className="flex items-center gap-2">
               <Zap className="h-5 w-5 text-primary animate-pulse" />
-              <span className="font-bold text-lg tracking-tight">LF7 Flow</span>
+              <span className="font-bold text-lg tracking-tight text-foreground">LF7 AI Flow</span>
             </div>
             <button 
               onClick={() => setIsSidebarOpen(true)}
-              className="p-2 -mr-2 text-slate-600 hover:bg-slate-100 rounded-xl transition-colors"
+              className="p-2 -mr-2 text-muted-foreground hover:bg-accent hover:text-accent-foreground rounded-xl transition-colors"
             >
               <Menu className="h-6 w-6" />
             </button>
           </header>
 
-          <main className="flex-1 overflow-y-auto bg-slate-50 p-4 lg:p-8">
+          <main className="flex-1 overflow-y-auto bg-background p-4 lg:p-8">
             {children}
           </main>
         </div>

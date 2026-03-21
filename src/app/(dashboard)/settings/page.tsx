@@ -43,7 +43,8 @@ export default function SettingsPage() {
 
       if (company) {
         setApiKey(company.api_key_internal || "Nenhuma chave gerada")
-        setWebhookUrl(`https://api.lf7flow.com/v1/webhooks/n8n/${profile.company_id}`)
+        const origin = typeof window !== 'undefined' ? window.location.origin : ''
+        setWebhookUrl(`${origin}/api/webhooks/n8n`)
       }
     } catch (err) {
       console.error(err)
