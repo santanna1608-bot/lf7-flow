@@ -1,6 +1,8 @@
-import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs'
-import { cookies } from 'next/headers'
+import { createClient } from '@supabase/supabase-js'
 import { NextResponse } from 'next/server'
+
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
+const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
 
 export async function POST(req: Request) {
   try {
@@ -12,7 +14,7 @@ export async function POST(req: Request) {
     }
 
     const apiKey = authHeader.split(' ')[1]
-    const supabase = createRouteHandlerClient({ cookies })
+    const supabase = createClient(supabaseUrl, supabaseAnonKey)
 
     // Valida a API Key usando a função RPC (bypassa RLS com SECURITY DEFINER)
     const { data: rpcData, error: rpcError } = await supabase
