@@ -35,14 +35,16 @@ export default function DashboardLayout({
 
         <div className="flex-1 flex flex-col overflow-hidden relative">
           {/* Header Mobile */}
-          <header className="lg:hidden flex items-center justify-between px-6 h-16 bg-background/80 backdrop-blur-md border-b border-border shadow-sm z-30 sticky top-0">
+          <header className="lg:hidden flex items-center justify-between px-6 h-16 bg-[hsl(var(--sidebar-bg))] border-b border-white/5 shadow-sm z-30 sticky top-0">
             <div className="flex items-center gap-2">
-              <Zap className="h-5 w-5 text-primary animate-pulse" />
-              <span className="font-bold text-lg tracking-tight text-foreground">LF7 AI Flow</span>
+              <div className="h-7 w-7 rounded-lg bg-premium-gradient flex items-center justify-center shadow-lg shadow-primary/20">
+                <Zap className="h-4 w-4 text-white" />
+              </div>
+              <span className="font-black text-lg tracking-tighter text-white">LF7 AI <span className="text-secondary italic">Flow</span></span>
             </div>
             <button 
               onClick={() => setIsSidebarOpen(true)}
-              className="p-2 -mr-2 text-muted-foreground hover:bg-accent hover:text-accent-foreground rounded-xl transition-colors"
+              className="p-2 -mr-2 text-slate-400 hover:bg-white/5 hover:text-white rounded-xl transition-colors"
             >
               <Menu className="h-6 w-6" />
             </button>

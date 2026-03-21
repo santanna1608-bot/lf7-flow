@@ -85,13 +85,15 @@ export function Sidebar({ onClose }: { onClose?: () => void }) {
   const currentMenuItems = isAdminView ? adminMenuItems : userMenuItems
 
   return (
-    <div className="flex h-full w-64 flex-col border-r bg-background">
+    <div className="flex h-full w-64 flex-col border-r border-white/5 bg-[hsl(var(--sidebar-bg))] text-white">
       {/* Header do Sidebar */}
       <div className="p-6 border-b flex flex-col gap-4">
         <div className="flex items-center gap-2 justify-between">
           <div className="flex items-center gap-2">
-            <Zap className="h-6 w-6 text-primary" />
-            <h2 className="text-xl font-bold tracking-tight">LF7 AI Flow</h2>
+            <div className="h-8 w-8 rounded-lg bg-premium-gradient flex items-center justify-center shadow-lg shadow-primary/20">
+              <Zap className="h-5 w-5 text-white" />
+            </div>
+            <h2 className="text-xl font-black tracking-tighter">LF7 AI <span className="text-secondary italic">Flow</span></h2>
           </div>
           {onClose && (
             <button 
@@ -110,7 +112,7 @@ export function Sidebar({ onClose }: { onClose?: () => void }) {
               onClick={() => router.push('/dashboard')}
               className={cn(
                 "flex-1 px-2 py-1.5 text-[10px] font-bold rounded-lg transition-all uppercase tracking-wider",
-                !isAdminView ? "bg-white shadow-sm text-primary" : "text-muted-foreground hover:bg-background/50"
+                !isAdminView ? "bg-white/10 shadow-sm text-white" : "text-slate-400 hover:bg-white/5"
               )}
             >
               Cliente
@@ -119,7 +121,7 @@ export function Sidebar({ onClose }: { onClose?: () => void }) {
               onClick={() => router.push('/admin')}
               className={cn(
                 "flex-1 px-2 py-1.5 text-[10px] font-bold rounded-lg transition-all uppercase tracking-wider flex items-center justify-center gap-1",
-                isAdminView ? "bg-white shadow-sm text-primary" : "text-muted-foreground hover:bg-background/50"
+                isAdminView ? "bg-white/10 shadow-sm text-white" : "text-slate-400 hover:bg-white/5"
               )}
             >
               <Crown className="h-2.5 w-2.5" /> Admin
@@ -145,8 +147,8 @@ export function Sidebar({ onClose }: { onClose?: () => void }) {
                 className={cn(
                   "group flex items-center rounded-md px-3 py-2 text-sm font-medium transition-colors",
                   isActive 
-                    ? "bg-primary text-primary-foreground shadow-lg shadow-primary/20" 
-                    : "text-muted-foreground hover:bg-accent hover:text-accent-foreground"
+                    ? "bg-premium-gradient text-white shadow-lg shadow-primary/20" 
+                    : "text-slate-400 hover:bg-white/5 hover:text-white"
                 )}
               >
                 <item.icon className={cn("mr-3 h-5 w-5", isActive ? "text-white" : "text-muted-foreground group-hover:text-primary transition-colors")} />
@@ -163,7 +165,7 @@ export function Sidebar({ onClose }: { onClose?: () => void }) {
           href="/profile"
           className="flex items-center space-x-3 p-2 rounded-lg hover:bg-accent transition-colors group"
         >
-           <div className="h-8 w-8 rounded-full bg-muted border border-slate-200 flex items-center justify-center text-muted-foreground group-hover:bg-primary/10 group-hover:text-primary transition-colors overflow-hidden">
+           <div className="h-8 w-8 rounded-full bg-white/10 border border-white/10 flex items-center justify-center text-slate-400 group-hover:bg-primary/20 group-hover:text-white transition-colors overflow-hidden">
              {user?.avatarUrl ? (
                <img src={user.avatarUrl} alt="Avatar" className="h-full w-full object-cover" />
              ) : (
@@ -177,7 +179,7 @@ export function Sidebar({ onClose }: { onClose?: () => void }) {
         </Link>
         <button 
           onClick={handleLogout}
-          className="w-full flex h-10 items-center justify-center gap-2 rounded-lg bg-primary text-primary-foreground font-medium hover:bg-primary/90 transition-colors shadow-lg shadow-primary/10"
+          className="w-full flex h-10 items-center justify-center gap-2 rounded-lg bg-premium-gradient text-white font-bold hover:opacity-90 transition-all shadow-lg shadow-primary/10"
         >
           <LogOut className="h-4 w-4" /> Sair
         </button>

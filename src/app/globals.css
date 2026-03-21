@@ -16,8 +16,8 @@
     --primary: 262 83% 58%;
     --primary-foreground: 210 40% 98%;
 
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    --secondary: 189 94% 43%;
+    --secondary-foreground: 210 40% 98%;
 
     --muted: 210 40% 96.1%;
     --muted-foreground: 215.4 16.3% 46.9%;
@@ -32,7 +32,14 @@
     --input: 214.3 31.8% 91.4%;
     --ring: 262 83% 58%;
 
-    --radius: 0.5rem;
+    --radius: 0.75rem;
+
+    /* Custom variables for the new theme */
+    --sidebar-bg: 245 40% 7%;
+    --sidebar-fg: 210 40% 98%;
+    --login-bg: 230 40% 4%;
+    --gradient-start: 189 94% 43%;
+    --gradient-end: 262 83% 58%;
   }
 }
 
@@ -42,5 +49,27 @@
   }
   body {
     @apply bg-background text-foreground;
+  }
+}
+
+@layer utilities {
+  .bg-premium-gradient {
+    background: linear-gradient(135deg, hsl(var(--gradient-start)), hsl(var(--gradient-end)));
+  }
+  
+  .bg-login-gradient {
+    background: radial-gradient(circle at top right, hsl(var(--sidebar-bg)), hsl(var(--login-bg)));
+  }
+
+  .text-gradient {
+    @apply bg-clip-text text-transparent bg-premium-gradient;
+  }
+
+  .shadow-premium {
+    box-shadow: 0 0 20px -5px hsl(var(--primary) / 0.3);
+  }
+
+  .glass-card {
+    @apply bg-white/5 backdrop-blur-lg border border-white/10;
   }
 }
