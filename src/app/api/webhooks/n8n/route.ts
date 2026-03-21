@@ -5,12 +5,8 @@ const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
 
 export async function POST(req: Request) {
-  let step = 'inicial'
   try {
-    step = 'parse_body'
     const body = await req.json()
-    
-    step = 'parse_headers'
     const authHeader = req.headers.get('Authorization')
     
     if (!authHeader || !authHeader.startsWith('Bearer ')) {
@@ -22,122 +18,58 @@ export async function POST(req: Request) {
 
     const apiKey = authHeader.split(' ')[1]
     
-    step = 'init_supabase'
     if (!supabaseUrl || !supabaseAnonKey) {
-      throw new Error(`Credenciais do Supabase ausentes no Vercel (URL: ${!!supabaseUrl}, Key: ${!!supabaseAnonKey})`)
+       throw new Error('Configuração do banco de dados (Supabase) ausente no servidor.')
     }
+    
     const supabase = createClient(supabaseUrl, supabaseAnonKey)
 
-    step = 'call_rpc_auth'
-    // Valida a API Key usando a função RPC
-    const { data: rpcData, error: rpcError } = await supabase
-      .rpc('get_company_by_api_key', { p_api_key: apiKey })
-
-    if (rpcError) {
-      console.error('RPC Error:', rpcError)
-      return NextResponse.json({ 
-        error: 'Erro no banco de dados', 
-        details: rpcError.message,
-        step: 'rpc_call'
-      }, { status: 401 })
-    }
-
-    if (!rpcData || !Array.isArray(rpcData) || rpcData.length === 0) {
-      return NextResponse.json({ 
-        error: 'API Key inválida', 
-        message: 'A chave fornecida não foi encontrada no banco de dados.',
-        step: 'auth_validation'
-      }, { status: 401 })
-    }
-
-    const companyId = rpcData[0].company_id
-
-    step = 'normaliza_payload'
-    // Normalização de Payloads (Aceita formato plano ou estruturado)
+    // Normalização de Payloads
     let leadData = body.lead || (body.phone ? { name: body.name, phone: body.phone } : null)
     let messageData = body.message || (body.content ? { content: body.content, role: body.role } : null)
 
     if (!leadData || !leadData.phone) {
       return NextResponse.json({ 
-        error: 'Dados do lead são obrigatórios', 
-        message: 'Envie ao menos o campo "phone" (diretamente ou dentro de um objeto "lead").',
-        step: 'payload_validation'
+        error: 'Dados inválidos', 
+        message: 'O campo "phone" é obrigatório.' 
       }, { status: 400 })
     }
 
-    step = 'search_lead'
-    // 1. Criar ou atualizar o lead
-    const { data: existingLead, error: leadSearchError } = await supabase
-      .from('leads')
-      .select('id')
-      .eq('company_id', companyId)
-      .eq('phone', leadData.phone)
-      .maybeSingle()
+    // Chama a função RPC unificada (Segura e ignora RLS no banco)
+    const { data: result, error: rpcError } = await supabase.rpc('process_webhook_payload', {
+      p_api_key: apiKey,
+      p_lead_name: leadData.name || null,
+      p_lead_phone: leadData.phone,
+      p_message_content: (messageData && messageData.content) ? messageData.content : null,
+      p_message_role: (messageData && messageData.role) ? messageData.role : 'assistant'
+    })
 
-    if (leadSearchError) {
-       throw new Error(`Erro ao buscar lead: ${leadSearchError.message}`)
+    if (rpcError) {
+      console.error('RPC Error:', rpcError)
+      return NextResponse.json({ 
+        error: 'Erro no processamento', 
+        details: rpcError.message 
+      }, { status: 500 })
     }
 
-    let leadId: string
-
-    if (existingLead) {
-      step = 'update_lead'
-      leadId = existingLead.id
-      const { error: updateError } = await supabase
-        .from('leads')
-        .update({ 
-          name: leadData.name || 'Sem nome',
-          last_message_at: new Date().toISOString()
-        })
-        .eq('id', leadId)
-      
-      if (updateError) throw new Error(`Erro ao atualizar lead: ${updateError.message}`)
-    } else {
-      step = 'create_lead'
-      const { data: newLead, error: createLeadError } = await supabase
-        .from('leads')
-        .insert({
-          company_id: companyId,
-          name: leadData.name || 'Sem nome',
-          phone: leadData.phone,
-          status: 'novo',
-          last_message_at: new Date().toISOString()
-        })
-        .select('id')
-        .single()
-
-      if (createLeadError) throw new Error(`Erro ao criar lead: ${createLeadError.message}`)
-      if (!newLead) throw new Error('Falha ao obter ID do novo lead após inserção')
-      leadId = newLead.id
-    }
-
-    // 2. Inserir a mensagem (se houver)
-    if (messageData && messageData.content) {
-      step = 'create_message'
-      const { error: msgError } = await supabase
-        .from('messages')
-        .insert({
-          company_id: companyId,
-          lead_id: leadId,
-          content: messageData.content,
-          role: messageData.role || 'assistant'
-        })
-
-      if (msgError) throw new Error(`Erro ao criar mensagem: ${msgError.message}`)
+    if (result && result.success === false) {
+      return NextResponse.json({ 
+        error: result.error || 'Falha na validação', 
+        message: 'Verifique sua API Key.' 
+      }, { status: 401 })
     }
 
     return NextResponse.json({ 
       success: true, 
-      leadId,
-      message: 'Webhook processado com sucesso' 
+      leadId: result.lead_id,
+      message: 'Dados processados com sucesso via RPC' 
     })
 
   } catch (error: any) {
-    console.error(`Webhook Error at ${step}:`, error)
+    console.error('Webhook Runtime Error:', error)
     return NextResponse.json({ 
       error: 'Internal Server Error', 
-      details: error.message,
-      step: step
+      details: error.message 
     }, { status: 500 })
   }
 }
