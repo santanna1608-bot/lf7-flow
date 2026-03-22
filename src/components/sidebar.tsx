@@ -11,6 +11,7 @@ import {
   MessageSquare, 
   Kanban, 
   Settings, 
+  Bot,
   Zap,
   ChevronRight,
   LogOut,
@@ -27,7 +28,7 @@ const userMenuItems = [
   { name: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
   { name: "Live Chat", href: "/chat", icon: MessageSquare },
   { name: "CRM Kanban", href: "/crm", icon: Kanban },
-  { name: "Integrações", href: "/settings", icon: Settings },
+  { name: "Meus Agentes", href: "/settings", icon: Bot },
 ]
 
 const adminMenuItems = [
