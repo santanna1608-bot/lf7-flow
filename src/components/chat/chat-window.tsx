@@ -81,7 +81,10 @@ export function ChatWindow({ lead, onBack }: ChatWindowProps) {
   }
 
   return (
-    <div className="flex h-full flex-col bg-slate-50 relative overflow-hidden">
+    <div className="flex h-full flex-col bg-[#efeae2] relative overflow-hidden">
+      {/* Background Pattern (Subtle WhatsApp feel) */}
+      <div className="absolute inset-0 opacity-[0.06] pointer-events-none" 
+           style={{ backgroundImage: 'url("https://www.transparenttextures.com/patterns/cubes.png")' }}></div>
       {/* Header do Chat (Light Style) */}
       <div className="h-[76px] flex items-center justify-between px-6 bg-white shrink-0 border-b border-slate-100 z-10 shadow-sm">
         <div className="flex items-center gap-4">
@@ -153,19 +156,19 @@ export function ChatWindow({ lead, onBack }: ChatWindowProps) {
         ))}
       </div>
 
-      {/* Área de Input (Light Style) */}
-      <div className="bg-white pt-4 pb-6 px-6 flex flex-col gap-4 z-10 border-t border-slate-100 shadow-[0_-4px_20px_rgba(0,0,0,0.02)]">
-        <div className="flex items-center gap-4">
-          <div className="flex items-center gap-1 text-slate-400">
-             <button className="p-2.5 hover:bg-slate-50 hover:text-slate-900 rounded-xl transition-all"><Smile className="h-5.5 w-5.5" /></button>
-             <button className="p-2.5 hover:bg-slate-50 hover:text-slate-900 rounded-xl transition-all"><Paperclip className="h-5.5 w-5.5" /></button>
+      {/* Área de Input (WhatsApp Style) */}
+      <div className="bg-[#f0f2f5] py-3 px-4 flex flex-col gap-2 z-10 border-t border-slate-200">
+        <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1 text-slate-500">
+             <button className="p-2 hover:bg-slate-200 rounded-full transition-all"><Smile className="h-6 w-6" /></button>
+             <button className="p-2 hover:bg-slate-200 rounded-full transition-all"><Paperclip className="h-6 w-6" /></button>
           </div>
           
-          <form onSubmit={handleSendMessage} className="flex-1 flex items-center gap-4">
+          <form onSubmit={handleSendMessage} className="flex-1 flex items-center gap-3">
             <input
               type="text"
-              placeholder="Envie sua mensagem por aqui..."
-              className="flex-1 h-12 rounded-[1.25rem] bg-slate-50 border border-slate-200 px-6 py-3 text-sm font-medium focus:outline-none placeholder:text-slate-400 text-slate-900 focus:border-primary/20 focus:ring-4 focus:ring-primary/5 transition-all shadow-inner"
+              placeholder="Digite uma mensagem"
+              className="flex-1 h-11 rounded-lg bg-white border-none px-4 text-[15px] focus:outline-none placeholder:text-slate-500 text-slate-900 transition-all shadow-sm"
               value={newMessage}
               onChange={(e) => setNewMessage(e.target.value)}
               disabled={sending}
@@ -173,16 +176,16 @@ export function ChatWindow({ lead, onBack }: ChatWindowProps) {
             <button 
               type="submit"
               disabled={!newMessage.trim() || sending}
-              className="h-12 w-12 flex items-center justify-center bg-premium-gradient text-white rounded-2xl shadow-xl shadow-primary/20 hover:shadow-primary/40 hover:scale-105 active:scale-95 transition-all disabled:opacity-20 disabled:scale-100"
+              className="h-11 w-11 flex items-center justify-center bg-transparent text-slate-500 hover:text-slate-900 transition-all disabled:opacity-20"
             >
-              <Send className="h-5 w-5 translate-x-0.5" />
+              <Send className="h-6 w-6" />
             </button>
           </form>
         </div>
 
-        <div className="text-center px-4">
-            <p className="text-[9px] text-slate-600 font-bold uppercase tracking-[0.2em] flex items-center justify-center gap-2">
-              <Zap className="h-3 w-3 text-primary animate-pulse" /> Intervenção Humana: A IA será pausada automaticamente ao você enviar uma mensagem.
+        <div className="text-center md:block hidden">
+            <p className="text-[10px] text-slate-400 font-medium flex items-center justify-center gap-2">
+              <Zap className="h-3 w-3 text-primary" /> IA pausada automaticamente ao intervir no fluxo.
             </p>
         </div>
       </div>
