@@ -17,6 +17,7 @@ interface ChatSidebarProps {
 export function ChatSidebar({ onSelectLead, selectedLeadId }: ChatSidebarProps) {
   const [leads, setLeads] = useState<Lead[]>([])
   const [search, setSearch] = useState("")
+  const [loading, setLoading] = useState(true)
   const [userAvatar, setUserAvatar] = useState<string | null>(null)
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false)
   const [companyId, setCompanyId] = useState<string | null>(null)
@@ -107,13 +108,13 @@ export function ChatSidebar({ onSelectLead, selectedLeadId }: ChatSidebarProps) 
            </div>
         </div>
         <div className="flex items-center gap-3 text-slate-500">
-           <button className="p-2.5 hover:bg-slate-100 hover:text-slate-900 rounded-xl transition-all">
+           <button className="p-2.5 hover:bg-slate-100 hover:text-slate-900 rounded-full transition-all">
               <CircleDashed className="h-5.5 w-5.5" />
            </button>
-           <button className="p-2.5 hover:bg-slate-100 hover:text-slate-900 rounded-xl transition-all">
+            <button onClick={() => setIsCreateModalOpen(true)} className="p-2.5 hover:bg-slate-100 hover:text-slate-900 rounded-full transition-all">
               <MessageSquarePlus className="h-5.5 w-5.5" />
            </button>
-           <button className="p-2.5 hover:bg-slate-100 hover:text-slate-900 rounded-xl transition-all">
+           <button className="p-2.5 hover:bg-slate-100 hover:text-slate-900 rounded-full transition-all">
               <MoreVertical className="h-5.5 w-5.5" />
            </button>
         </div>
