@@ -85,75 +85,92 @@ export function ChatWindow({ lead, onBack }: ChatWindowProps) {
       {/* Background Pattern (Subtle WhatsApp feel) */}
       <div className="absolute inset-0 opacity-[0.06] pointer-events-none" 
            style={{ backgroundImage: 'url("https://www.transparenttextures.com/patterns/cubes.png")' }}></div>
-      {/* Header do Chat (Light Style) */}
-      <div className="h-[76px] flex items-center justify-between px-6 bg-white shrink-0 border-b border-slate-100 z-10 shadow-sm">
-        <div className="flex items-center gap-4">
+      {/* Header do Chat (WhatsApp Style) */}
+      <div className="h-[64px] flex items-center justify-between px-4 bg-[#f0f2f5] shrink-0 border-b border-slate-200 z-10 shadow-sm">
+        <div className="flex items-center gap-3">
           {onBack && (
             <button 
               onClick={onBack}
-              className="md:hidden p-2 text-slate-400 hover:bg-slate-50 hover:text-slate-900 rounded-xl transition-all"
+              className="md:hidden p-1.5 text-slate-500 hover:bg-slate-200 rounded-full transition-all"
             >
               <ChevronLeft className="h-6 w-6" />
             </button>
           )}
-          <div className="h-12 w-12 rounded-2xl bg-slate-50 flex items-center justify-center relative overflow-hidden border border-slate-100 shadow-inner">
-             <span className="text-xl font-black text-primary opacity-80">{lead.name.charAt(0)}</span>
-             <User className="h-8 w-8 text-slate-900 absolute opacity-5" />
+          <div className="h-10 w-10 rounded-full bg-slate-300 flex items-center justify-center relative overflow-hidden border border-slate-200 shadow-sm">
+             <span className="text-lg font-black text-white">{lead.name.charAt(0)}</span>
+             <User className="h-7 w-7 text-slate-900 absolute opacity-10" />
           </div>
-          <div className="flex flex-col">
-            <h3 className="text-base font-black text-slate-900 leading-tight tracking-tight">{lead.name}</h3>
-            <div className="flex items-center gap-1.5 mt-0.5">
-              <span className="h-2 w-2 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.4)]" />
-              <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">IA Monitorando Fluxo</span>
+          <div className="flex flex-col min-w-0">
+            <h3 className="text-[15px] font-bold text-slate-900 leading-tight truncate">{lead.name}</h3>
+            <div className="flex items-center gap-1.5">
+              <span className="text-[11px] text-slate-500 truncate">Visto por último hoje às {new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
             </div>
           </div>
         </div>
-        <div className="flex items-center gap-3 text-slate-400">
-           <button className="p-2.5 hover:bg-slate-50 hover:text-slate-900 rounded-xl transition-all"><Search className="h-5 w-5" /></button>
-           <button className="p-2.5 hover:bg-slate-50 hover:text-slate-900 rounded-xl transition-all"><MoreVertical className="h-5 w-5" /></button>
+        <div className="flex items-center gap-2 text-slate-500">
+           <button className="p-2 hover:bg-slate-200 rounded-full transition-all"><Search className="h-5 w-5" /></button>
+           <button className="p-2 hover:bg-slate-200 rounded-full transition-all"><MoreVertical className="h-5 w-5" /></button>
         </div>
       </div>
 
-      {/* Área de Mensagens (Dark Premium) */}
       <div 
         ref={scrollRef}
-        className="flex-1 overflow-y-auto p-6 md:p-10 space-y-6 z-10 custom-scrollbar"
+        className="flex-1 overflow-y-auto p-4 md:px-12 md:py-6 space-y-2 z-10 custom-scrollbar"
       >
         {messages.length === 0 && !loading && (
             <div className="flex justify-center my-8 scale-in-center">
-                <span className="bg-white/5 border border-white/5 px-4 py-2 rounded-2xl text-[10px] text-slate-500 backdrop-blur-xl uppercase font-black tracking-[0.2em] shadow-2xl">Início da conversa</span>
+                <span className="bg-[#fff9c2] border border-[#e5e0b0] px-4 py-1.5 rounded-lg text-[11px] text-slate-600 shadow-sm uppercase font-bold tracking-wider">Criptografia de ponta a ponta</span>
             </div>
         )}
         
-        {messages.map((msg) => (
-          <div
-            key={msg.id}
-            className={cn(
-              "flex w-full animate-in fade-in slide-in-from-bottom-2 duration-300",
-              msg.role === 'assistant' ? "justify-start" : "justify-end"
-            )}
-          >
+        {messages.map((msg, idx) => {
+          const isFirstInGroup = idx === 0 || messages[idx-1].role !== msg.role;
+          return (
             <div
+              key={msg.id}
               className={cn(
-                "max-w-[85%] md:max-w-[70%] px-5 py-4 shadow-sm relative text-[14px] leading-relaxed tracking-tight group/msg",
-                msg.role === 'assistant' 
-                  ? "bg-white text-slate-900 border border-slate-100 rounded-[2rem] rounded-tl-none" 
-                  : "bg-premium-gradient text-white rounded-[2rem] rounded-tr-none shadow-xl shadow-primary/10"
+                "flex w-full animate-in fade-in slide-in-from-bottom-1 duration-300 mb-1",
+                msg.role === 'assistant' ? "justify-start" : "justify-end",
+                isFirstInGroup ? "mt-4" : "mt-1.5"
               )}
             >
-              <p className="whitespace-pre-wrap">{msg.content}</p>
-              <div className={cn(
-                "flex items-center gap-2 mt-3 justify-end",
-                "text-[9px] font-black uppercase tracking-tighter opacity-40 group-hover/msg:opacity-80 transition-opacity"
-              )}>
-                {new Date(msg.created_at || '').toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                {msg.role === 'user' && (
-                  <svg viewBox="0 0 16 15" width="14" height="13" className="text-white ml-0.5"><path fill="currentColor" d="M15.01 3.316l-.478-.372a.365.365 0 0 0-.51.063L8.666 9.879l-2.976-2.09a.307.307 0 0 0-.413.056l-.427.5a.306.306 0 0 0 .048.42l3.756 2.64a.341.341 0 0 0 .461-.044L15.083 3.82a.374.374 0 0 0-.073-.504zm-3.514.391l-.478-.372a.365.365 0 0 0-.51.063l-2.001 2.506a.342.342 0 0 0 .061.472l.441.344a.366.366 0 0 0 .51-.063l2.05-2.568a.375.375 0 0 0-.073-.482zM4.156 10.45l-2.454-1.724a.306.306 0 0 0-.413.056l-.427.5a.306.306 0 0 0 .048.42l3.756 2.64a.341.341 0 0 0 .461-.044L5.672 11.5l-.65-.508l-1.127 1.41z"></path></svg>
+              <div
+                className={cn(
+                  "max-w-[85%] md:max-w-[65%] px-3 py-1.5 shadow-sm relative text-[14.2px] leading-snug tracking-normal group/msg",
+                  msg.role === 'assistant' 
+                    ? "bg-white text-slate-900 rounded-lg rounded-tl-none ml-2" 
+                    : "bg-[#d9fdd3] text-[#111b21] rounded-lg rounded-tr-none mr-2 shadow-[#00000014]"
                 )}
+              >
+                {/* Tail for WhatsApp bubbles */}
+                {isFirstInGroup && (
+                  <div className={cn(
+                    "absolute top-0 w-3 h-3",
+                    msg.role === 'assistant' 
+                      ? "-left-1.5 border-t-[10px] border-t-white border-l-[10px] border-l-transparent" 
+                      : "-right-1.5 border-t-[10px] border-t-[#d9fdd3] border-r-[10px] border-r-transparent"
+                  )} />
+                )}
+
+                <div className="pr-12 md:pr-14">
+                  <p className="whitespace-pre-wrap">{msg.content}</p>
+                </div>
+
+                <div className={cn(
+                  "absolute bottom-0 right-1.5 flex items-center gap-1 opacity-60",
+                  "text-[10px] text-slate-500 font-medium"
+                )}>
+                  {new Date(msg.created_at || '').toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                  {msg.role === 'user' && (
+                    <div className="text-[#53bdeb] flex items-center">
+                      <svg viewBox="0 0 16 15" width="16" height="15"><path fill="currentColor" d="M15.01 3.316l-.478-.372a.365.365 0 0 0-.51.063L8.666 9.879l-2.976-2.09a.307.307 0 0 0-.413.056l-.427.5a.306.306 0 0 0 .048.42l3.756 2.64a.341.341 0 0 0 .461-.044L15.083 3.82a.374.374 0 0 0-.073-.504zm-3.514.391l-.478-.372a.365.365 0 0 0-.51.063l-2.001 2.506a.342.342 0 0 0 .061.472l.441.344a.366.366 0 0 0 .51-.063l2.05-2.568a.375.375 0 0 0-.073-.482zM4.156 10.45l-2.454-1.724a.306.306 0 0 0-.413.056l-.427.5a.306.306 0 0 0 .048.42l3.756 2.64a.341.341 0 0 0 .461-.044L5.672 11.5l-.65-.508l-1.127 1.41z"></path></svg>
+                    </div>
+                  )}
+                </div>
               </div>
             </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
 
       {/* Área de Input (WhatsApp Style) */}
