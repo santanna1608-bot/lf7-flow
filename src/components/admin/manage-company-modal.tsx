@@ -159,7 +159,6 @@ export function ManageCompanyModal({ isOpen, onClose, onSuccess, company }: Mana
                 onChange={(e) => setFormData({...formData, subscription_start_date: e.target.value})}
               />
             </div>
-            </div>
           </div>
 
           <div className="space-y-3">
