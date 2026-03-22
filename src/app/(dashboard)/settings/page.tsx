@@ -142,127 +142,125 @@ export default function SettingsPage() {
         <p className="text-slate-500 font-medium">Conecte seus Agentes de IA via n8n ou Evolution API com facilidade.</p>
       </div>
 
-      <div className="grid gap-8 md:grid-cols-2">
-        <div className="rounded-[2.5rem] border border-slate-100 bg-white shadow-xl relative overflow-hidden group">
-          <div className="absolute top-0 left-0 w-full h-[2px] bg-premium-gradient opacity-0 group-hover:opacity-100 transition-opacity" />
-          <div className="p-8">
-            <div className="flex items-center gap-3 mb-6">
-              <div className="p-2.5 bg-primary/10 rounded-xl">
-                <Webhook className="h-6 w-6 text-primary" />
+      <div className="grid gap-8 lg:grid-cols-2">
+        <div className="space-y-8">
+          {/* Card de Webhook URL */}
+          <div className="rounded-[2.5rem] border border-slate-100 bg-white shadow-xl relative overflow-hidden group">
+            <div className="absolute top-0 left-0 w-full h-[2px] bg-premium-gradient opacity-0 group-hover:opacity-100 transition-opacity" />
+            <div className="p-8">
+              <div className="flex items-center gap-3 mb-6">
+                <div className="p-2.5 bg-primary/10 rounded-xl">
+                  <Webhook className="h-6 w-6 text-primary" />
+                </div>
+                <h3 className="font-black text-xl text-slate-900 tracking-tight">Webhook URL</h3>
               </div>
-              <h3 className="font-black text-xl text-slate-900 tracking-tight">Webhook URL</h3>
+              <p className="text-sm text-slate-500 font-medium mb-8 leading-relaxed">
+                Use esta URL no seu nó HTTP Request do n8n para enviar eventos de mensagens.
+              </p>
+              <div className="relative flex items-center group/input">
+                <input
+                  readOnly
+                  value={loading ? "Carregando..." : webhookUrl}
+                  className="w-full rounded-2xl border border-slate-100 bg-slate-50 px-6 py-4 text-xs font-mono text-slate-600 focus:outline-none focus:border-primary/30 transition-all shadow-inner"
+                />
+                <button 
+                  onClick={() => handleCopy(webhookUrl, 'webhook')}
+                  disabled={loading}
+                  className="absolute right-3 p-2 hover:bg-white/5 rounded-xl transition-all disabled:opacity-50 text-slate-400"
+                >
+                  {copied === 'webhook' ? (
+                    <Check className="h-4 w-4 text-emerald-500" />
+                  ) : (
+                    <Copy className="h-4 w-4" />
+                  )}
+                </button>
+              </div>
             </div>
-            <p className="text-sm text-slate-500 font-medium mb-8 leading-relaxed">
-              Use esta URL no seu nó HTTP Request do n8n para enviar eventos de mensagens para o CRM de forma instantânea.
-            </p>
-            <div className="relative flex items-center group/input">
-              <input
-                readOnly
-                value={loading ? "Carregando..." : webhookUrl}
-                className="w-full rounded-2xl border border-slate-100 bg-slate-50 px-6 py-4 text-xs font-mono text-slate-600 focus:outline-none focus:border-primary/30 transition-all shadow-inner"
-              />
-              <button 
-                onClick={() => handleCopy(webhookUrl, 'webhook')}
-                disabled={loading}
-                className="absolute right-3 p-2 hover:bg-white/5 rounded-xl transition-all disabled:opacity-50 text-slate-400 hover:text-white"
-                title="Copiar para área de transferência"
-              >
-                {copied === 'webhook' ? (
-                  <Check className="h-4 w-4 text-emerald-500" />
-                ) : (
-                  <Copy className="h-4 w-4" />
-                )}
-              </button>
-            </div>
-            <div className="mt-8 flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-primary hover:text-primary/80 transition-colors">
-              <ExternalLink className="h-3.5 w-3.5" />
-              <a href="https://docs.n8n.io/integrations/builtin/core-nodes/n8n-nodes-base.httprequest/" target="_blank" rel="noopener noreferrer"> Ver documentação oficial n8n</a>
+          </div>
+
+          {/* Card de API Key Interna */}
+          <div className="rounded-[2.5rem] border border-slate-100 bg-white shadow-xl relative overflow-hidden group">
+            <div className="absolute top-0 left-0 w-full h-[2px] bg-premium-gradient opacity-0 group-hover:opacity-100 transition-opacity" />
+            <div className="p-8">
+              <div className="flex items-center gap-3 mb-6">
+                <div className="p-2.5 bg-primary/10 rounded-xl">
+                  <Key className="h-6 w-6 text-primary" />
+                </div>
+                <h3 className="font-black text-xl text-slate-900 tracking-tight">API Key Interna</h3>
+              </div>
+              <p className="text-sm text-slate-500 font-medium mb-8 leading-relaxed">
+                Chave mestre para as requisições da sua IA.
+              </p>
+              <div className="relative flex items-center group/input">
+                <input
+                  readOnly
+                  type="password"
+                  value={loading ? "••••••••" : apiKey}
+                  className="w-full rounded-2xl border border-slate-100 bg-slate-50 px-6 py-4 text-xs font-mono text-slate-600 focus:outline-none focus:border-primary/30 transition-all shadow-inner"
+                />
+                <button 
+                  onClick={() => handleCopy(apiKey, 'key')}
+                  disabled={loading}
+                  className="absolute right-3 p-2 hover:bg-white/5 rounded-xl transition-all disabled:opacity-50 text-slate-400"
+                >
+                  {copied === 'key' ? (
+                    <Check className="h-4 w-4 text-emerald-500" />
+                  ) : (
+                    <Copy className="h-4 w-4" />
+                  )}
+                </button>
+              </div>
+              <div className="mt-8">
+                <button 
+                  onClick={handleRotateKey}
+                  disabled={loading || rotating}
+                  className="text-[10px] font-black uppercase tracking-widest text-rose-500 hover:text-rose-400 flex items-center gap-2.5"
+                >
+                  {rotating ? <Loader2 className="h-4 w-4 animate-spin" /> : <RefreshCw className="h-4 w-4" />}
+                  Rotacionar chave
+                </button>
+              </div>
             </div>
           </div>
         </div>
 
-        {/* Card de Personalidade da IA */}
-        <div className="md:col-span-2 rounded-[2.5rem] border border-slate-100 bg-white shadow-xl relative overflow-hidden group">
+        {/* Card de Personalidade da IA (Fica ao lado em desktops) */}
+        <div className="rounded-[2.5rem] border border-slate-100 bg-white shadow-xl relative overflow-hidden group h-full">
           <div className="absolute top-0 left-0 w-full h-[2px] bg-premium-gradient opacity-0 group-hover:opacity-100 transition-opacity" />
-          <div className="p-8 lg:p-10">
-            <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-8">
+          <div className="p-8 lg:p-10 flex flex-col h-full">
+            <div className="flex flex-col xl:flex-row xl:items-center justify-between gap-6 mb-8 shrink-0">
               <div className="flex items-center gap-4">
                 <div className="p-3 bg-primary/10 rounded-2xl">
                   <Bot className="h-7 w-7 text-primary" />
                 </div>
                 <div>
-                  <h3 className="font-black text-2xl text-slate-900 tracking-tight">Personalidade do Agente</h3>
-                  <p className="text-sm text-slate-500 font-medium">Defina o tom de voz e como seu agente deve se comportar.</p>
+                  <h3 className="font-black text-2xl text-slate-900 tracking-tight">Personalidade</h3>
+                  <p className="text-sm text-slate-500 font-medium leading-tight">Como o agente deve agir.</p>
                 </div>
               </div>
               <button
                 onClick={handleSavePersonality}
                 disabled={savingPersonality}
-                className="flex items-center gap-2 px-8 py-4 rounded-2xl bg-slate-900 text-white font-black text-xs uppercase tracking-[0.2em] shadow-xl hover:bg-black hover:scale-[1.02] active:scale-95 transition-all disabled:opacity-50"
+                className="flex items-center justify-center gap-2 px-6 py-4 rounded-2xl bg-slate-900 text-white font-black text-[10px] uppercase tracking-[0.2em] shadow-xl hover:bg-black hover:scale-[1.02] active:scale-95 transition-all disabled:opacity-50"
               >
                 {savingPersonality ? (
                   <Loader2 className="h-4 w-4 animate-spin" />
                 ) : (
-                  <><Save className="h-4 w-4" /> Salvar Alterações</>
+                  <><Save className="h-4 w-4" /> Salvar</>
                 )}
               </button>
             </div>
 
-            <div className="relative group/textarea">
-              <div className="absolute top-4 right-4 flex items-center gap-2 text-[10px] font-black text-primary/40 uppercase tracking-widest bg-white/50 px-2 py-1 rounded-lg backdrop-blur-sm pointer-events-none">
-                <Wand2 className="h-3 w-3" /> Modo Criativo Ativado
+            <div className="relative group/textarea flex-1 min-h-[350px]">
+              <div className="absolute top-4 right-4 flex items-center gap-2 text-[10px] font-black text-primary/40 uppercase tracking-widest bg-white/50 px-2 py-1 rounded-lg backdrop-blur-sm pointer-events-none z-10">
+                <Wand2 className="h-3 w-3" /> Modo Ativo
               </div>
               <textarea
                 value={aiPersonality}
                 onChange={(e) => setAiPersonality(e.target.value)}
-                placeholder="Ex: Você é um assistente de vendas altamente persuasivo e amigável. Seu objetivo é qualificar leads para serviços de marketing e agendar reuniões..."
-                className="w-full min-h-[250px] rounded-[1.5rem] border border-slate-100 bg-slate-50 px-8 py-10 text-sm text-slate-600 focus:outline-none focus:ring-4 focus:ring-primary/10 transition-all shadow-inner leading-relaxed"
+                placeholder="Defina as instruções para a sua IA..."
+                className="w-full h-full rounded-[1.5rem] border border-slate-100 bg-slate-50 px-8 py-10 text-sm text-slate-600 focus:outline-none focus:ring-4 focus:ring-primary/10 transition-all shadow-inner leading-relaxed resize-none font-medium"
               />
-            </div>
-          </div>
-        </div>
-
-        <div className="rounded-[2.5rem] border border-slate-100 bg-white shadow-xl relative overflow-hidden group">
-          <div className="absolute top-0 left-0 w-full h-[2px] bg-premium-gradient opacity-0 group-hover:opacity-100 transition-opacity" />
-          <div className="p-8">
-            <div className="flex items-center gap-3 mb-6">
-              <div className="p-2.5 bg-primary/10 rounded-xl">
-                <Key className="h-6 w-6 text-primary" />
-              </div>
-              <h3 className="font-black text-xl text-slate-900 tracking-tight">API Key Interna</h3>
-            </div>
-            <p className="text-sm text-slate-500 font-medium mb-8 leading-relaxed">
-              Chave de autenticação mestre para as requisições da sua IA. Mantenha em segredo absoluto.
-            </p>
-            <div className="relative flex items-center group/input">
-              <input
-                readOnly
-                type="password"
-                value={loading ? "••••••••" : apiKey}
-                className="w-full rounded-2xl border border-slate-100 bg-slate-50 px-6 py-4 text-xs font-mono text-slate-600 focus:outline-none focus:border-primary/30 transition-all shadow-inner"
-              />
-              <button 
-                onClick={() => handleCopy(apiKey, 'key')}
-                disabled={loading}
-                className="absolute right-3 p-2 hover:bg-white/5 rounded-xl transition-all disabled:opacity-50 text-slate-400 hover:text-white"
-                title="Copiar API Key"
-              >
-                {copied === 'key' ? (
-                  <Check className="h-4 w-4 text-emerald-500" />
-                ) : (
-                  <Copy className="h-4 w-4" />
-                )}
-              </button>
-            </div>
-            <div className="mt-8">
-              <button 
-                onClick={handleRotateKey}
-                disabled={loading || rotating}
-                className="text-[10px] font-black uppercase tracking-widest text-rose-500 hover:text-rose-400 flex items-center gap-2.5 disabled:opacity-50 transition-colors"
-              >
-                {rotating ? <Loader2 className="h-4 w-4 animate-spin" /> : <RefreshCw className="h-4 w-4" />}
-                Rotacionar chave de segurança
-              </button>
             </div>
           </div>
         </div>
