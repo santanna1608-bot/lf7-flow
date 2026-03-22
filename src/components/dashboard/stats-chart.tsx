@@ -41,17 +41,17 @@ export function StatsChart({ data }: { data?: ChartData[] }) {
               <stop offset="95%" stopColor="#8b5cf6" stopOpacity={0}/>
             </linearGradient>
           </defs>
-          <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
+          <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="rgba(255,255,255,0.05)" />
           <XAxis 
             dataKey="name" 
-            stroke="#94a3b8" 
+            stroke="#64748b" 
             fontSize={12} 
             tickLine={false} 
             axisLine={false}
             dy={10}
           />
           <YAxis 
-            stroke="#94a3b8" 
+            stroke="#64748b" 
             fontSize={12} 
             tickLine={false} 
             axisLine={false}
@@ -59,11 +59,13 @@ export function StatsChart({ data }: { data?: ChartData[] }) {
           />
           <Tooltip 
             contentStyle={{ 
-              backgroundColor: 'white', 
-              borderRadius: '12px', 
-              border: '1px solid #f1f5f9', 
-              boxShadow: '0 10px 15px -3px rgba(0,0,0,0.1)' 
+              backgroundColor: '#0f172a', 
+              borderRadius: '16px', 
+              border: '1px solid rgba(255,255,255,0.1)', 
+              boxShadow: '0 20px 25px -5px rgba(0,0,0,0.5)',
+              color: '#fff'
             }} 
+            itemStyle={{ color: '#fff' }}
           />
           <Area 
             type="monotone" 

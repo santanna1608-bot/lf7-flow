@@ -12,9 +12,9 @@ export default function ChatPage() {
   const [selectedLead, setSelectedLead] = useState<Lead | null>(null)
 
   return (
-    <div className="flex h-[calc(100vh-120px)] lg:h-[calc(100vh-80px)] overflow-hidden rounded-xl border bg-card shadow-lg relative">
+    <div className="flex h-[calc(100vh-140px)] lg:h-[calc(100vh-110px)] overflow-hidden rounded-[2.5rem] border border-white/10 bg-white/5 backdrop-blur-2xl shadow-2xl relative">
       <div className={cn(
-        "w-full md:w-80 border-r",
+        "w-full md:w-80 border-r border-white/5",
         selectedLead ? "hidden md:block" : "block"
       )}>
         <ChatSidebar 

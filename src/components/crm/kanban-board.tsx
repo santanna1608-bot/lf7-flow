@@ -76,25 +76,27 @@ export function KanbanBoard({ activeFunnel }: KanbanBoardProps) {
     >
       <div className="flex flex-col h-full gap-8">
         {/* Kanban Search Header - Premium Style */}
-        <div className="flex items-center justify-between gap-6 bg-white/40 backdrop-blur-md p-5 rounded-[2rem] border border-white/60 shadow-[0_8px_32px_rgba(0,0,0,0.04)] mb-2 group transition-all hover:bg-white/60">
+        <div className="flex items-center justify-between gap-6 bg-white/5 backdrop-blur-xl p-5 rounded-[2rem] border border-white/10 shadow-2xl mb-2 group transition-all hover:bg-white/10 relative overflow-hidden">
+          <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 blur-[40px] rounded-full -z-10" />
+          
           <div className="relative flex-1 max-w-lg">
-            <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400 font-black group-focus-within:text-primary transition-colors" />
+            <Search className="absolute left-5 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-500 font-black group-focus-within:text-primary transition-colors" />
             <input
               type="text"
               placeholder="Pesquisar leads neste funil..."
-              className="w-full pl-12 pr-4 py-3 rounded-2xl border border-slate-200/60 bg-white/80 focus:outline-none focus:ring-4 focus:ring-primary/10 border-transparent focus:border-primary/20 transition-all text-[15px] text-slate-900 shadow-sm"
+              className="w-full pl-14 pr-6 py-3.5 rounded-2xl border border-white/5 bg-white/5 focus:outline-none focus:ring-4 focus:ring-primary/10 border-transparent focus:border-primary/20 transition-all text-[14px] font-medium text-white placeholder-slate-500"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
           </div>
           
           <div className="flex items-center gap-4">
-            <div className="hidden md:flex items-center gap-2 bg-slate-100/50 p-1.5 rounded-xl border border-slate-200/50">
+            <div className="hidden md:flex items-center gap-2 bg-black/20 p-1.5 rounded-2xl border border-white/5">
                <button 
                  onClick={() => setViewMode("grid")}
                  className={cn(
-                   "p-2 rounded-lg transition-all",
-                   viewMode === "grid" ? "bg-white shadow-sm text-primary" : "text-slate-400 hover:text-slate-600"
+                   "p-2.5 rounded-xl transition-all",
+                   viewMode === "grid" ? "bg-premium-gradient shadow-lg shadow-primary/20 text-white" : "text-slate-500 hover:text-white hover:bg-white/5"
                  )}
                >
                  <LayoutGrid className="h-4 w-4" />
@@ -102,20 +104,20 @@ export function KanbanBoard({ activeFunnel }: KanbanBoardProps) {
                <button 
                  onClick={() => setViewMode("list")}
                  className={cn(
-                   "p-2 rounded-lg transition-all",
-                   viewMode === "list" ? "bg-white shadow-sm text-primary" : "text-slate-400 hover:text-slate-600"
+                   "p-2.5 rounded-xl transition-all",
+                   viewMode === "list" ? "bg-premium-gradient shadow-lg shadow-primary/20 text-white" : "text-slate-500 hover:text-white hover:bg-white/5"
                  )}
                >
                  <List className="h-4 w-4" />
                </button>
             </div>
             
-            <div className="h-10 w-[1px] bg-slate-200/60" />
+            <div className="h-10 w-[1px] bg-white/5" />
 
             <div className="flex items-center gap-3">
-              <span className="text-[11px] font-black text-slate-500 uppercase tracking-[0.2em] bg-white px-4 py-2.5 rounded-xl border border-slate-100 shadow-sm flex items-center gap-2">
-                <Filter className="h-3.5 w-3.5 text-primary/60" />
-                {filteredLeads.length} <span className="text-slate-400">Leads</span>
+              <span className="text-[11px] font-black text-white uppercase tracking-[0.2em] bg-white/5 px-5 py-3 rounded-2xl border border-white/5 shadow-sm flex items-center gap-2.5">
+                <Filter className="h-3.5 w-3.5 text-primary" />
+                {filteredLeads.length} <span className="text-slate-500">Leads</span>
               </span>
             </div>
           </div>

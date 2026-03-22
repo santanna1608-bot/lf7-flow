@@ -99,105 +99,120 @@ export default function SettingsPage() {
   }
 
   return (
-    <div className="flex-1 space-y-8 p-8 pt-6">
-      <div className="flex items-center justify-between space-y-2">
-        <div>
-          <h2 className="text-3xl font-bold tracking-tight">Configurações de Integração</h2>
-          <p className="text-muted-foreground">Conecte seus Agentes de IA via n8n ou Evolution API.</p>
-        </div>
+    <div className="flex-1 space-y-10 p-8 pt-6 max-w-[1400px] mx-auto pb-20 relative">
+      <div className="absolute top-0 right-0 w-64 h-64 bg-primary/5 blur-[120px] rounded-full -z-10" />
+      
+      <div className="flex flex-col space-y-2">
+        <h2 className="text-4xl font-black text-white tracking-tighter">Configurações de Integração</h2>
+        <p className="text-slate-400 font-medium">Conecte seus Agentes de IA via n8n ou Evolution API com facilidade.</p>
       </div>
 
-      <div className="grid gap-6 md:grid-cols-2">
-        <div className="rounded-xl border bg-card text-card-foreground shadow-sm">
-          <div className="p-6">
-            <div className="flex items-center gap-2 mb-4">
-              <Webhook className="h-5 w-5 text-primary" />
-              <h3 className="font-semibold text-lg">Webhook URL</h3>
+      <div className="grid gap-8 md:grid-cols-2">
+        <div className="rounded-[2.5rem] border border-white/10 bg-white/5 backdrop-blur-xl shadow-2xl relative overflow-hidden group">
+          <div className="absolute top-0 left-0 w-full h-[2px] bg-premium-gradient opacity-0 group-hover:opacity-100 transition-opacity" />
+          <div className="p-8">
+            <div className="flex items-center gap-3 mb-6">
+              <div className="p-2.5 bg-primary/10 rounded-xl">
+                <Webhook className="h-6 w-6 text-primary" />
+              </div>
+              <h3 className="font-black text-xl text-white tracking-tight">Webhook URL</h3>
             </div>
-            <p className="text-sm text-muted-foreground mb-6">
-              Use esta URL no seu nó HTTP Request do n8n para enviar eventos de mensagens para o CRM.
+            <p className="text-sm text-slate-400 font-medium mb-8 leading-relaxed">
+              Use esta URL no seu nó HTTP Request do n8n para enviar eventos de mensagens para o CRM de forma instantânea.
             </p>
-            <div className="relative flex items-center">
+            <div className="relative flex items-center group/input">
               <input
                 readOnly
                 value={loading ? "Carregando..." : webhookUrl}
-                className="w-full rounded-md border bg-muted/50 px-4 py-2.5 text-sm font-mono focus:outline-none"
+                className="w-full rounded-2xl border border-white/5 bg-black/20 px-6 py-4 text-xs font-mono text-white/80 focus:outline-none focus:border-primary/30 transition-all shadow-inner"
               />
               <button 
                 onClick={() => handleCopy(webhookUrl, 'webhook')}
                 disabled={loading}
-                className="absolute right-2 p-1.5 hover:bg-muted rounded-md transition-colors disabled:opacity-50"
+                className="absolute right-3 p-2 hover:bg-white/5 rounded-xl transition-all disabled:opacity-50 text-slate-400 hover:text-white"
                 title="Copiar para área de transferência"
               >
                 {copied === 'webhook' ? (
-                  <Check className="h-4 w-4 text-green-500" />
+                  <Check className="h-4 w-4 text-emerald-500" />
                 ) : (
-                  <Copy className="h-4 w-4 text-muted-foreground" />
+                  <Copy className="h-4 w-4" />
                 )}
               </button>
             </div>
-            <div className="mt-6 flex items-center gap-2 text-xs text-primary">
-              <ExternalLink className="h-3 w-3" />
-              <a href="https://docs.n8n.io/integrations/builtin/core-nodes/n8n-nodes-base.httprequest/" target="_blank" rel="noopener noreferrer" className="hover:underline"> Ver documentação do n8n</a>
+            <div className="mt-8 flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-primary hover:text-primary/80 transition-colors">
+              <ExternalLink className="h-3.5 w-3.5" />
+              <a href="https://docs.n8n.io/integrations/builtin/core-nodes/n8n-nodes-base.httprequest/" target="_blank" rel="noopener noreferrer"> Ver documentação oficial n8n</a>
             </div>
           </div>
         </div>
 
-        <div className="rounded-xl border bg-card text-card-foreground shadow-sm">
-          <div className="p-6">
-            <div className="flex items-center gap-2 mb-4">
-              <Key className="h-5 w-5 text-primary" />
-              <h3 className="font-semibold text-lg">API Key Interna</h3>
+        <div className="rounded-[2.5rem] border border-white/10 bg-white/5 backdrop-blur-xl shadow-2xl relative overflow-hidden group">
+          <div className="absolute top-0 left-0 w-full h-[2px] bg-premium-gradient opacity-0 group-hover:opacity-100 transition-opacity" />
+          <div className="p-8">
+            <div className="flex items-center gap-3 mb-6">
+              <div className="p-2.5 bg-primary/10 rounded-xl">
+                <Key className="h-6 w-6 text-primary" />
+              </div>
+              <h3 className="font-black text-xl text-white tracking-tight">API Key Interna</h3>
             </div>
-            <p className="text-sm text-muted-foreground mb-6">
-              Chave de autenticação para as requisições da sua IA. Mantenha em segredo.
+            <p className="text-sm text-slate-400 font-medium mb-8 leading-relaxed">
+              Chave de autenticação mestre para as requisições da sua IA. Mantenha em segredo absoluto.
             </p>
-            <div className="relative flex items-center">
+            <div className="relative flex items-center group/input">
               <input
                 readOnly
                 type="password"
                 value={loading ? "••••••••" : apiKey}
-                className="w-full rounded-md border bg-muted/50 px-4 py-2.5 text-sm font-mono focus:outline-none"
+                className="w-full rounded-2xl border border-white/5 bg-black/20 px-6 py-4 text-xs font-mono text-white/80 focus:outline-none focus:border-primary/30 transition-all shadow-inner"
               />
               <button 
                 onClick={() => handleCopy(apiKey, 'key')}
                 disabled={loading}
-                className="absolute right-2 p-1.5 hover:bg-muted rounded-md transition-colors disabled:opacity-50"
+                className="absolute right-3 p-2 hover:bg-white/5 rounded-xl transition-all disabled:opacity-50 text-slate-400 hover:text-white"
+                title="Copiar API Key"
               >
                 {copied === 'key' ? (
-                  <Check className="h-4 w-4 text-green-500" />
+                  <Check className="h-4 w-4 text-emerald-500" />
                 ) : (
-                  <Copy className="h-4 w-4 text-muted-foreground" />
+                  <Copy className="h-4 w-4" />
                 )}
               </button>
             </div>
-            <div className="mt-6">
+            <div className="mt-8">
               <button 
                 onClick={handleRotateKey}
                 disabled={loading || rotating}
-                className="text-xs font-semibold text-destructive hover:underline flex items-center gap-2 disabled:opacity-50"
+                className="text-[10px] font-black uppercase tracking-widest text-rose-500 hover:text-rose-400 flex items-center gap-2.5 disabled:opacity-50 transition-colors"
               >
-                {rotating ? <Loader2 className="h-3 w-3 animate-spin" /> : <RefreshCw className="h-3 w-3" />}
-                Rotacionar chave de API
+                {rotating ? <Loader2 className="h-4 w-4 animate-spin" /> : <RefreshCw className="h-4 w-4" />}
+                Rotacionar chave de segurança
               </button>
             </div>
           </div>
         </div>
       </div>
 
-      <div className="rounded-xl border bg-primary/5 p-8 border-primary/20">
-        <div className="flex items-start gap-4">
-          <div className="p-3 bg-primary/10 rounded-full">
-            <Zap className="h-6 w-6 text-primary" />
+      <div className="rounded-[2.5rem] border border-white/10 bg-primary/5 p-10 border-primary/20 relative overflow-hidden group">
+        <div className="absolute -bottom-10 -right-10 w-48 h-48 bg-primary/10 blur-[80px] rounded-full -z-10 group-hover:w-64 group-hover:h-64 transition-all duration-700" />
+        <div className="flex items-start gap-6">
+          <div className="p-4 bg-primary/10 rounded-[1.5rem] shadow-xl shadow-primary/10">
+            <Zap className="h-8 w-8 text-primary" />
           </div>
-          <div className="space-y-2">
-            <h4 className="text-lg font-bold text-slate-900">Resumo da Integração</h4>
-            <p className="text-sm text-slate-600 max-w-2xl leading-relaxed">
-              1. No n8n, crie um fluxo que receba mensagens da Evolution API.<br/>
-              2. Adicione um nó HTTP Request apontando para o seu Webhook URL.<br/>
-              3. Inclua o Header `Authorization: Bearer [SUA_API_KEY]`.<br/>
-              4. Seus leads e conversas aparecerão instantaneamente no Live Chat e Kanban.
-            </p>
+          <div className="space-y-4">
+            <h4 className="text-xl font-black text-white tracking-tight">Fluxo de Implementação Recomendado</h4>
+            <div className="grid gap-3">
+              {[
+                "1. No n8n, crie um workflow que capture mensagens da sua Evolution API.",
+                "2. Adicione um nó HTTP Request apontando para o seu 'Webhook URL' acima.",
+                "3. No cabeçalho (Header), inclua 'Authorization: Bearer [SUA_API_KEY]'.",
+                "4. Seus leads e conversas serão sincronizados em tempo real no Dashboard."
+              ].map((step, i) => (
+                <div key={i} className="flex items-center gap-3">
+                  <span className="h-1.5 w-1.5 rounded-full bg-primary/40 shrink-0" />
+                  <p className="text-[13px] text-slate-400 font-medium leading-relaxed">{step}</p>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </div>

@@ -42,23 +42,23 @@ export function KanbanCard({ lead, onClick, onUpdate }: KanbanCardProps) {
       {...attributes}
       onClick={() => onClick?.(lead)}
       className={cn(
-        "group cursor-grab rounded-2xl border border-slate-100 bg-white p-5 shadow-[0_2px_10px_rgba(0,0,0,0.02)] relative overflow-hidden",
-        !isDragging && "transition-all hover:shadow-[0_10px_30px_rgba(0,0,0,0.06)] hover:-translate-y-1",
+        "group cursor-grab rounded-[2rem] border border-white/5 bg-white/5 p-6 shadow-2xl relative overflow-hidden backdrop-blur-xl",
+        !isDragging && "transition-all hover:shadow-primary/10 hover:border-white/10 hover:-translate-y-1",
         isDragging && "opacity-50 ring-2 ring-primary/20 scale-95 cursor-grabbing"
       )}
     >
       {/* Borda lateral de status */}
-      <div className={cn("absolute left-0 top-0 bottom-0 w-1.5", getStatusColor(lead.status || ""))} />
+      <div className={cn("absolute left-0 top-0 bottom-0 w-1.5 opacity-80", getStatusColor(lead.status || ""))} />
 
-      <div className="flex items-start justify-between mb-4">
-        <div className="flex items-center gap-3">
-          <div className="h-11 w-11 rounded-xl bg-slate-50 border border-slate-100 flex items-center justify-center text-slate-400 group-hover:bg-primary/5 group-hover:text-primary transition-colors">
-            <User className="h-5 w-5" />
+      <div className="flex items-start justify-between mb-5">
+        <div className="flex items-center gap-4">
+          <div className="h-12 w-12 rounded-2xl bg-white/5 border border-white/5 flex items-center justify-center text-slate-500 group-hover:bg-primary/10 group-hover:text-primary transition-all shadow-inner">
+            <User className="h-6 w-6" />
           </div>
           <div>
-            <h4 className="font-black text-[15px] text-slate-900 leading-tight group-hover:text-primary transition-colors">{lead.name}</h4>
-            <div className="flex items-center text-[11px] font-bold text-slate-400 mt-0.5">
-               <Calendar className="mr-1 h-3.5 w-3.5" />
+            <h4 className="font-black text-[15px] text-white leading-tight group-hover:text-primary transition-colors tracking-tight">{lead.name}</h4>
+            <div className="flex items-center text-[10px] font-black text-slate-500 mt-1 uppercase tracking-widest">
+               <Calendar className="mr-1.5 h-3.5 w-3.5" />
                {lead.last_message_at ? new Date(lead.last_message_at).toLocaleDateString('pt-BR') : 'Sem interação'}
             </div>
           </div>
@@ -74,50 +74,50 @@ export function KanbanCard({ lead, onClick, onUpdate }: KanbanCardProps) {
                 onUpdate?.(lead.id, { ai_enabled: e.target.checked })
               }}
             />
-            <div className="w-10 h-5.5 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4.5 after:w-4.5 after:transition-all peer-checked:bg-primary shadow-inner"></div>
+            <div className="w-11 h-6 bg-white/10 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white/20 after:border-white/10 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-premium-gradient shadow-inner"></div>
           </label>
         </div>
       </div>
       
-      <div className="space-y-3 mb-5">
+      <div className="space-y-3 mb-6">
         {lead.phone && (
-          <div className="flex items-center text-xs font-bold text-slate-500 bg-slate-50/50 p-2 rounded-lg border border-slate-100/50">
-            <Phone className="mr-2 h-3.5 w-3.5 text-primary/60" />
+          <div className="flex items-center text-[11px] font-black text-slate-400 bg-white/5 p-2.5 rounded-xl border border-white/5">
+            <Phone className="mr-2.5 h-4 w-4 text-primary/80" />
             {lead.phone}
           </div>
         )}
       </div>
 
-      <div className="flex items-center justify-between pt-4 border-t border-slate-50">
-        <div className="flex items-center gap-1.5">
+      <div className="flex items-center justify-between pt-5 border-t border-white/5">
+        <div className="flex items-center gap-2">
           {lead.ai_enabled !== false ? (
             <span className="relative flex h-2 w-2">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400/50 opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500 shadow-[0_0_10px_rgba(16,185,129,0.5)]"></span>
             </span>
           ) : (
-            <span className="h-2 w-2 rounded-full bg-slate-300"></span>
+            <span className="h-2 w-2 rounded-full bg-slate-600"></span>
           )}
           <span className={cn(
-            "text-[10px] font-black uppercase tracking-[0.1em]",
-            lead.ai_enabled !== false ? "text-emerald-600" : "text-slate-400"
+            "text-[9px] font-black uppercase tracking-[0.2em]",
+            lead.ai_enabled !== false ? "text-emerald-500" : "text-slate-500"
           )}>
-            {lead.ai_enabled !== false ? "IA Monitorando" : "IA Pausada"}
+            {lead.ai_enabled !== false ? "IA Ativa" : "Pausada"}
           </span>
         </div>
 
         <div className="flex items-center gap-2">
            <button 
-             className="p-1.5 text-slate-400 hover:text-primary hover:bg-primary/5 rounded-lg transition-all"
+             className="p-2 text-slate-500 hover:text-white hover:bg-white/5 rounded-xl transition-all"
              title="Abrir Chat"
            >
-              <MessageSquare className="h-4 w-4" />
+              <MessageSquare className="h-4.5 w-4.5" />
            </button>
            <button 
-             className="p-1.5 text-slate-400 hover:text-primary hover:bg-primary/5 rounded-lg transition-all"
+             className="p-2 text-slate-500 hover:text-white hover:bg-white/5 rounded-xl transition-all"
              title="Ver Detalhes"
            >
-              <ExternalLink className="h-4 w-4" />
+              <ExternalLink className="h-4.5 w-4.5" />
            </button>
         </div>
       </div>

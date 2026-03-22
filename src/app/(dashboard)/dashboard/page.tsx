@@ -201,18 +201,22 @@ export default function DashboardPage() {
   }
 
   return (
-    <div className="space-y-8 max-w-[1400px] mx-auto pb-10">
+    <div className="space-y-8 max-w-[1400px] mx-auto pb-10 relative">
+      {/* Brilhos de fundo para profundidade */}
+      <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-primary/5 blur-[120px] rounded-full -z-10" />
+      <div className="absolute bottom-1/4 left-0 w-[300px] h-[300px] bg-secondary/5 blur-[100px] rounded-full -z-10" />
+
       {/* Header */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-          <h1 className="text-4xl font-bold text-slate-900 tracking-tight">Dashboard</h1>
-          <p className="text-slate-500 mt-1">Bem-vindo de volta! Aqui está um resumo do seu fluxo de IA.</p>
+          <h1 className="text-4xl font-black text-white tracking-tighter">Dashboard</h1>
+          <p className="text-slate-400 font-medium mt-1">Bem-vindo de volta! Aqui está um resumo do seu fluxo de IA.</p>
         </div>
         <button 
           onClick={handleDownloadReport}
           disabled={downloading}
           className={cn(
-            "flex items-center gap-2 px-6 py-3 rounded-xl bg-[#2563eb] text-white font-bold text-sm shadow-xl shadow-blue-500/20 hover:bg-blue-700 transition-all active:scale-95 disabled:opacity-50 disabled:cursor-wait",
+            "flex items-center gap-2 px-6 py-3 rounded-xl bg-premium-gradient text-white font-black text-sm shadow-xl shadow-primary/20 hover:shadow-primary/40 hover:scale-[1.02] transition-all active:scale-95 disabled:opacity-50 disabled:cursor-wait",
             downloading && "animate-pulse"
           )}
         >
@@ -225,28 +229,33 @@ export default function DashboardPage() {
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
         {loadingStats ? (
           [1, 2, 3, 4].map(i => (
-            <div key={i} className="h-32 bg-white rounded-3xl border border-slate-100 animate-pulse shadow-sm" />
+            <div key={i} className="h-32 bg-white/5 rounded-3xl border border-white/5 animate-pulse shadow-sm" />
           ))
         ) : dashboardStats.map((stat) => (
-          <div key={stat.name} className="bg-white p-6 rounded-3xl shadow-sm border border-slate-100 relative group hover:shadow-md transition-all">
+          <div key={stat.name} className="bg-white/5 backdrop-blur-xl p-6 rounded-3xl shadow-2xl border border-white/10 relative group hover:border-primary/30 transition-all overflow-hidden">
+            <div className="absolute top-0 right-0 w-24 h-24 bg-primary/5 blur-[40px] rounded-full -z-10 group-hover:bg-primary/10 transition-colors" />
+            
             <div className="flex items-center justify-between mb-8">
-              <span className="text-sm font-semibold text-slate-500">{stat.name}</span>
-              <div className={`p-2 rounded-xl ${stat.bg} ${stat.color}`}>
+              <span className="text-[10px] font-black text-slate-500 uppercase tracking-widest">{stat.name}</span>
+              <div className={cn("p-2 rounded-xl bg-white/5 border border-white/5", stat.color)}>
                 <stat.icon className="h-5 w-5" />
               </div>
             </div>
             <div className="flex flex-col">
-              <span className="text-4xl font-bold text-slate-900">{stat.value}</span>
-              <div className="flex items-center gap-1 mt-2">
-                {stat.trend === 'up' ? (
-                  <ArrowUpRight className="h-4 w-4 text-emerald-500" />
-                ) : (
-                  <ArrowDownRight className="h-4 w-4 text-rose-500" />
-                )}
-                <span className={`text-sm font-bold ${stat.trend === 'up' ? 'text-emerald-500' : 'text-rose-500'}`}>
+              <span className="text-4xl font-black text-white tracking-tighter">{stat.value}</span>
+              <div className="flex items-center gap-1 mt-3">
+                <div className={cn(
+                  "flex items-center gap-0.5 px-2 py-0.5 rounded-full text-[10px] font-black uppercase tracking-tighter",
+                  stat.trend === 'up' ? 'bg-emerald-500/10 text-emerald-400' : 'bg-rose-500/10 text-rose-400'
+                )}>
+                  {stat.trend === 'up' ? (
+                    <ArrowUpRight className="h-3 w-3" />
+                  ) : (
+                    <ArrowDownRight className="h-3 w-3" />
+                  )}
                   {stat.change}
-                </span>
-                <span className="text-slate-400 text-sm ml-1">vs mês anterior</span>
+                </div>
+                <span className="text-slate-500 text-[10px] font-bold ml-1 uppercase tracking-tighter">vs mês anterior</span>
               </div>
             </div>
           </div>
@@ -256,36 +265,38 @@ export default function DashboardPage() {
       {/* Main Content Grid */}
       <div className="grid gap-8 lg:grid-cols-3">
         {/* Chart Section */}
-        <div className="lg:col-span-2 bg-white p-8 rounded-[2.5rem] shadow-sm border border-slate-100">
+        <div className="lg:col-span-2 bg-white/5 backdrop-blur-xl p-8 rounded-[2.5rem] shadow-2xl border border-white/10 relative overflow-hidden group">
+           <div className="absolute -top-24 -left-24 w-64 h-64 bg-secondary/5 blur-[100px] rounded-full -z-10 group-hover:bg-secondary/10 transition-colors" />
            <div className="flex items-center justify-between mb-8">
-             <h3 className="text-xl font-bold text-slate-800">Volume de Mensagens (IA vs User)</h3>
+             <h3 className="text-xl font-black text-white tracking-tight">Volume de Mensagens <span className="text-slate-500">(IA vs Humano)</span></h3>
            </div>
              <StatsChart data={chartData} />
         </div>
 
         {/* Activity Section */}
-        <div className="bg-white p-8 rounded-[2.5rem] shadow-sm border border-slate-100 flex flex-col">
-           <h3 className="text-xl font-bold text-slate-800 mb-8 text-center">Atividade Recente</h3>
+        <div className="bg-white/5 backdrop-blur-xl p-8 rounded-[2.5rem] shadow-2xl border border-white/10 flex flex-col relative overflow-hidden group">
+           <div className="absolute -bottom-24 -right-24 w-64 h-64 bg-primary/5 blur-[100px] rounded-full -z-10 group-hover:bg-primary/10 transition-colors" />
+           <h3 className="text-xl font-black text-white mb-8 text-center tracking-tight">Atividade Recente</h3>
            
            <div className="space-y-6 flex-1">
              {activities.length > 0 ? activities.map((activity) => (
-               <div key={activity.id} className="flex items-center justify-between group">
+               <div key={activity.id} className="flex items-center justify-between group/item">
                  <div className="flex items-center gap-4">
                    <div className={cn(
-                     "h-10 w-10 rounded-xl flex items-center justify-center",
-                     activity.color.includes('emerald') ? "bg-emerald-50 text-emerald-500" : "bg-blue-50 text-blue-500"
+                     "h-10 w-10 rounded-xl flex items-center justify-center border border-white/5 transition-all group-hover/item:scale-110",
+                     activity.color.includes('emerald') ? "bg-emerald-500/10 text-emerald-400 border-emerald-500/20" : "bg-primary/10 text-primary border-primary/20"
                    )}>
                       <UserPlus className="h-5 w-5" />
                    </div>
                    <div className="flex flex-col">
-                     <span className="text-sm font-bold text-slate-800">{activity.title}</span>
-                     <span className="text-xs text-slate-400">{activity.time}</span>
+                     <span className="text-sm font-black text-white leading-tight">{activity.title}</span>
+                     <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">{activity.time}</span>
                    </div>
                  </div>
-                 <span className={`text-sm font-bold ${activity.color}`}>{activity.amount}</span>
+                 <span className={cn("text-xs font-black tracking-tighter", activity.color.replace('text-', 'text-'))}>{activity.amount}</span>
                </div>
              )) : (
-               <div className="text-center py-10 text-slate-400 text-sm italic">
+               <div className="text-center py-10 text-slate-500 text-sm font-medium italic">
                  Nenhuma atividade recente.
                </div>
              )}
@@ -293,7 +304,7 @@ export default function DashboardPage() {
 
            <Link 
              href="/crm"
-             className="mt-10 text-sm font-bold text-blue-600 hover:text-blue-700 transition-colors text-center w-full"
+             className="mt-10 h-12 flex items-center justify-center rounded-xl bg-white/5 border border-white/5 text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] hover:text-white hover:bg-white/10 hover:border-white/10 transition-all w-full"
            >
              Ver todas as atividades
            </Link>

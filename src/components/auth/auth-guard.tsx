@@ -33,7 +33,8 @@ export function AuthGuard({ children }: { children: React.ReactNode }) {
       }
 
       // Bypass check for Super Admins on admin routes
-      if (profile.role === 'admin' && pathname.startsWith('/admin')) {
+      const AUTHORIZED_ADMIN = 'santanna1608@gmail.com'
+      if (profile.role === 'admin' && session.user.email === AUTHORIZED_ADMIN && pathname.startsWith('/admin')) {
         setLoading(false)
         return
       }

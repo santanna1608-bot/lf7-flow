@@ -18,7 +18,8 @@ export function ManageCompanyModal({ isOpen, onClose, onSuccess, company }: Mana
     account_status: "ativo",
     asaas_customer_id: "",
     negotiated_value: 0,
-    subscription_start_date: ""
+    subscription_start_date: "",
+    plan_type: "FREE"
   })
   const [loading, setLoading] = useState(false)
   const [deleting, setDeleting] = useState(false)
@@ -33,7 +34,8 @@ export function ManageCompanyModal({ isOpen, onClose, onSuccess, company }: Mana
         negotiated_value: company.negotiated_value || 0,
         subscription_start_date: company.subscription_start_date 
           ? new Date(company.subscription_start_date).toISOString().split('T')[0] 
-          : new Date().toISOString().split('T')[0]
+          : new Date().toISOString().split('T')[0],
+        plan_type: company.plan_type || "FREE"
       })
     }
   }, [company])
@@ -51,7 +53,8 @@ export function ManageCompanyModal({ isOpen, onClose, onSuccess, company }: Mana
         account_status: formData.account_status,
         asaas_customer_id: formData.asaas_customer_id,
         negotiated_value: Number(formData.negotiated_value),
-        subscription_start_date: formData.subscription_start_date
+        subscription_start_date: formData.subscription_start_date,
+        plan_type: formData.plan_type
       })
       .eq('id', company.id)
 
@@ -156,6 +159,28 @@ export function ManageCompanyModal({ isOpen, onClose, onSuccess, company }: Mana
                 onChange={(e) => setFormData({...formData, subscription_start_date: e.target.value})}
               />
             </div>
+            </div>
+          </div>
+
+          <div className="space-y-3">
+             <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Nível do Plano</label>
+             <div className="grid grid-cols-2 gap-4">
+                {['FREE', 'PREMIUM'].map((plan) => (
+                  <button
+                    key={plan}
+                    type="button"
+                    onClick={() => setFormData({...formData, plan_type: plan})}
+                    className={cn(
+                      "h-12 rounded-xl border-2 flex items-center justify-center gap-2 font-black text-[10px] transition-all",
+                      formData.plan_type === plan 
+                        ? "border-primary bg-primary/5 text-primary shadow-lg shadow-primary/5" 
+                        : "border-slate-50 bg-slate-50/50 text-slate-400"
+                    )}
+                  >
+                    {plan}
+                  </button>
+                ))}
+             </div>
           </div>
 
           <div className="space-y-3">

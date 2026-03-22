@@ -86,28 +86,20 @@ export function NewCompanyModal({ isOpen, onClose, onSuccess }: NewCompanyModalP
               Tipo de Plano
             </label>
             <div className="grid grid-cols-2 gap-4">
-              <button
-                type="button"
-                onClick={() => setPlanType("free")}
-                className={`h-14 rounded-2xl border-2 font-black text-sm transition-all ${
-                  planType === "free"
-                    ? "border-primary bg-primary/5 text-primary"
-                    : "border-slate-50 bg-slate-50/30 text-slate-400 hover:border-slate-100"
-                }`}
-              >
-                GRATUITO
-              </button>
-              <button
-                type="button"
-                onClick={() => setPlanType("premium")}
-                className={`h-14 rounded-2xl border-2 font-black text-sm transition-all ${
-                  planType === "premium"
-                    ? "border-amber-400 bg-amber-50 text-amber-600 shadow-sm"
-                    : "border-slate-50 bg-slate-50/30 text-slate-400 hover:border-slate-100"
-                }`}
-              >
-                PREMIUM
-              </button>
+              {['FREE', 'PREMIUM'].map((plan) => (
+                <button
+                  key={plan}
+                  type="button"
+                  onClick={() => setPlanType(plan.toLowerCase())}
+                  className={`h-14 rounded-2xl border-2 font-black text-sm transition-all ${
+                    planType === plan.toLowerCase()
+                      ? plan === 'PREMIUM' ? "border-amber-400 bg-amber-50 text-amber-600 shadow-sm" : "border-primary bg-primary/5 text-primary"
+                      : "border-slate-50 bg-slate-50/30 text-slate-400 hover:border-slate-100"
+                  }`}
+                >
+                  {plan}
+                </button>
+              ))}
             </div>
           </div>
 

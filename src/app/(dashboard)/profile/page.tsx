@@ -158,168 +158,182 @@ export default function ProfilePage() {
     }
   }
 
-  if (loading) return <div className="p-8 animate-pulse text-center">Carregando dados do perfil...</div>
+  if (loading) return <div className="p-10 animate-pulse text-center text-[10px] font-black uppercase tracking-widest text-slate-500">Sincronizando dados vitais...</div>
 
   return (
-    <div className="max-w-5xl mx-auto p-4 lg:p-10 space-y-10 pb-20">
+    <div className="max-w-[1200px] mx-auto p-4 lg:p-10 space-y-12 pb-24 relative">
+      <div className="absolute top-0 right-0 w-80 h-80 bg-primary/5 blur-[150px] rounded-full -z-10" />
+      
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
-        <div>
-          <h1 className="text-4xl font-bold tracking-tight text-slate-900">Minha Conta</h1>
-          <p className="text-slate-500 mt-2">Gerencie suas informações pessoais, contatos e segurança.</p>
+        <div className="animate-in fade-in slide-in-from-left-4 duration-500">
+          <h1 className="text-4xl font-black tracking-tighter text-white">Configurações de Perfil</h1>
+          <p className="text-slate-400 mt-2 font-medium">Gerencie sua identidade digital e preferências de segurança.</p>
         </div>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
-        {/* Lado Esquerdo: Perfil Rápido */}
-        <div className="space-y-6">
-          <div className="bg-white border border-slate-100 rounded-[2.5rem] p-8 shadow-sm flex flex-col items-center text-center">
-            <div className="relative group mb-6">
-              <div className="h-32 w-32 rounded-full bg-slate-50 border-4 border-white shadow-xl overflow-hidden flex items-center justify-center">
+        {/* Lado Esquerdo: Perfil Rápido (Dark Style) */}
+        <div className="space-y-8 animate-in fade-in zoom-in duration-500">
+          <div className="bg-white/5 border border-white/10 rounded-[2.5rem] p-10 shadow-2xl flex flex-col items-center text-center backdrop-blur-xl relative overflow-hidden group">
+            <div className="absolute -top-10 -right-10 w-24 h-24 bg-primary/10 blur-[40px] rounded-full -z-10" />
+            
+            <div className="relative group/avatar mb-8">
+              <div className="h-40 w-40 rounded-[3rem] bg-white/5 border-4 border-white/5 shadow-2xl overflow-hidden flex items-center justify-center transition-transform duration-500 group-hover/avatar:scale-105 group-hover/avatar:rotate-2">
                 {profile.avatarUrl ? (
                   <img src={profile.avatarUrl} alt="Avatar" className="h-full w-full object-cover" />
                 ) : (
-                  <User className="h-16 w-16 text-slate-300" />
+                  <User className="h-20 w-20 text-slate-700" />
                 )}
               </div>
-              <label className="absolute bottom-1 right-1 h-9 w-9 bg-primary text-white rounded-full flex items-center justify-center cursor-pointer shadow-lg hover:scale-105 transition-all">
-                <Camera className="h-4 w-4" />
+              <label className="absolute bottom-1 right-1 h-12 w-12 bg-premium-gradient text-white rounded-2xl flex items-center justify-center cursor-pointer shadow-xl shadow-primary/30 hover:scale-110 active:scale-95 transition-all border border-white/10">
+                <Camera className="h-5 w-5" />
                 <input type="file" className="hidden" accept="image/*" onChange={handleAvatarUpload} />
               </label>
             </div>
-            <h3 className="text-xl font-bold text-slate-900">{profile.fullName || "Usuário"}</h3>
-            <p className="text-sm text-slate-400 mt-1">{profile.email}</p>
             
-            <div className="w-full h-px bg-slate-100 my-6" />
+            <h3 className="text-2xl font-black text-white tracking-tight">{profile.fullName || "Usuário"}</h3>
+            <p className="text-[11px] font-black text-primary/60 mt-1 uppercase tracking-[0.2em]">{profile.email}</p>
             
-            <div className="flex flex-col gap-3 w-full">
-              <div className="flex items-center justify-between text-sm">
-                <span className="text-slate-400">Status</span>
-                <span className="inline-flex items-center px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-600 text-[10px] font-bold">Ativo</span>
+            <div className="w-full h-px bg-white/5 my-8" />
+            
+            <div className="flex flex-col gap-4 w-full">
+              <div className="flex items-center justify-between text-xs">
+                <span className="text-slate-500 font-bold uppercase tracking-widest">Status da Conta</span>
+                <span className="inline-flex items-center px-4 py-1.5 rounded-xl bg-emerald-500/10 text-emerald-500 text-[10px] font-black uppercase tracking-widest border border-emerald-500/20">Ativo</span>
               </div>
-              <div className="flex items-center justify-between text-sm">
-                <span className="text-slate-400">Membro desde</span>
-                <span className="text-slate-900 font-medium">Março 2024</span>
+              <div className="flex items-center justify-between text-xs">
+                <span className="text-slate-500 font-bold uppercase tracking-widest">Membro desde</span>
+                <span className="text-white font-black tracking-tighter">Março 2024</span>
               </div>
             </div>
           </div>
 
-          <div className="bg-primary/5 border border-primary/10 rounded-[2.5rem] p-8">
-            <div className="flex items-center gap-3 mb-4 text-primary">
-              <ShieldCheck className="h-6 w-6" />
-              <h4 className="font-bold">Segurança da Conta</h4>
+          <div className="bg-primary/5 border border-primary/20 rounded-[2.5rem] p-10 backdrop-blur-xl relative overflow-hidden">
+            <div className="absolute -bottom-5 -left-5 w-20 h-20 bg-primary/20 blur-[30px] rounded-full" />
+            <div className="flex items-center gap-4 mb-5 text-primary">
+              <ShieldCheck className="h-8 w-8" />
+              <h4 className="font-black text-lg tracking-tight">Privacidade Total</h4>
             </div>
-            <p className="text-xs text-primary/60 leading-relaxed">
-              Mantenha seus dados atualizados e sua senha segura para garantir a integridade do seu fluxo de IA.
+            <p className="text-[11px] text-slate-400 font-medium leading-relaxed uppercase tracking-wider">
+              Seus dados são protegidos com tecnologia de ponta para garantir a segurança absoluta das suas operações.
             </p>
           </div>
         </div>
 
-        {/* Lado Direito: Formulários */}
-        <div className="lg:col-span-2 space-y-8">
+        {/* Lado Direito: Formulários (Glassmorphism) */}
+        <div className="lg:col-span-2 space-y-10 animate-in fade-in slide-in-from-bottom-6 duration-700">
           {/* Informações Básicas */}
-          <div className="bg-white border border-slate-100 rounded-[2.5rem] p-8 shadow-sm">
-            <h3 className="text-lg font-bold text-slate-800 mb-6 flex items-center gap-2">
-              <User className="h-5 w-5 text-primary" /> Informações Básicas
-            </h3>
-            <form onSubmit={handleSave} className="space-y-6">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div className="space-y-2">
-                  <label className="text-sm font-semibold text-slate-600 ml-1">Nome Completo</label>
+          <div className="bg-white/5 border border-white/10 rounded-[2.5rem] p-10 shadow-2xl backdrop-blur-xl">
+            <div className="flex items-center gap-4 mb-10">
+              <div className="p-3 bg-primary/10 rounded-2xl">
+                <User className="h-6 w-6 text-primary" />
+              </div>
+              <h3 className="text-xl font-black text-white tracking-tight">Configurações de Identidade</h3>
+            </div>
+            
+            <form onSubmit={handleSave} className="space-y-8">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div className="space-y-3">
+                  <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest ml-1">Nome Completo</label>
                   <input 
                     value={profile.fullName}
                     onChange={e => setProfile({...profile, fullName: e.target.value})}
-                    className="w-full h-12 px-5 rounded-2xl border border-slate-200 bg-slate-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all text-slate-900 placeholder:text-slate-300"
+                    className="w-full h-14 px-6 rounded-2xl border border-white/5 bg-black/20 focus:bg-white/5 focus:outline-none focus:ring-4 focus:ring-primary/10 focus:border-primary/20 transition-all text-white font-medium placeholder:text-slate-700 shadow-inner"
                     placeholder="Seu nome"
                   />
                 </div>
-                <div className="space-y-2">
-                  <label className="text-sm font-semibold text-slate-600 ml-1">Telefone / WhatsApp</label>
+                <div className="space-y-3">
+                  <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest ml-1">Telefone / WhatsApp</label>
                   <input 
                     value={profile.phone}
                     onChange={e => setProfile({...profile, phone: e.target.value})}
-                    className="w-full h-12 px-5 rounded-2xl border border-slate-200 bg-slate-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all text-slate-900 placeholder:text-slate-300"
+                    className="w-full h-14 px-6 rounded-2xl border border-white/5 bg-black/20 focus:bg-white/5 focus:outline-none focus:ring-4 focus:ring-primary/10 focus:border-primary/20 transition-all text-white font-medium placeholder:text-slate-700 shadow-inner"
                     placeholder="(00) 00000-0000"
                   />
                 </div>
-                <div className="space-y-2 md:col-span-2">
-                  <label className="text-sm font-semibold text-slate-600 ml-1">E-mail de Acesso</label>
-                  <div className="relative">
-                    <Mail className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-300" />
+                <div className="space-y-3 md:col-span-2">
+                  <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest ml-1">E-mail Corporativo</label>
+                  <div className="relative group/input">
+                    <Mail className="absolute left-6 top-1/2 -translate-y-1/2 h-5 w-5 text-slate-600 group-focus-within/input:text-primary transition-colors" />
                     <input 
                       type="email"
                       value={profile.email}
                       onChange={e => setProfile({...profile, email: e.target.value})}
-                      className="w-full h-12 pl-12 pr-5 rounded-2xl border border-slate-200 bg-slate-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all text-slate-900 placeholder:text-slate-300"
+                      className="w-full h-14 pl-14 pr-6 rounded-2xl border border-white/5 bg-black/20 focus:bg-white/5 focus:outline-none focus:ring-4 focus:ring-primary/10 focus:border-primary/20 transition-all text-white font-medium placeholder:text-slate-700 shadow-inner"
                       placeholder="seu@email.com"
                     />
                   </div>
-                  <p className="text-[10px] text-slate-400 mt-1 ml-1 leading-tight">
-                    * Ao alterar seu e-mail, você receberá um link de confirmação para validar a mudança.
+                  <p className="text-[9px] text-primary/40 mt-2 ml-1 font-bold uppercase tracking-widest italic">
+                    * A mudança de e-mail requer confirmação por link de segurança.
                   </p>
                 </div>
               </div>
 
-              <div className="flex justify-end pt-2">
+              <div className="flex justify-end pt-4">
                 <button 
                   type="submit"
                   disabled={saving}
-                  className="px-8 h-12 bg-primary text-white rounded-2xl font-bold flex items-center justify-center gap-2 hover:bg-opacity-90 transition-all active:scale-95 disabled:opacity-50 shadow-lg shadow-primary/20"
+                  className="px-10 h-14 bg-premium-gradient text-white rounded-2xl font-black text-xs uppercase tracking-[0.2em] flex items-center justify-center gap-3 hover:shadow-2xl hover:shadow-primary/40 hover:scale-105 active:scale-95 transition-all disabled:opacity-30 shadow-xl shadow-primary/20"
                 >
                   {saving ? (
                     <Loader2 className="h-5 w-5 animate-spin" />
                   ) : success ? (
                     <><CheckCircle2 className="h-5 w-5" /> Dados Atualizados!</>
                   ) : (
-                    "Salvar Alterações"
+                    "Salvar Dados"
                   )}
                 </button>
               </div>
             </form>
           </div>
 
-          {/* Troca de Senha */}
-          <div className="bg-white border border-slate-100 rounded-[2.5rem] p-8 shadow-sm">
-            <h3 className="text-lg font-bold text-slate-800 mb-6 flex items-center gap-2">
-              <Lock className="h-5 w-5 text-primary" /> Alterar Senha
-            </h3>
-            <form onSubmit={handleUpdatePassword} className="space-y-6">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div className="space-y-2 relative">
-                  <label className="text-sm font-semibold text-slate-600 ml-1">Nova Senha</label>
-                  <div className="relative">
+          {/* Troca de Senha (Dark Style) */}
+          <div className="bg-white/5 border border-white/10 rounded-[2.5rem] p-10 shadow-2xl backdrop-blur-xl">
+            <div className="flex items-center gap-4 mb-10">
+              <div className="p-3 bg-rose-500/10 rounded-2xl">
+                <Lock className="h-6 w-6 text-rose-500" />
+              </div>
+              <h3 className="text-xl font-black text-white tracking-tight">Segurança de Acesso</h3>
+            </div>
+            
+            <form onSubmit={handleUpdatePassword} className="space-y-8">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div className="space-y-3 relative">
+                  <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest ml-1">Nova Senha</label>
+                  <div className="relative group/input">
                     <input 
                       type={showPassword ? "text" : "password"}
                       value={password.newPassword}
                       onChange={e => setPassword({...password, newPassword: e.target.value})}
-                      className="w-full h-12 px-5 pr-12 rounded-2xl border border-slate-200 bg-slate-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all text-slate-900 placeholder:text-slate-300"
+                      className="w-full h-14 px-6 pr-14 rounded-2xl border border-white/5 bg-black/20 focus:bg-white/5 focus:outline-none focus:ring-4 focus:ring-rose-500/10 focus:border-rose-500/30 transition-all text-white font-medium placeholder:text-slate-700 shadow-inner"
                       placeholder="••••••••"
                     />
                     <button 
                       type="button"
                       onClick={() => setShowPassword(!showPassword)}
-                      className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-300 hover:text-slate-600 transition-colors"
+                      className="absolute right-5 top-1/2 -translate-y-1/2 text-slate-600 hover:text-white transition-colors"
                     >
-                      {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                      {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
                     </button>
                   </div>
                 </div>
-                <div className="space-y-2">
-                  <label className="text-sm font-semibold text-slate-600 ml-1">Confirmar Senha</label>
+                <div className="space-y-3">
+                  <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest ml-1">Confirmar Nova Senha</label>
                   <input 
                     type={showPassword ? "text" : "password"}
                     value={password.confirmPassword}
                     onChange={e => setPassword({...password, confirmPassword: e.target.value})}
-                    className="w-full h-12 px-5 rounded-2xl border border-slate-200 bg-slate-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all text-slate-900 placeholder:text-slate-300"
+                    className="w-full h-14 px-6 rounded-2xl border border-white/5 bg-black/20 focus:bg-white/5 focus:outline-none focus:ring-4 focus:ring-rose-500/10 focus:border-rose-500/30 transition-all text-white font-medium placeholder:text-slate-700 shadow-inner"
                     placeholder="••••••••"
                   />
                 </div>
               </div>
 
-              <div className="flex justify-end pt-2">
+              <div className="flex justify-end pt-4">
                 <button 
                   type="submit"
                   disabled={changingPassword}
-                  className="px-8 h-12 bg-slate-900 text-white rounded-2xl font-bold flex items-center justify-center gap-2 hover:bg-slate-800 transition-all active:scale-95 disabled:opacity-50"
+                  className="px-10 h-14 bg-white/10 hover:bg-white/20 text-white rounded-2xl font-black text-xs uppercase tracking-[0.2em] flex items-center justify-center gap-3 active:scale-95 disabled:opacity-30 transition-all border border-white/10 shadow-xl"
                 >
                   {changingPassword ? (
                     <Loader2 className="h-5 w-5 animate-spin" />

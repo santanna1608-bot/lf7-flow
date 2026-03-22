@@ -61,10 +61,14 @@ export function Sidebar({ onClose }: { onClose?: () => void }) {
           .eq('user_id', session.user.id)
           .single()
         
+        // Fallback de segurança: Se for o e-mail autorizado, forçar super_admin internamente para a UI
+        const AUTHORIZED_ADMIN = 'santanna1608@gmail.com'
+        const effectiveRole = session.user.email === AUTHORIZED_ADMIN ? 'super_admin' : (profile?.role || 'user')
+        
         setUser({
           name: profile?.full_name || session.user.email?.split('@')[0],
           email: session.user.email,
-          role: profile?.role,
+          role: effectiveRole,
           avatarUrl: profile?.avatar_url,
           companyName: (profile as any)?.companies?.name || "LF7 AI Flow"
         })
@@ -85,36 +89,36 @@ export function Sidebar({ onClose }: { onClose?: () => void }) {
   const currentMenuItems = isAdminView ? adminMenuItems : userMenuItems
 
   return (
-    <div className="flex h-full w-64 flex-col border-r border-white/5 bg-[hsl(var(--sidebar-bg))] text-white">
+    <div className="flex h-full w-64 flex-col border-r border-slate-100 bg-white text-slate-900">
       {/* Header do Sidebar */}
-      <div className="p-6 border-b flex flex-col gap-4">
+      <div className="p-6 border-b border-slate-50 flex flex-col gap-4">
         <div className="flex items-center gap-2 justify-between">
           <div className="flex items-center gap-2">
-            <div className="h-8 w-8 rounded-lg bg-premium-gradient flex items-center justify-center shadow-lg shadow-primary/20">
-              <Zap className="h-5 w-5 text-white" />
+            <div className="h-8 w-8 rounded-lg bg-primary/10 flex items-center justify-center">
+              <Zap className="h-5 w-5 text-primary" />
             </div>
-            <h2 className="text-xl font-black tracking-tighter">LF7 AI <span className="text-secondary italic">Flow</span></h2>
+            <h2 className="text-xl font-bold tracking-tight text-slate-900">LF7 AI Flow</h2>
           </div>
           {onClose && (
             <button 
               onClick={onClose}
-              className="lg:hidden p-2 text-slate-400 hover:text-slate-600 hover:bg-slate-100 rounded-lg transition-all"
+              className="lg:hidden p-2 text-slate-400 hover:text-slate-600 hover:bg-slate-50 rounded-lg transition-all"
             >
               <X className="h-5 w-5" />
             </button>
           )}
         </div>
         
-        {/* Switcher Admin/User (Apenas para Admins) */}
-        {(user?.role?.toLowerCase() === 'admin' || user?.email === 'lf7.marketingdigital@gmail.com') && (
-          <div className="flex p-1 bg-black/40 rounded-xl gap-1 border border-white/5">
+        {/* Switcher Admin/User (Apenas para o Administrador Autorizado) */}
+        {(user?.role === 'super_admin' && user?.email === 'santanna1608@gmail.com') && (
+          <div className="flex p-1 bg-slate-50 rounded-xl gap-1 border border-slate-100">
             <button 
               onClick={() => router.push('/dashboard')}
               className={cn(
-                "flex-1 px-2 py-1.5 text-[10px] font-black rounded-lg transition-all uppercase tracking-[0.15em]",
+                "flex-1 px-2 py-1.5 text-[10px] font-bold rounded-lg transition-all uppercase tracking-wider",
                 !isAdminView 
-                  ? "bg-premium-gradient text-white shadow-lg shadow-primary/20" 
-                  : "text-slate-500 hover:text-white hover:bg-white/5"
+                  ? "bg-white text-primary shadow-sm border border-slate-100" 
+                  : "text-slate-500 hover:text-slate-700"
               )}
             >
               Cliente
@@ -122,10 +126,10 @@ export function Sidebar({ onClose }: { onClose?: () => void }) {
             <button 
               onClick={() => router.push('/admin')}
               className={cn(
-                "flex-1 px-2 py-1.5 text-[10px] font-black rounded-lg transition-all uppercase tracking-[0.15em] flex items-center justify-center gap-1.5",
+                "flex-1 px-2 py-1.5 text-[10px] font-bold rounded-lg transition-all uppercase tracking-wider flex items-center justify-center gap-1.5",
                 isAdminView 
-                  ? "bg-premium-gradient text-white shadow-lg shadow-primary/20" 
-                  : "text-slate-500 hover:text-white hover:bg-white/5"
+                  ? "bg-white text-primary shadow-sm border border-slate-100" 
+                  : "text-slate-500 hover:text-slate-700"
               )}
             >
               <Crown className="h-3 w-3" /> Admin
@@ -178,11 +182,18 @@ export function Sidebar({ onClose }: { onClose?: () => void }) {
                )}
              </div>
            </div>
-           <div className="flex-1 overflow-hidden">
-             <p className="text-sm font-black leading-none truncate text-white mb-1.5">{user?.name || "Meu Perfil"}</p>
-             <p className="text-[10px] text-secondary font-black uppercase tracking-widest truncate group-hover:text-white transition-colors">Minha Conta</p>
-           </div>
-           <ChevronRight className="h-4 w-4 text-slate-600 group-hover:text-white transition-colors" />
+            <div className="flex-1 overflow-hidden">
+              <p className="text-sm font-black leading-none truncate text-white mb-1.5">{user?.name || "Meu Perfil"}</p>
+              <div className="flex items-center gap-2">
+                <p className="text-[10px] text-secondary font-black uppercase tracking-widest truncate group-hover:text-white transition-colors">Minha Conta</p>
+                {user?.role && (
+                  <span className="text-[8px] bg-white/10 px-1.5 py-0.5 rounded-md text-slate-500 font-black uppercase tracking-tighter">
+                    {user.role}
+                  </span>
+                )}
+              </div>
+            </div>
+            <ChevronRight className="h-4 w-4 text-slate-600 group-hover:text-white transition-colors" />
         </Link>
         <button 
           onClick={handleLogout}
