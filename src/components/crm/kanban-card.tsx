@@ -42,8 +42,8 @@ export function KanbanCard({ lead, onClick, onUpdate }: KanbanCardProps) {
       {...attributes}
       onClick={() => onClick?.(lead)}
       className={cn(
-        "group cursor-grab rounded-[2rem] border border-white/5 bg-white/5 p-6 shadow-2xl relative overflow-hidden backdrop-blur-xl",
-        !isDragging && "transition-all hover:shadow-primary/10 hover:border-white/10 hover:-translate-y-1",
+        "group cursor-grab rounded-[2rem] border border-slate-100 bg-white p-6 shadow-sm relative overflow-hidden",
+        !isDragging && "transition-all hover:shadow-xl hover:shadow-slate-200/50 hover:border-slate-200 hover:-translate-y-1",
         isDragging && "opacity-50 ring-2 ring-primary/20 scale-95 cursor-grabbing"
       )}
     >
@@ -52,12 +52,12 @@ export function KanbanCard({ lead, onClick, onUpdate }: KanbanCardProps) {
 
       <div className="flex items-start justify-between mb-5">
         <div className="flex items-center gap-4">
-          <div className="h-12 w-12 rounded-2xl bg-white/5 border border-white/5 flex items-center justify-center text-slate-500 group-hover:bg-primary/10 group-hover:text-primary transition-all shadow-inner">
+          <div className="h-12 w-12 rounded-2xl bg-slate-50 border border-slate-100 flex items-center justify-center text-slate-400 group-hover:bg-primary/10 group-hover:text-primary transition-all shadow-inner">
             <User className="h-6 w-6" />
           </div>
           <div>
-            <h4 className="font-black text-[15px] text-white leading-tight group-hover:text-primary transition-colors tracking-tight">{lead.name}</h4>
-            <div className="flex items-center text-[10px] font-black text-slate-500 mt-1 uppercase tracking-widest">
+            <h4 className="font-black text-[15px] text-slate-900 leading-tight group-hover:text-primary transition-colors tracking-tight">{lead.name}</h4>
+            <div className="flex items-center text-[10px] font-black text-slate-400 mt-1 uppercase tracking-widest">
                <Calendar className="mr-1.5 h-3.5 w-3.5" />
                {lead.last_message_at ? new Date(lead.last_message_at).toLocaleDateString('pt-BR') : 'Sem interação'}
             </div>
@@ -74,14 +74,14 @@ export function KanbanCard({ lead, onClick, onUpdate }: KanbanCardProps) {
                 onUpdate?.(lead.id, { ai_enabled: e.target.checked })
               }}
             />
-            <div className="w-11 h-6 bg-white/10 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white/20 after:border-white/10 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-premium-gradient shadow-inner"></div>
+            <div className="w-11 h-6 bg-slate-100 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-slate-200 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-premium-gradient shadow-inner"></div>
           </label>
         </div>
       </div>
       
       <div className="space-y-3 mb-6">
         {lead.phone && (
-          <div className="flex items-center text-[11px] font-black text-slate-400 bg-white/5 p-2.5 rounded-xl border border-white/5">
+          <div className="flex items-center text-[11px] font-black text-slate-500 bg-slate-50 p-2.5 rounded-xl border border-slate-100">
             <Phone className="mr-2.5 h-4 w-4 text-primary/80" />
             {lead.phone}
           </div>
@@ -108,13 +108,13 @@ export function KanbanCard({ lead, onClick, onUpdate }: KanbanCardProps) {
 
         <div className="flex items-center gap-2">
            <button 
-             className="p-2 text-slate-500 hover:text-white hover:bg-white/5 rounded-xl transition-all"
+             className="p-2 text-slate-400 hover:text-slate-900 hover:bg-slate-50 rounded-xl transition-all"
              title="Abrir Chat"
            >
               <MessageSquare className="h-4.5 w-4.5" />
            </button>
            <button 
-             className="p-2 text-slate-500 hover:text-white hover:bg-white/5 rounded-xl transition-all"
+             className="p-2 text-slate-400 hover:text-slate-900 hover:bg-slate-50 rounded-xl transition-all"
              title="Ver Detalhes"
            >
               <ExternalLink className="h-4.5 w-4.5" />

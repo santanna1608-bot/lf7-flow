@@ -59,20 +59,20 @@ export function ChatWindow({ lead, onBack }: ChatWindowProps) {
 
   if (!lead) {
     return (
-      <div className="flex h-full flex-col items-center justify-center text-center p-12 bg-transparent relative overflow-hidden">
+      <div className="flex h-full flex-col items-center justify-center text-center p-12 bg-white relative overflow-hidden">
         <div className="absolute inset-0 bg-primary/5 blur-[120px] rounded-full -z-10" />
         <div className="max-w-md flex flex-col items-center animate-in fade-in zoom-in duration-700">
             <div className="h-28 w-28 rounded-[2.5rem] bg-premium-gradient flex items-center justify-center mb-10 shadow-2xl shadow-primary/30 rotate-3 hover:rotate-0 transition-transform duration-500">
                 <Zap className="h-14 w-14 text-white fill-current drop-shadow-lg" />
             </div>
-            <h1 className="text-4xl font-black text-white mb-4 tracking-tighter">LF7 AI <span className="text-primary">Flow Intelligence</span></h1>
-            <p className="text-slate-400 text-sm font-medium leading-relaxed mb-12">
+            <h1 className="text-4xl font-black text-slate-900 mb-4 tracking-tighter">LF7 AI <span className="text-primary">Flow Intelligence</span></h1>
+            <p className="text-slate-500 text-sm font-medium leading-relaxed mb-12">
                 Central de Monitoramento em Tempo Real. Acompanhe a inteligência artificial agindo nos seus leads e intervenha para garantir a conversão perfeita.
             </p>
-            <div className="h-[1px] w-48 bg-white/5 mb-12" />
-            <div className="px-6 py-3 rounded-2xl bg-white/5 border border-white/5 backdrop-blur-xl">
-              <p className="text-slate-500 text-[10px] font-black uppercase tracking-[0.2em] flex items-center gap-3">
-                  <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" /> Conectado e Seguro
+            <div className="h-[1px] w-48 bg-slate-100 mb-12" />
+            <div className="px-6 py-3 rounded-2xl bg-slate-50 border border-slate-100 shadow-sm">
+              <p className="text-slate-400 text-[10px] font-black uppercase tracking-[0.2em] flex items-center gap-3">
+                  <span className="h-2 w-2 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.5)]" /> Conectado e Seguro
               </p>
             </div>
         </div>
@@ -81,36 +81,33 @@ export function ChatWindow({ lead, onBack }: ChatWindowProps) {
   }
 
   return (
-    <div className="flex h-full flex-col bg-transparent relative overflow-hidden">
-      {/* Glow de Fundo do Chat */}
-      <div className="absolute -top-20 -right-20 w-64 h-64 bg-primary/5 blur-[100px] rounded-full -z-10" />
-
-      {/* Header do Chat (Premium Dark) */}
-      <div className="h-[76px] flex items-center justify-between px-6 bg-white/5 shrink-0 border-b border-white/5 z-10 backdrop-blur-xl">
+    <div className="flex h-full flex-col bg-slate-50 relative overflow-hidden">
+      {/* Header do Chat (Light Style) */}
+      <div className="h-[76px] flex items-center justify-between px-6 bg-white shrink-0 border-b border-slate-100 z-10 shadow-sm">
         <div className="flex items-center gap-4">
           {onBack && (
             <button 
               onClick={onBack}
-              className="md:hidden p-2 text-slate-400 hover:bg-white/5 hover:text-white rounded-xl transition-all"
+              className="md:hidden p-2 text-slate-400 hover:bg-slate-50 hover:text-slate-900 rounded-xl transition-all"
             >
               <ChevronLeft className="h-6 w-6" />
             </button>
           )}
-          <div className="h-12 w-12 rounded-2xl bg-white/5 flex items-center justify-center relative overflow-hidden border border-white/5 shadow-inner group-hover/chat:scale-105 transition-transform">
+          <div className="h-12 w-12 rounded-2xl bg-slate-50 flex items-center justify-center relative overflow-hidden border border-slate-100 shadow-inner">
              <span className="text-xl font-black text-primary opacity-80">{lead.name.charAt(0)}</span>
-             <User className="h-8 w-8 text-white absolute opacity-5" />
+             <User className="h-8 w-8 text-slate-900 absolute opacity-5" />
           </div>
           <div className="flex flex-col">
-            <h3 className="text-base font-black text-white leading-tight tracking-tight">{lead.name}</h3>
+            <h3 className="text-base font-black text-slate-900 leading-tight tracking-tight">{lead.name}</h3>
             <div className="flex items-center gap-1.5 mt-0.5">
-              <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse shadow-[0_0_8px_rgba(16,185,129,0.5)]" />
-              <span className="text-[10px] font-black text-slate-500 uppercase tracking-widest">IA Monitorando Fluxo</span>
+              <span className="h-2 w-2 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.4)]" />
+              <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">IA Monitorando Fluxo</span>
             </div>
           </div>
         </div>
         <div className="flex items-center gap-3 text-slate-400">
-           <button className="p-2.5 hover:bg-white/5 hover:text-white rounded-xl transition-all"><Search className="h-5 w-5" /></button>
-           <button className="p-2.5 hover:bg-white/5 hover:text-white rounded-xl transition-all"><MoreVertical className="h-5 w-5" /></button>
+           <button className="p-2.5 hover:bg-slate-50 hover:text-slate-900 rounded-xl transition-all"><Search className="h-5 w-5" /></button>
+           <button className="p-2.5 hover:bg-slate-50 hover:text-slate-900 rounded-xl transition-all"><MoreVertical className="h-5 w-5" /></button>
         </div>
       </div>
 
@@ -135,10 +132,10 @@ export function ChatWindow({ lead, onBack }: ChatWindowProps) {
           >
             <div
               className={cn(
-                "max-w-[85%] md:max-w-[70%] px-5 py-4 shadow-2xl relative text-[14px] leading-relaxed tracking-tight group/msg",
+                "max-w-[85%] md:max-w-[70%] px-5 py-4 shadow-sm relative text-[14px] leading-relaxed tracking-tight group/msg",
                 msg.role === 'assistant' 
-                  ? "bg-white/5 text-white border border-white/5 rounded-[2rem] rounded-tl-none backdrop-blur-xl" 
-                  : "bg-premium-gradient text-white rounded-[2rem] rounded-tr-none shadow-primary/20"
+                  ? "bg-white text-slate-900 border border-slate-100 rounded-[2rem] rounded-tl-none" 
+                  : "bg-premium-gradient text-white rounded-[2rem] rounded-tr-none shadow-xl shadow-primary/10"
               )}
             >
               <p className="whitespace-pre-wrap">{msg.content}</p>
@@ -156,19 +153,19 @@ export function ChatWindow({ lead, onBack }: ChatWindowProps) {
         ))}
       </div>
 
-      {/* Área de Input (Dark Premium) */}
-      <div className="bg-white/5 pt-4 pb-6 px-6 flex flex-col gap-4 z-10 backdrop-blur-2xl border-t border-white/5">
+      {/* Área de Input (Light Style) */}
+      <div className="bg-white pt-4 pb-6 px-6 flex flex-col gap-4 z-10 border-t border-slate-100 shadow-[0_-4px_20px_rgba(0,0,0,0.02)]">
         <div className="flex items-center gap-4">
-          <div className="flex items-center gap-1 text-slate-500">
-             <button className="p-2.5 hover:bg-white/5 hover:text-white rounded-xl transition-all"><Smile className="h-5.5 w-5.5" /></button>
-             <button className="p-2.5 hover:bg-white/5 hover:text-white rounded-xl transition-all"><Paperclip className="h-5.5 w-5.5" /></button>
+          <div className="flex items-center gap-1 text-slate-400">
+             <button className="p-2.5 hover:bg-slate-50 hover:text-slate-900 rounded-xl transition-all"><Smile className="h-5.5 w-5.5" /></button>
+             <button className="p-2.5 hover:bg-slate-50 hover:text-slate-900 rounded-xl transition-all"><Paperclip className="h-5.5 w-5.5" /></button>
           </div>
           
           <form onSubmit={handleSendMessage} className="flex-1 flex items-center gap-4">
             <input
               type="text"
               placeholder="Envie sua mensagem por aqui..."
-              className="flex-1 h-12 rounded-[1.25rem] bg-white/5 border border-white/10 px-6 py-3 text-sm font-medium focus:outline-none placeholder:text-slate-600 text-white focus:border-primary/20 focus:ring-4 focus:ring-primary/5 transition-all shadow-inner"
+              className="flex-1 h-12 rounded-[1.25rem] bg-slate-50 border border-slate-200 px-6 py-3 text-sm font-medium focus:outline-none placeholder:text-slate-400 text-slate-900 focus:border-primary/20 focus:ring-4 focus:ring-primary/5 transition-all shadow-inner"
               value={newMessage}
               onChange={(e) => setNewMessage(e.target.value)}
               disabled={sending}

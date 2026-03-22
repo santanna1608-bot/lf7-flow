@@ -89,7 +89,7 @@ export function Sidebar({ onClose }: { onClose?: () => void }) {
   const currentMenuItems = isAdminView ? adminMenuItems : userMenuItems
 
   return (
-    <div className="flex h-full w-64 flex-col border-r border-white/5 bg-background text-white shadow-2xl">
+    <div className="flex h-full w-64 flex-col border-r border-white/5 bg-[#0a0e1b] text-white shadow-2xl">
       {/* Header do Sidebar */}
       <div className="p-8 border-b border-white/5 flex flex-col gap-6">
         <div className="flex items-center gap-2 justify-between">

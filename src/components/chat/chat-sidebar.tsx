@@ -77,10 +77,10 @@ export function ChatSidebar({ onSelectLead, selectedLeadId }: ChatSidebarProps) 
     lead.phone?.includes(search)
   )
 
-  return (    <div className="flex h-full w-full flex-col bg-transparent border-r border-white/5">
-      {/* WhatsApp Header: Perfil do Usuário e Ações (Dark Style) */}
-      <div className="h-[76px] bg-white/5 px-6 flex items-center justify-between shrink-0 border-b border-white/5 backdrop-blur-md">
-        <div className="h-11 w-11 rounded-2xl bg-white/5 p-[2px] shadow-lg shadow-black/20">
+  return (    <div className="flex h-full w-full flex-col bg-white border-r border-slate-100">
+      {/* WhatsApp Header: Perfil do Usuário e Ações (Light Style) */}
+      <div className="h-[76px] bg-slate-50/50 px-6 flex items-center justify-between shrink-0 border-b border-slate-100">
+        <div className="h-11 w-11 rounded-2xl bg-white p-[2px] shadow-sm border border-slate-200">
            <div className="h-full w-full rounded-2xl bg-[#0a0e1b] flex items-center justify-center overflow-hidden border border-white/5">
              {userAvatar ? (
                <img src={userAvatar} alt="Meu Perfil" className="h-full w-full object-cover" />
@@ -91,14 +91,14 @@ export function ChatSidebar({ onSelectLead, selectedLeadId }: ChatSidebarProps) 
              )}
            </div>
         </div>
-        <div className="flex items-center gap-3 text-slate-400">
-           <button className="p-2.5 hover:bg-white/5 hover:text-white rounded-xl transition-all">
+        <div className="flex items-center gap-3 text-slate-500">
+           <button className="p-2.5 hover:bg-slate-100 hover:text-slate-900 rounded-xl transition-all">
               <CircleDashed className="h-5.5 w-5.5" />
            </button>
-           <button className="p-2.5 hover:bg-white/5 hover:text-white rounded-xl transition-all">
+           <button className="p-2.5 hover:bg-slate-100 hover:text-slate-900 rounded-xl transition-all">
               <MessageSquarePlus className="h-5.5 w-5.5" />
            </button>
-           <button className="p-2.5 hover:bg-white/5 hover:text-white rounded-xl transition-all">
+           <button className="p-2.5 hover:bg-slate-100 hover:text-slate-900 rounded-xl transition-all">
               <MoreVertical className="h-5.5 w-5.5" />
            </button>
         </div>
@@ -113,7 +113,7 @@ export function ChatSidebar({ onSelectLead, selectedLeadId }: ChatSidebarProps) 
           <input
             type="text"
             placeholder="Pesquisar conversa..."
-            className="w-full rounded-2xl bg-white/5 pl-12 pr-6 py-3 text-sm font-medium focus:outline-none placeholder:text-slate-600 text-white border border-white/5 focus:border-primary/20 focus:ring-4 focus:ring-primary/5 transition-all"
+            className="w-full rounded-2xl bg-slate-50 pl-12 pr-6 py-3 text-sm font-medium focus:outline-none placeholder:text-slate-400 text-slate-900 border border-slate-100 focus:border-primary/20 focus:ring-4 focus:ring-primary/5 transition-all"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
           />
@@ -132,23 +132,23 @@ export function ChatSidebar({ onSelectLead, selectedLeadId }: ChatSidebarProps) 
               key={lead.id}
               onClick={() => onSelectLead(lead)}
               className={cn(
-                "flex w-full items-center gap-4 px-6 py-4 text-left transition-all border-b border-white/5 relative overflow-hidden group/item",
-                selectedLeadId === lead.id ? "bg-white/10" : "hover:bg-white/[0.03]"
+                "flex w-full items-center gap-4 px-6 py-4 text-left transition-all border-b border-slate-50 relative overflow-hidden group/item",
+                selectedLeadId === lead.id ? "bg-slate-100" : "hover:bg-slate-50"
               )}
             >
-              <div className="h-14 w-14 rounded-2xl bg-white/5 flex items-center justify-center shrink-0 overflow-hidden relative border border-white/5 shadow-inner transition-transform group-hover/item:scale-105">
-                <span className="text-xl font-black text-slate-500 uppercase">{lead.name.charAt(0)}</span>
-                <User className="h-10 w-10 text-white absolute opacity-5" />
+              <div className="h-14 w-14 rounded-2xl bg-slate-100 flex items-center justify-center shrink-0 overflow-hidden relative border border-slate-200 shadow-sm transition-transform group-hover/item:scale-105">
+                <span className="text-xl font-black text-slate-400 uppercase">{lead.name.charAt(0)}</span>
+                <User className="h-10 w-10 text-slate-900 absolute opacity-5" />
               </div>
               <div className="flex-1 min-w-0 py-1">
                 <div className="flex items-center justify-between mb-1">
                   <p className={cn(
                     "truncate font-black text-[16px] tracking-tight transition-colors",
-                    selectedLeadId === lead.id ? "text-primary" : "text-white group-hover/item:text-primary"
+                    selectedLeadId === lead.id ? "text-primary" : "text-slate-900 group-hover/item:text-primary"
                   )}>{lead.name}</p>
                   <span className={cn(
                     "text-[10px] whitespace-nowrap ml-2 font-black uppercase tracking-tighter opacity-60",
-                    selectedLeadId === lead.id ? "text-primary" : "text-slate-500"
+                    selectedLeadId === lead.id ? "text-primary" : "text-slate-400"
                   )}>
                     {lead.last_message_at ? new Date(lead.last_message_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : ''}
                   </span>

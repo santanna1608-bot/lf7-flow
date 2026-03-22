@@ -4,42 +4,41 @@
 
 @layer base {
   :root {
-    --background: 224 45% 7%; /* #0a0e1b */
-    --foreground: 210 40% 98%;
+    --background: 210 40% 98%; /* #f8fafc */
+    --foreground: 222 47% 11%; /* #0f172a */
 
-    --card: 224 45% 10%;
-    --card-foreground: 210 40% 98%;
+    --card: 0 0% 100%;
+    --card-foreground: 222 47% 11%;
 
-    --popover: 224 45% 7%;
-    --popover-foreground: 210 40% 98%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222 47% 11%;
 
-    --primary: 180 100% 50%; /* Cyan */
-    --primary-foreground: 224 45% 7%;
+    --primary: 221 83% 53%; /* Blue primary for light theme */
+    --primary-foreground: 210 40% 98%;
 
-    --secondary: 271 76% 53%; /* Purple */
-    --secondary-foreground: 210 40% 98%;
+    --secondary: 210 40% 96.1%;
+    --secondary-foreground: 222 47% 11%;
 
-    --muted: 224 45% 15%;
-    --muted-foreground: 215 20% 65%;
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
 
-    --accent: 224 45% 15%;
-    --accent-foreground: 210 40% 98%;
+    --accent: 210 40% 96.1%;
+    --accent-foreground: 222 47% 11%;
 
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
 
-    --border: 224 45% 15%;
-    --input: 224 45% 15%;
-    --ring: 180 100% 50%;
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 221 83% 53%;
 
     --radius: 1rem;
 
-    /* Custom variables for the new theme */
-    --sidebar-bg: 224 45% 7%;
-    --sidebar-fg: 210 40% 98%;
-    --login-bg: 224 45% 7%;
-    --gradient-start: 180 100% 50%; /* Cyan #00ffff */
-    --gradient-end: 271 76% 53%;   /* Purple #8a2be2 */
+    /* Custom variables for the premium elements */
+    --premium-cyan: 180 100% 50%;
+    --premium-purple: 271 76% 53%;
+    --gradient-start: 180 100% 50%;
+    --gradient-end: 271 76% 53%;
   }
 }
 

@@ -75,28 +75,28 @@ export function KanbanBoard({ activeFunnel }: KanbanBoardProps) {
       onDragEnd={handleDragEnd}
     >
       <div className="flex flex-col h-full gap-8">
-        {/* Kanban Search Header - Premium Style */}
-        <div className="flex items-center justify-between gap-6 bg-white/5 backdrop-blur-xl p-5 rounded-[2rem] border border-white/10 shadow-2xl mb-2 group transition-all hover:bg-white/10 relative overflow-hidden">
+        {/* Kanban Search Header - Light Style */}
+        <div className="flex items-center justify-between gap-6 bg-white p-5 rounded-[2rem] border border-slate-200 shadow-sm mb-2 group transition-all relative overflow-hidden">
           <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 blur-[40px] rounded-full -z-10" />
           
           <div className="relative flex-1 max-w-lg">
-            <Search className="absolute left-5 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-500 font-black group-focus-within:text-primary transition-colors" />
+            <Search className="absolute left-5 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400 font-black group-focus-within:text-primary transition-colors" />
             <input
               type="text"
               placeholder="Pesquisar leads neste funil..."
-              className="w-full pl-14 pr-6 py-3.5 rounded-2xl border border-white/5 bg-white/5 focus:outline-none focus:ring-4 focus:ring-primary/10 border-transparent focus:border-primary/20 transition-all text-[14px] font-medium text-white placeholder-slate-500"
+              className="w-full pl-14 pr-6 py-3.5 rounded-2xl border border-slate-100 bg-slate-50 focus:outline-none focus:ring-4 focus:ring-primary/10 border-transparent focus:border-primary/20 transition-all text-[14px] font-medium text-slate-900 placeholder-slate-400"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
           </div>
           
           <div className="flex items-center gap-4">
-            <div className="hidden md:flex items-center gap-2 bg-black/20 p-1.5 rounded-2xl border border-white/5">
+            <div className="hidden md:flex items-center gap-2 bg-slate-50 p-1.5 rounded-2xl border border-slate-100">
                <button 
                  onClick={() => setViewMode("grid")}
                  className={cn(
                    "p-2.5 rounded-xl transition-all",
-                   viewMode === "grid" ? "bg-premium-gradient shadow-lg shadow-primary/20 text-white" : "text-slate-500 hover:text-white hover:bg-white/5"
+                   viewMode === "grid" ? "bg-premium-gradient shadow-lg shadow-primary/20 text-white" : "text-slate-400 hover:text-slate-900 hover:bg-white"
                  )}
                >
                  <LayoutGrid className="h-4 w-4" />
@@ -105,7 +105,7 @@ export function KanbanBoard({ activeFunnel }: KanbanBoardProps) {
                  onClick={() => setViewMode("list")}
                  className={cn(
                    "p-2.5 rounded-xl transition-all",
-                   viewMode === "list" ? "bg-premium-gradient shadow-lg shadow-primary/20 text-white" : "text-slate-500 hover:text-white hover:bg-white/5"
+                   viewMode === "list" ? "bg-premium-gradient shadow-lg shadow-primary/20 text-white" : "text-slate-400 hover:text-slate-900 hover:bg-white"
                  )}
                >
                  <List className="h-4 w-4" />
