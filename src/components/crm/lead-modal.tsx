@@ -58,6 +58,7 @@ export function LeadModal({ lead, onClose, onUpdate }: LeadModalProps) {
             </div>
           </div>
           <button 
+            type="button"
             onClick={onClose}
             className="p-2 hover:bg-muted rounded-full transition-colors"
           >

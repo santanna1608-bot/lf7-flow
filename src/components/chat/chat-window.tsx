@@ -31,6 +31,12 @@ export function ChatWindow({ lead, onBack }: ChatWindowProps) {
     }
   }, [messages])
 
+  // Resetar modal ao trocar de lead
+  useEffect(() => {
+    setIsLeadModalOpen(false)
+    setIsSearchOpen(false)
+  }, [lead?.id])
+
   const handleSendMessage = async (e?: React.FormEvent) => {
     e?.preventDefault()
     if (!newMessage.trim() || !lead || sending) return
