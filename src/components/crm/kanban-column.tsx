@@ -37,24 +37,25 @@ export function KanbanColumn({ id, title, leads, onCardClick, onCardUpdate, onAd
 
   return (
     <div className="flex w-80 shrink-0 flex-col gap-6 px-1 animate-in fade-in slide-in-from-right-4 duration-500">
-      <div className="flex items-center justify-between group/header">
+      <div className="flex items-center justify-between px-2 mb-2">
         <div className="flex items-center gap-3">
-          <div className={cn("h-8 px-4 rounded-xl flex items-center justify-center font-black text-[10px] uppercase tracking-[0.15em] border shadow-sm", style.bg, style.color, style.border)}>
+          <div className={cn("h-9 px-4 rounded-2xl flex items-center justify-center font-black text-[10px] uppercase tracking-[0.2em] border shadow-sm transition-all hover:scale-105 active:scale-95", style.bg, style.color, style.border)}>
              {title}
           </div>
-          <span className="flex h-6 w-9 items-center justify-center rounded-full bg-slate-50 text-[10px] font-black text-slate-400 border border-slate-100 shadow-inner">
+          <span className="flex h-7 w-10 items-center justify-center rounded-xl bg-white text-[11px] font-black text-slate-400 border border-slate-100 shadow-sm">
             {leads.length}
           </span>
         </div>
-        <div className="flex items-center gap-1 opacity-0 group-hover/header:opacity-100 transition-opacity">
+        <div className="flex items-center gap-1.5">
           <button 
             onClick={() => onAddLead?.(id)}
-            className="rounded-xl p-2 hover:bg-slate-50 text-slate-400 hover:text-slate-900 transition-all"
+            className="h-9 w-9 flex items-center justify-center rounded-xl bg-white border border-slate-100 text-slate-400 hover:text-primary hover:border-primary/20 hover:bg-primary/5 transition-all shadow-sm"
+            title="Adicionar Lead"
           >
-            <Plus className="h-4 w-4" />
+            <Plus className="h-4.5 w-4.5" />
           </button>
-          <button className="rounded-xl p-2 hover:bg-slate-50 text-slate-400 transition-all">
-            <MoreHorizontal className="h-4 w-4" />
+          <button className="h-9 w-9 flex items-center justify-center rounded-xl bg-white border border-slate-100 text-slate-400 hover:text-slate-900 hover:bg-slate-50 transition-all shadow-sm">
+            <MoreHorizontal className="h-4.5 w-4.5" />
           </button>
         </div>
       </div>
@@ -83,12 +84,15 @@ export function KanbanColumn({ id, title, leads, onCardClick, onCardUpdate, onAd
         
         {leads.length === 0 && (
           <div className={cn(
-            "flex flex-1 flex-col items-center justify-center rounded-2xl border-2 border-dashed p-8 text-center transition-all",
-            isOver ? "border-primary/40 bg-primary/5" : "border-slate-200 bg-transparent"
+            "flex flex-1 flex-col items-center justify-center rounded-[2.5rem] border-2 border-dashed p-8 text-center transition-all",
+            isOver ? "border-primary/40 bg-primary/5" : "border-slate-100 bg-white/30"
           )}>
-            <LayoutPanelTop className="h-12 w-12 text-slate-300 mb-4" />
-            <p className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] leading-relaxed">
-               Nenhum lead <br /> nesta etapa
+            <div className="h-16 w-16 rounded-3xl bg-slate-50 flex items-center justify-center mb-6 border border-slate-100 shadow-inner">
+              <LayoutPanelTop className="h-8 w-8 text-slate-200" />
+            </div>
+            <p className="text-[11px] font-black text-slate-400 uppercase tracking-[0.25em] leading-relaxed">
+               Etapa Limpa <br /> 
+               <span className="text-[10px] opacity-60 font-medium">Aguardando leads</span>
             </p>
           </div>
         )}
