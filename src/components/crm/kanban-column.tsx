@@ -63,8 +63,8 @@ export function KanbanColumn({ id, title, leads, onCardClick, onCardUpdate, onAd
       <div
         ref={setNodeRef}
         className={cn(
-          "flex flex-1 flex-col gap-5 rounded-[2rem] bg-slate-50/50 p-4 transition-all min-h-[550px] border border-slate-100 shadow-sm relative overflow-hidden group/column",
-          isOver && "bg-slate-100 ring-1 ring-primary/20 border-primary/30 scale-[1.01] shadow-lg z-20"
+          "flex flex-1 flex-col gap-5 rounded-[2rem] bg-slate-100/70 p-4 transition-all min-h-[550px] border border-slate-200/50 shadow-sm relative overflow-hidden group/column",
+          isOver && "bg-slate-200/80 ring-1 ring-primary/20 border-primary/30 scale-[1.01] shadow-lg z-20"
         )}
       >
         {/* Glow de fundo da coluna */}
