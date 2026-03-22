@@ -40,8 +40,9 @@ export function ChatSidebar({ onSelectLead, selectedLeadId }: ChatSidebarProps) 
           .eq('user_id', session.user.id)
           .single()
 
-        if (profile?.company_id) {
-          setCompanyId(profile.company_id)
+        if (profile) {
+          if (profile.company_id) setCompanyId(profile.company_id)
+          if (profile.avatar_url) setUserAvatar(profile.avatar_url)
           
           // Buscar o primeiro funil disponível
           const { data: funnels } = await supabase
