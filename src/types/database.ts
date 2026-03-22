@@ -124,6 +124,7 @@ export interface Database {
           content: string
           company_id: string
           created_at: string | null
+          file_url: string | null
         }
         Insert: {
           id?: string
@@ -132,6 +133,7 @@ export interface Database {
           content: string
           company_id: string
           created_at?: string | null
+          file_url?: string | null
         }
         Update: {
           id?: string
@@ -140,6 +142,7 @@ export interface Database {
           content?: string
           company_id?: string
           created_at?: string | null
+          file_url?: string | null
         }
       }
     }

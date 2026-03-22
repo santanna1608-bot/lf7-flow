@@ -22,7 +22,10 @@ export function ChatWindow({ lead, onBack }: ChatWindowProps) {
   const [searchTerm, setSearchTerm] = useState("")
   const [isSearchOpen, setIsSearchOpen] = useState(false)
   const [isLeadModalOpen, setIsLeadModalOpen] = useState(false)
+  const [isEmojiPickerOpen, setIsEmojiPickerOpen] = useState(false)
+  const [selectedFile, setSelectedFile] = useState<File | null>(null)
   const scrollRef = useRef<HTMLDivElement>(null)
+  const fileInputRef = useRef<HTMLInputElement>(null)
   const supabase = createClientComponentClient()
 
   useEffect(() => {
@@ -39,17 +42,37 @@ export function ChatWindow({ lead, onBack }: ChatWindowProps) {
 
   const handleSendMessage = async (e?: React.FormEvent) => {
     e?.preventDefault()
-    if (!newMessage.trim() || !lead || sending) return
+    if ((!newMessage.trim() && !selectedFile) || !lead || sending) return
 
     setSending(true)
     try {
+      let fileUrl = null
+
+      if (selectedFile) {
+        const fileExt = selectedFile.name.split('.').pop()
+        const fileName = `${Math.random()}.${fileExt}`
+        const filePath = `${lead.company_id}/${fileName}`
+
+        const { error: uploadError } = await supabase.storage
+          .from('messages_attachments')
+          .upload(filePath, selectedFile)
+
+        if (!uploadError) {
+          const { data: { publicUrl } } = supabase.storage
+            .from('messages_attachments')
+            .getPublicUrl(filePath)
+          fileUrl = publicUrl
+        }
+      }
+
       const { error: msgError } = await supabase
         .from('messages')
         .insert({
           content: newMessage.trim(),
           role: 'user',
           lead_id: lead.id,
-          company_id: lead.company_id
+          company_id: lead.company_id,
+          file_url: fileUrl
         })
 
       if (msgError) throw msgError
@@ -60,12 +83,21 @@ export function ChatWindow({ lead, onBack }: ChatWindowProps) {
         .eq('id', lead.id)
 
       setNewMessage("")
+      setSelectedFile(null)
+      setIsEmojiPickerOpen(false)
     } catch (err) {
       console.error('Erro ao enviar mensagem:', err)
     } finally {
       setSending(false)
     }
   }
+
+  const addEmoji = (emoji: string) => {
+    setNewMessage(prev => prev + emoji)
+    setIsEmojiPickerOpen(false)
+  }
+
+  const popularEmojis = ["😀", "😂", "🥰", "😍", "🤫", "🤑", "🙌", "👍", "🔥", "✨", "🚀", "💎"]
 
   if (!lead) {
     return (
@@ -203,7 +235,20 @@ export function ChatWindow({ lead, onBack }: ChatWindowProps) {
                 )}
 
                 <div className="pr-12 md:pr-14">
-                  <p className="whitespace-pre-wrap">{msg.content}</p>
+                  {msg.file_url && (
+                    <div className="mb-2 p-2 bg-black/5 rounded-lg border border-black/5 flex items-center gap-2 group/file">
+                      <Paperclip className="h-4 w-4 text-slate-500" />
+                      <a 
+                        href={msg.file_url} 
+                        target="_blank" 
+                        rel="noopener noreferrer"
+                        className="text-xs font-bold text-primary hover:underline truncate max-w-[150px]"
+                      >
+                        Ver anexo
+                      </a>
+                    </div>
+                  )}
+                  {msg.content && <p className="whitespace-pre-wrap">{msg.content}</p>}
                 </div>
 
                 <div className={cn(
@@ -224,11 +269,71 @@ export function ChatWindow({ lead, onBack }: ChatWindowProps) {
       </div>
 
       {/* Área de Input (WhatsApp Style) */}
-      <div className="bg-[#f0f2f5] py-3 px-4 flex flex-col gap-2 z-10 border-t border-slate-200">
+      <div className="bg-[#f0f2f5] py-3 px-4 flex flex-col gap-2 z-20 border-t border-slate-200 relative">
+        {/* Preview de Arquivo */}
+        {selectedFile && (
+          <div className="absolute bottom-full left-0 right-0 p-3 bg-white border-t flex items-center justify-between animate-in slide-in-from-bottom-2">
+            <div className="flex items-center gap-3">
+              <div className="p-2 bg-slate-100 rounded-lg">
+                <Paperclip className="h-4 w-4 text-primary" />
+              </div>
+              <div>
+                <p className="text-xs font-bold text-slate-900 truncate max-w-[200px]">{selectedFile.name}</p>
+                <p className="text-[10px] text-slate-500">{(selectedFile.size / 1024).toFixed(1)} KB</p>
+              </div>
+            </div>
+            <button 
+              onClick={() => setSelectedFile(null)}
+              className="p-1 hover:bg-slate-100 rounded-full text-slate-400"
+            >
+              <X className="h-4 w-4" />
+            </button>
+          </div>
+        )}
+
+        {/* Seletor de Emoji Customizado */}
+        {isEmojiPickerOpen && (
+          <div className="absolute bottom-[calc(100%+8px)] left-4 bg-white p-3 rounded-2xl shadow-xl border border-slate-100 grid grid-cols-6 gap-2 z-50 animate-in zoom-in-95 duration-200 origin-bottom-left">
+            {popularEmojis.map(emoji => (
+              <button 
+                key={emoji}
+                onClick={() => addEmoji(emoji)}
+                className="h-10 w-10 flex items-center justify-center text-xl hover:bg-slate-50 rounded-lg transition-colors"
+              >
+                {emoji}
+              </button>
+            ))}
+          </div>
+        )}
+
         <div className="flex items-center gap-2">
           <div className="flex items-center gap-1 text-slate-500">
-             <button className="p-2 hover:bg-slate-200 rounded-full transition-all"><Smile className="h-6 w-6" /></button>
-             <button className="p-2 hover:bg-slate-200 rounded-full transition-all"><Paperclip className="h-6 w-6" /></button>
+             <button 
+               type="button"
+               onClick={() => setIsEmojiPickerOpen(!isEmojiPickerOpen)}
+               className={cn(
+                 "p-2 hover:bg-slate-200 rounded-full transition-all",
+                 isEmojiPickerOpen && "text-primary bg-primary/10"
+               )}
+             >
+               <Smile className="h-6 w-6" />
+             </button>
+             <button 
+               type="button"
+               onClick={() => fileInputRef.current?.click()}
+               className={cn(
+                 "p-2 hover:bg-slate-200 rounded-full transition-all",
+                 selectedFile && "text-primary bg-primary/10"
+               )}
+             >
+               <Paperclip className="h-6 w-6" />
+             </button>
+             <input 
+               type="file" 
+               className="hidden" 
+               ref={fileInputRef}
+               onChange={(e) => setSelectedFile(e.target.files?.[0] || null)}
+             />
           </div>
           
           <form onSubmit={handleSendMessage} className="flex-1 flex items-center gap-3">
