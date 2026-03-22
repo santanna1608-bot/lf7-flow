@@ -15,6 +15,7 @@ export interface Database {
           name: string
           plan_type: string | null
           api_key_internal: string | null
+          ai_personality: string | null
           created_at: string | null
         }
         Insert: {
@@ -22,6 +23,7 @@ export interface Database {
           name: string
           plan_type?: string | null
           api_key_internal?: string | null
+          ai_personality?: string | null
           created_at?: string | null
         }
         Update: {

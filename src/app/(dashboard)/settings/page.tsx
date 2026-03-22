@@ -11,7 +11,10 @@ import {
   ShieldCheck,
   Zap,
   Loader2,
-  RefreshCw
+  RefreshCw,
+  Bot,
+  Save,
+  Wand2
 } from "lucide-react"
 
 export default function SettingsPage() {
@@ -21,6 +24,8 @@ export default function SettingsPage() {
   const [rotating, setRotating] = useState(false)
   const [apiKey, setApiKey] = useState("")
   const [webhookUrl, setWebhookUrl] = useState("")
+  const [aiPersonality, setAiPersonality] = useState("")
+  const [savingPersonality, setSavingPersonality] = useState(false)
   
   const fetchSettings = async () => {
     try {
@@ -37,12 +42,13 @@ export default function SettingsPage() {
 
       const { data: company } = await supabase
         .from('companies')
-        .select('api_key_internal')
+        .select('api_key_internal, ai_personality')
         .eq('id', profile.company_id)
         .single()
 
       if (company) {
         setApiKey(company.api_key_internal || "Nenhuma chave gerada")
+        setAiPersonality(company.ai_personality || "")
         const origin = typeof window !== 'undefined' ? window.location.origin : ''
         setWebhookUrl(`${origin}/api/webhooks/n8n`)
       }
@@ -98,6 +104,35 @@ export default function SettingsPage() {
     }
   }
 
+  const handleSavePersonality = async () => {
+    setSavingPersonality(true)
+    try {
+      const { data: { session } } = await supabase.auth.getSession()
+      if (!session) return
+
+      const { data: profile } = await supabase
+        .from('profiles')
+        .select('company_id')
+        .eq('user_id', session.user.id)
+        .single()
+
+      if (!profile?.company_id) return
+
+      const { error } = await supabase
+        .from('companies')
+        .update({ ai_personality: aiPersonality })
+        .eq('id', profile.company_id)
+
+      if (error) throw error
+      alert("Personalidade da IA salva com sucesso!")
+    } catch (err) {
+      console.error(err)
+      alert("Erro ao salvar personalidade.")
+    } finally {
+      setSavingPersonality(false)
+    }
+  }
+
   return (
     <div className="flex-1 space-y-10 p-8 pt-6 max-w-[1400px] mx-auto pb-20 relative">
       <div className="absolute top-0 right-0 w-64 h-64 bg-primary/5 blur-[120px] rounded-full -z-10" />
@@ -142,6 +177,47 @@ export default function SettingsPage() {
             <div className="mt-8 flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-primary hover:text-primary/80 transition-colors">
               <ExternalLink className="h-3.5 w-3.5" />
               <a href="https://docs.n8n.io/integrations/builtin/core-nodes/n8n-nodes-base.httprequest/" target="_blank" rel="noopener noreferrer"> Ver documentação oficial n8n</a>
+            </div>
+          </div>
+        </div>
+
+        {/* Card de Personalidade da IA */}
+        <div className="md:col-span-2 rounded-[2.5rem] border border-slate-100 bg-white shadow-xl relative overflow-hidden group">
+          <div className="absolute top-0 left-0 w-full h-[2px] bg-premium-gradient opacity-0 group-hover:opacity-100 transition-opacity" />
+          <div className="p-8 lg:p-10">
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-8">
+              <div className="flex items-center gap-4">
+                <div className="p-3 bg-primary/10 rounded-2xl">
+                  <Bot className="h-7 w-7 text-primary" />
+                </div>
+                <div>
+                  <h3 className="font-black text-2xl text-slate-900 tracking-tight">Personalidade do Agente</h3>
+                  <p className="text-sm text-slate-500 font-medium">Defina o tom de voz e como seu agente deve se comportar.</p>
+                </div>
+              </div>
+              <button
+                onClick={handleSavePersonality}
+                disabled={savingPersonality}
+                className="flex items-center gap-2 px-8 py-4 rounded-2xl bg-slate-900 text-white font-black text-xs uppercase tracking-[0.2em] shadow-xl hover:bg-black hover:scale-[1.02] active:scale-95 transition-all disabled:opacity-50"
+              >
+                {savingPersonality ? (
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                ) : (
+                  <><Save className="h-4 w-4" /> Salvar Alterações</>
+                )}
+              </button>
+            </div>
+
+            <div className="relative group/textarea">
+              <div className="absolute top-4 right-4 flex items-center gap-2 text-[10px] font-black text-primary/40 uppercase tracking-widest bg-white/50 px-2 py-1 rounded-lg backdrop-blur-sm pointer-events-none">
+                <Wand2 className="h-3 w-3" /> Modo Criativo Ativado
+              </div>
+              <textarea
+                value={aiPersonality}
+                onChange={(e) => setAiPersonality(e.target.value)}
+                placeholder="Ex: Você é um assistente de vendas altamente persuasivo e amigável. Seu objetivo é qualificar leads para serviços de marketing e agendar reuniões..."
+                className="w-full min-h-[250px] rounded-[1.5rem] border border-slate-100 bg-slate-50 px-8 py-10 text-sm text-slate-600 focus:outline-none focus:ring-4 focus:ring-primary/10 transition-all shadow-inner leading-relaxed"
+              />
             </div>
           </div>
         </div>
