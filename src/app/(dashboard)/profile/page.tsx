@@ -165,24 +165,24 @@ export default function ProfilePage() {
       <div className="absolute top-0 right-0 w-80 h-80 bg-primary/5 blur-[150px] rounded-full -z-10" />
       
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
-        <div className="animate-in fade-in slide-in-from-left-4 duration-500">
-          <h1 className="text-4xl font-black tracking-tighter text-white">Configurações de Perfil</h1>
-          <p className="text-slate-400 mt-2 font-medium">Gerencie sua identidade digital e preferências de segurança.</p>
+        <div className="animate-in fade-in slide-in-from-left-4 duration-500 relative z-10">
+          <h1 className="text-4xl font-black tracking-tighter text-slate-900">Configurações de Perfil</h1>
+          <p className="text-slate-500 mt-2 font-medium">Gerencie sua identidade digital e preferências de segurança.</p>
         </div>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
-        {/* Lado Esquerdo: Perfil Rápido (Dark Style) */}
+        {/* Lado Esquerdo: Perfil Rápido */}
         <div className="space-y-8 animate-in fade-in zoom-in duration-500">
-          <div className="bg-white/5 border border-white/10 rounded-[2.5rem] p-10 shadow-2xl flex flex-col items-center text-center backdrop-blur-xl relative overflow-hidden group">
+          <div className="bg-white border border-slate-100 rounded-[2.5rem] p-10 shadow-xl flex flex-col items-center text-center relative overflow-hidden group">
             <div className="absolute -top-10 -right-10 w-24 h-24 bg-primary/10 blur-[40px] rounded-full -z-10" />
             
             <div className="relative group/avatar mb-8">
-              <div className="h-40 w-40 rounded-[3rem] bg-white/5 border-4 border-white/5 shadow-2xl overflow-hidden flex items-center justify-center transition-transform duration-500 group-hover/avatar:scale-105 group-hover/avatar:rotate-2">
+              <div className="h-40 w-40 rounded-[3rem] bg-slate-50 border-4 border-slate-100 shadow-xl overflow-hidden flex items-center justify-center transition-transform duration-500 group-hover/avatar:scale-105 group-hover/avatar:rotate-2">
                 {profile.avatarUrl ? (
                   <img src={profile.avatarUrl} alt="Avatar" className="h-full w-full object-cover" />
                 ) : (
-                  <User className="h-20 w-20 text-slate-700" />
+                  <User className="h-20 w-20 text-slate-300" />
                 )}
               </div>
               <label className="absolute bottom-1 right-1 h-12 w-12 bg-premium-gradient text-white rounded-2xl flex items-center justify-center cursor-pointer shadow-xl shadow-primary/30 hover:scale-110 active:scale-95 transition-all border border-white/10">
@@ -191,10 +191,12 @@ export default function ProfilePage() {
               </label>
             </div>
             
-            <h3 className="text-2xl font-black text-white tracking-tight">{profile.fullName || "Usuário"}</h3>
+            
+            <h3 className="text-2xl font-black text-slate-900 tracking-tight">{profile.fullName || "Usuário"}</h3>
             <p className="text-[11px] font-black text-primary/60 mt-1 uppercase tracking-[0.2em]">{profile.email}</p>
             
-            <div className="w-full h-px bg-white/5 my-8" />
+            
+            <div className="w-full h-px bg-slate-100 my-8" />
             
             <div className="flex flex-col gap-4 w-full">
               <div className="flex items-center justify-between text-xs">
@@ -203,7 +205,7 @@ export default function ProfilePage() {
               </div>
               <div className="flex items-center justify-between text-xs">
                 <span className="text-slate-500 font-bold uppercase tracking-widest">Membro desde</span>
-                <span className="text-white font-black tracking-tighter">Março 2024</span>
+                <span className="text-slate-900 font-black tracking-tighter">Março 2024</span>
               </div>
             </div>
           </div>
@@ -212,23 +214,23 @@ export default function ProfilePage() {
             <div className="absolute -bottom-5 -left-5 w-20 h-20 bg-primary/20 blur-[30px] rounded-full" />
             <div className="flex items-center gap-4 mb-5 text-primary">
               <ShieldCheck className="h-8 w-8" />
-              <h4 className="font-black text-lg tracking-tight">Privacidade Total</h4>
+              <h4 className="font-black text-lg tracking-tight text-slate-900">Privacidade Total</h4>
             </div>
-            <p className="text-[11px] text-slate-400 font-medium leading-relaxed uppercase tracking-wider">
+            <p className="text-[11px] text-slate-500 font-medium leading-relaxed uppercase tracking-wider">
               Seus dados são protegidos com tecnologia de ponta para garantir a segurança absoluta das suas operações.
             </p>
           </div>
         </div>
 
-        {/* Lado Direito: Formulários (Glassmorphism) */}
+        {/* Lado Direito: Formulários */}
         <div className="lg:col-span-2 space-y-10 animate-in fade-in slide-in-from-bottom-6 duration-700">
           {/* Informações Básicas */}
-          <div className="bg-white/5 border border-white/10 rounded-[2.5rem] p-10 shadow-2xl backdrop-blur-xl">
+          <div className="bg-white border border-slate-100 rounded-[2.5rem] p-10 shadow-xl">
             <div className="flex items-center gap-4 mb-10">
               <div className="p-3 bg-primary/10 rounded-2xl">
                 <User className="h-6 w-6 text-primary" />
               </div>
-              <h3 className="text-xl font-black text-white tracking-tight">Configurações de Identidade</h3>
+              <h3 className="text-xl font-black text-slate-900 tracking-tight">Configurações de Identidade</h3>
             </div>
             
             <form onSubmit={handleSave} className="space-y-8">
@@ -238,7 +240,7 @@ export default function ProfilePage() {
                   <input 
                     value={profile.fullName}
                     onChange={e => setProfile({...profile, fullName: e.target.value})}
-                    className="w-full h-14 px-6 rounded-2xl border border-white/5 bg-black/20 focus:bg-white/5 focus:outline-none focus:ring-4 focus:ring-primary/10 focus:border-primary/20 transition-all text-white font-medium placeholder:text-slate-700 shadow-inner"
+                    className="w-full h-14 px-6 rounded-2xl border border-slate-100 bg-slate-50 focus:bg-white focus:outline-none focus:ring-4 focus:ring-primary/10 transition-all text-slate-900 font-medium placeholder:text-slate-400 shadow-inner"
                     placeholder="Seu nome"
                   />
                 </div>
@@ -247,7 +249,7 @@ export default function ProfilePage() {
                   <input 
                     value={profile.phone}
                     onChange={e => setProfile({...profile, phone: e.target.value})}
-                    className="w-full h-14 px-6 rounded-2xl border border-white/5 bg-black/20 focus:bg-white/5 focus:outline-none focus:ring-4 focus:ring-primary/10 focus:border-primary/20 transition-all text-white font-medium placeholder:text-slate-700 shadow-inner"
+                    className="w-full h-14 px-6 rounded-2xl border border-slate-100 bg-slate-50 focus:bg-white focus:outline-none focus:ring-4 focus:ring-primary/10 transition-all text-slate-900 font-medium placeholder:text-slate-400 shadow-inner"
                     placeholder="(00) 00000-0000"
                   />
                 </div>
@@ -259,7 +261,7 @@ export default function ProfilePage() {
                       type="email"
                       value={profile.email}
                       onChange={e => setProfile({...profile, email: e.target.value})}
-                      className="w-full h-14 pl-14 pr-6 rounded-2xl border border-white/5 bg-black/20 focus:bg-white/5 focus:outline-none focus:ring-4 focus:ring-primary/10 focus:border-primary/20 transition-all text-white font-medium placeholder:text-slate-700 shadow-inner"
+                      className="w-full h-14 pl-14 pr-6 rounded-2xl border border-slate-100 bg-slate-50 focus:bg-white focus:outline-none focus:ring-4 focus:ring-primary/10 transition-all text-slate-900 font-medium placeholder:text-slate-400 shadow-inner"
                       placeholder="seu@email.com"
                     />
                   </div>
@@ -287,13 +289,13 @@ export default function ProfilePage() {
             </form>
           </div>
 
-          {/* Troca de Senha (Dark Style) */}
-          <div className="bg-white/5 border border-white/10 rounded-[2.5rem] p-10 shadow-2xl backdrop-blur-xl">
+          {/* Troca de Senha */}
+          <div className="bg-white border border-slate-100 rounded-[2.5rem] p-10 shadow-xl">
             <div className="flex items-center gap-4 mb-10">
               <div className="p-3 bg-rose-500/10 rounded-2xl">
                 <Lock className="h-6 w-6 text-rose-500" />
               </div>
-              <h3 className="text-xl font-black text-white tracking-tight">Segurança de Acesso</h3>
+              <h3 className="text-xl font-black text-slate-900 tracking-tight">Segurança de Acesso</h3>
             </div>
             
             <form onSubmit={handleUpdatePassword} className="space-y-8">
@@ -305,7 +307,7 @@ export default function ProfilePage() {
                       type={showPassword ? "text" : "password"}
                       value={password.newPassword}
                       onChange={e => setPassword({...password, newPassword: e.target.value})}
-                      className="w-full h-14 px-6 pr-14 rounded-2xl border border-white/5 bg-black/20 focus:bg-white/5 focus:outline-none focus:ring-4 focus:ring-rose-500/10 focus:border-rose-500/30 transition-all text-white font-medium placeholder:text-slate-700 shadow-inner"
+                      className="w-full h-14 px-6 pr-14 rounded-2xl border border-slate-100 bg-slate-50 focus:bg-white focus:outline-none focus:ring-4 focus:ring-rose-500/10 transition-all text-slate-900 font-medium placeholder:text-slate-400 shadow-inner"
                       placeholder="••••••••"
                     />
                     <button 
@@ -323,7 +325,7 @@ export default function ProfilePage() {
                     type={showPassword ? "text" : "password"}
                     value={password.confirmPassword}
                     onChange={e => setPassword({...password, confirmPassword: e.target.value})}
-                    className="w-full h-14 px-6 rounded-2xl border border-white/5 bg-black/20 focus:bg-white/5 focus:outline-none focus:ring-4 focus:ring-rose-500/10 focus:border-rose-500/30 transition-all text-white font-medium placeholder:text-slate-700 shadow-inner"
+                    className="w-full h-14 px-6 rounded-2xl border border-slate-100 bg-slate-50 focus:bg-white focus:outline-none focus:ring-4 focus:ring-rose-500/10 transition-all text-slate-900 font-medium placeholder:text-slate-400 shadow-inner"
                     placeholder="••••••••"
                   />
                 </div>
@@ -333,7 +335,7 @@ export default function ProfilePage() {
                 <button 
                   type="submit"
                   disabled={changingPassword}
-                  className="px-10 h-14 bg-white/10 hover:bg-white/20 text-white rounded-2xl font-black text-xs uppercase tracking-[0.2em] flex items-center justify-center gap-3 active:scale-95 disabled:opacity-30 transition-all border border-white/10 shadow-xl"
+                  className="px-10 h-14 bg-slate-900 hover:bg-black text-white rounded-2xl font-black text-xs uppercase tracking-[0.2em] flex items-center justify-center gap-3 active:scale-95 disabled:opacity-30 transition-all shadow-xl"
                 >
                   {changingPassword ? (
                     <Loader2 className="h-5 w-5 animate-spin" />
