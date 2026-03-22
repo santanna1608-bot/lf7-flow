@@ -89,20 +89,22 @@ export function Sidebar({ onClose }: { onClose?: () => void }) {
   const currentMenuItems = isAdminView ? adminMenuItems : userMenuItems
 
   return (
-    <div className="flex h-full w-64 flex-col border-r border-slate-100 bg-white text-slate-900">
+    <div className="flex h-full w-64 flex-col border-r border-white/5 bg-background text-white shadow-2xl">
       {/* Header do Sidebar */}
-      <div className="p-6 border-b border-slate-50 flex flex-col gap-4">
+      <div className="p-8 border-b border-white/5 flex flex-col gap-6">
         <div className="flex items-center gap-2 justify-between">
-          <div className="flex items-center gap-2">
-            <div className="h-8 w-8 rounded-lg bg-primary/10 flex items-center justify-center">
-              <Zap className="h-5 w-5 text-primary" />
+          <div className="flex items-center gap-3 group">
+            <div className="h-10 w-10 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center transition-all duration-500 group-hover:bg-primary/20 group-hover:scale-110">
+              <Zap className="h-6 w-6 text-primary group-hover:animate-pulse" />
             </div>
-            <h2 className="text-xl font-bold tracking-tight text-slate-900">LF7 AI Flow</h2>
+            <h2 className="text-xl font-black tracking-tighter text-white">
+              LF7 <span className="text-primary italic">AI</span> Flow
+            </h2>
           </div>
           {onClose && (
             <button 
               onClick={onClose}
-              className="lg:hidden p-2 text-slate-400 hover:text-slate-600 hover:bg-slate-50 rounded-lg transition-all"
+              className="lg:hidden p-2 text-slate-500 hover:text-white hover:bg-white/5 rounded-xl transition-all"
             >
               <X className="h-5 w-5" />
             </button>
@@ -111,14 +113,14 @@ export function Sidebar({ onClose }: { onClose?: () => void }) {
         
         {/* Switcher Admin/User (Apenas para o Administrador Autorizado) */}
         {(user?.role === 'super_admin' && user?.email === 'santanna1608@gmail.com') && (
-          <div className="flex p-1 bg-slate-50 rounded-xl gap-1 border border-slate-100">
+          <div className="flex p-1.5 bg-white/5 rounded-2xl gap-1 border border-white/5 shadow-inner">
             <button 
               onClick={() => router.push('/dashboard')}
               className={cn(
-                "flex-1 px-2 py-1.5 text-[10px] font-bold rounded-lg transition-all uppercase tracking-wider",
+                "flex-1 px-2 py-2 text-[10px] font-black rounded-xl transition-all uppercase tracking-[0.2em]",
                 !isAdminView 
-                  ? "bg-white text-primary shadow-sm border border-slate-100" 
-                  : "text-slate-500 hover:text-slate-700"
+                  ? "bg-white text-primary shadow-lg" 
+                  : "text-slate-500 hover:text-white"
               )}
             >
               Cliente
@@ -126,10 +128,10 @@ export function Sidebar({ onClose }: { onClose?: () => void }) {
             <button 
               onClick={() => router.push('/admin')}
               className={cn(
-                "flex-1 px-2 py-1.5 text-[10px] font-bold rounded-lg transition-all uppercase tracking-wider flex items-center justify-center gap-1.5",
+                "flex-1 px-2 py-2 text-[10px] font-black rounded-xl transition-all uppercase tracking-[0.2em] flex items-center justify-center gap-1.5",
                 isAdminView 
-                  ? "bg-white text-primary shadow-sm border border-slate-100" 
-                  : "text-slate-500 hover:text-slate-700"
+                  ? "bg-white text-primary shadow-lg" 
+                  : "text-slate-500 hover:text-white"
               )}
             >
               <Crown className="h-3 w-3" /> Admin
@@ -139,13 +141,13 @@ export function Sidebar({ onClose }: { onClose?: () => void }) {
       </div>
 
       {/* Menu Body */}
-      <div className="flex-1 overflow-y-auto py-4">
+      <div className="flex-1 overflow-y-auto py-6">
         {isAdminView && (
-          <div className="px-6 mb-4">
-            <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-[0.2em]">Super Admin</span>
+          <div className="px-8 mb-6">
+            <span className="text-[10px] font-black text-primary uppercase tracking-[0.3em] opacity-80">Arquitetura VIP</span>
           </div>
         )}
-        <nav className="space-y-1 px-3">
+        <nav className="space-y-2 px-4">
           {currentMenuItems.map((item) => {
             const isActive = pathname === item.href
             return (
@@ -153,13 +155,13 @@ export function Sidebar({ onClose }: { onClose?: () => void }) {
                 key={item.name}
                 href={item.href}
                 className={cn(
-                  "group flex items-center rounded-md px-3 py-2 text-sm font-medium transition-colors",
+                  "group flex items-center rounded-2xl px-4 py-3.5 text-xs font-black uppercase tracking-widest transition-all",
                   isActive 
-                    ? "bg-premium-gradient text-white shadow-lg shadow-primary/20" 
-                    : "text-slate-400 hover:bg-white/5 hover:text-white"
+                    ? "bg-premium-gradient text-white shadow-xl shadow-primary/20 scale-[1.02]" 
+                    : "text-slate-500 hover:bg-white/5 hover:text-white"
                 )}
               >
-                <item.icon className={cn("mr-3 h-5 w-5", isActive ? "text-white" : "text-muted-foreground group-hover:text-primary transition-colors")} />
+                <item.icon className={cn("mr-3 h-5 w-5 transition-all", isActive ? "text-white" : "text-slate-600 group-hover:text-primary")} />
                 {item.name}
               </Link>
             )
@@ -168,26 +170,26 @@ export function Sidebar({ onClose }: { onClose?: () => void }) {
       </div>
 
       {/* Footer do Sidebar */}
-      <div className="border-t p-4 space-y-3">
+      <div className="border-t border-white/5 p-6 space-y-4">
         <Link 
           href="/profile"
-          className="flex items-center space-x-3 p-3 rounded-2xl bg-white/5 border border-white/5 hover:bg-white/10 hover:border-white/10 transition-all group"
+          className="flex items-center space-x-3 p-4 rounded-3xl bg-white/5 border border-white/5 hover:bg-white/10 hover:border-white/10 transition-all group"
         >
            <div className="h-10 w-10 rounded-full bg-premium-gradient p-[2px] shadow-lg shadow-primary/20">
-             <div className="h-full w-full rounded-full bg-[#0a0e1b] flex items-center justify-center overflow-hidden">
+             <div className="h-full w-full rounded-full bg-background flex items-center justify-center overflow-hidden">
                {user?.avatarUrl ? (
                  <img src={user.avatarUrl} alt="Avatar" className="h-full w-full object-cover" />
                ) : (
-                 <User className="h-5 w-5 text-slate-400" />
+                 <User className="h-5 w-5 text-slate-500" />
                )}
              </div>
            </div>
             <div className="flex-1 overflow-hidden">
-              <p className="text-sm font-black leading-none truncate text-white mb-1.5">{user?.name || "Meu Perfil"}</p>
+              <p className="text-xs font-black leading-none truncate text-white mb-1.5">{user?.name || "Meu Perfil"}</p>
               <div className="flex items-center gap-2">
-                <p className="text-[10px] text-secondary font-black uppercase tracking-widest truncate group-hover:text-white transition-colors">Minha Conta</p>
+                <p className="text-[8px] text-primary font-black uppercase tracking-widest truncate group-hover:text-white transition-colors">Plano Premium</p>
                 {user?.role && (
-                  <span className="text-[8px] bg-white/10 px-1.5 py-0.5 rounded-md text-slate-500 font-black uppercase tracking-tighter">
+                  <span className="text-[7px] bg-white/10 px-1.5 py-0.5 rounded-md text-slate-500 font-black uppercase tracking-tighter">
                     {user.role}
                   </span>
                 )}
@@ -197,9 +199,9 @@ export function Sidebar({ onClose }: { onClose?: () => void }) {
         </Link>
         <button 
           onClick={handleLogout}
-          className="w-full flex h-10 items-center justify-center gap-2 rounded-lg bg-premium-gradient text-white font-bold hover:opacity-90 transition-all shadow-lg shadow-primary/10"
+          className="w-full flex h-12 items-center justify-center gap-2 rounded-2xl bg-premium-gradient text-white font-black text-[10px] uppercase tracking-widest hover:opacity-90 transition-all shadow-xl shadow-primary/20"
         >
-          <LogOut className="h-4 w-4" /> Sair
+          <LogOut className="h-4 w-4" /> Sair do Sistema
         </button>
       </div>
     </div>
