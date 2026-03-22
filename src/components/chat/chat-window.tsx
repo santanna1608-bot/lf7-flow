@@ -251,7 +251,7 @@ export function ChatWindow({ lead, onBack }: ChatWindowProps) {
         </div>
       </div>
 
-      {lead && (
+      {isLeadModalOpen && lead && (
         <LeadModal
           lead={lead}
           onClose={() => setIsLeadModalOpen(false)}
@@ -260,6 +260,7 @@ export function ChatWindow({ lead, onBack }: ChatWindowProps) {
               .from('leads')
               .update(updates)
               .eq('id', id)
+              .eq('company_id', lead.company_id)
             return !error
           }}
         />
