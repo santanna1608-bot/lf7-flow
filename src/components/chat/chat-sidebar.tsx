@@ -78,10 +78,10 @@ export function ChatSidebar({ onSelectLead, selectedLeadId }: ChatSidebarProps) 
   )
 
   return (    <div className="flex h-full w-full flex-col bg-white border-r border-slate-100">
-      {/* WhatsApp Header: Perfil do Usuário e Ações (Light Style) */}
-      <div className="h-[76px] bg-slate-50/50 px-6 flex items-center justify-between shrink-0 border-b border-slate-100">
-        <div className="h-11 w-11 rounded-2xl bg-white p-[2px] shadow-sm border border-slate-200">
-           <div className="h-full w-full rounded-2xl bg-[#0a0e1b] flex items-center justify-center overflow-hidden border border-white/5">
+      {/* WhatsApp Header: Perfil do Usuário e Ações (WhatsApp Style) */}
+      <div className="h-[64px] bg-[#f0f2f5] px-4 flex items-center justify-between shrink-0 border-b border-slate-200">
+        <div className="h-10 w-10 rounded-full bg-slate-300 p-[1px] shadow-sm border border-slate-200 overflow-hidden">
+            <div className="h-full w-full rounded-full bg-[#0a0e1b] flex items-center justify-center overflow-hidden">
              {userAvatar ? (
                <img src={userAvatar} alt="Meu Perfil" className="h-full w-full object-cover" />
              ) : (
@@ -136,9 +136,9 @@ export function ChatSidebar({ onSelectLead, selectedLeadId }: ChatSidebarProps) 
                 selectedLeadId === lead.id ? "bg-slate-100" : "hover:bg-slate-50"
               )}
             >
-              <div className="h-14 w-14 rounded-2xl bg-slate-100 flex items-center justify-center shrink-0 overflow-hidden relative border border-slate-200 shadow-sm transition-transform group-hover/item:scale-105">
-                <span className="text-xl font-black text-slate-400 uppercase">{lead.name.charAt(0)}</span>
-                <User className="h-10 w-10 text-slate-900 absolute opacity-5" />
+              <div className="h-12 w-12 rounded-full bg-slate-200 flex items-center justify-center shrink-0 overflow-hidden relative border border-slate-100 transition-transform group-hover/item:scale-105">
+                <span className="text-lg font-black text-slate-400 uppercase">{lead.name.charAt(0)}</span>
+                <User className="h-8 w-8 text-slate-900 absolute opacity-10" />
               </div>
               <div className="flex-1 min-w-0 py-1">
                 <div className="flex items-center justify-between mb-1">
