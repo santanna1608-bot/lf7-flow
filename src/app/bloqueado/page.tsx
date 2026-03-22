@@ -36,7 +36,7 @@ export default function BlockedPage() {
             </div>
 
             <div className="bg-slate-50 p-6 rounded-2xl border border-slate-100 text-sm text-slate-600 text-left space-y-3">
-              <p>Para regularizar seu acesso e reativar seus agentes de IA, por favor:</p>
+              <p>Para regularizar seu acesso e reativar seus Funcionários IA, por favor:</p>
               <ul className="list-disc list-inside space-y-1 font-medium">
                 <li>Realize o pagamento pendente</li>
                 <li>Entre em contato com nosso suporte</li>

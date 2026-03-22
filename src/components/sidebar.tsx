@@ -28,7 +28,7 @@ const userMenuItems = [
   { name: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
   { name: "Live Chat", href: "/chat", icon: MessageSquare },
   { name: "CRM Kanban", href: "/crm", icon: Kanban },
-  { name: "Meus Agentes", href: "/settings", icon: Bot },
+  { name: "Funcionários IA", href: "/settings", icon: Bot },
 ]
 
 const adminMenuItems = [

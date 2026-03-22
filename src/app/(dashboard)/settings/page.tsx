@@ -139,7 +139,7 @@ export default function SettingsPage() {
       
       <div className="flex flex-col space-y-2 relative z-10">
         <h2 className="text-4xl font-black text-slate-900 tracking-tighter">Configurações de Integração</h2>
-        <p className="text-slate-500 font-medium">Conecte seus Agentes de IA via n8n ou Evolution API com facilidade.</p>
+        <p className="text-slate-500 font-medium">Conecte seus Funcionários IA via n8n ou Evolution API com facilidade.</p>
       </div>
 
       <div className="grid gap-8 lg:grid-cols-2">
@@ -235,7 +235,7 @@ export default function SettingsPage() {
                 </div>
                 <div>
                   <h3 className="font-black text-2xl text-slate-900 tracking-tight">Personalidade</h3>
-                  <p className="text-sm text-slate-500 font-medium leading-tight">Como o agente deve agir.</p>
+                  <p className="text-sm text-slate-500 font-medium leading-tight">Como o Funcionário IA deve agir.</p>
                 </div>
               </div>
               <button

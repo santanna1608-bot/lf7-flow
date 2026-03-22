@@ -38,7 +38,7 @@ export default function TermsPage() {
           <section>
             <h2 className="text-2xl font-black text-white mb-4">2. Descrição do Serviço</h2>
             <p>
-              O LF7 AI Flow é uma plataforma SaaS de CRM e gerenciamento de agentes de Inteligência Artificial para WhatsApp. O serviço inclui, mas não se limita a: triagem de leads por IA, painel de monitoramento (Kanban), live chat e integrações de automação via n8n.
+              O LF7 AI Flow é uma plataforma SaaS de CRM e gerenciamento de Funcionários IA para WhatsApp. O serviço inclui, mas não se limita a: triagem de leads por IA, painel de monitoramento (Kanban), live chat e integrações de automação via n8n.
             </p>
           </section>
 
@@ -59,7 +59,7 @@ export default function TermsPage() {
           <section>
             <h2 className="text-2xl font-black text-white mb-4">5. Pagamentos e Assinaturas</h2>
             <p>
-              O acesso ao sistema é liberado mediante o pagamento da assinatura escolhida. O atraso no pagamento pode resultar na suspensão imediata do acesso ao painel e na desativação temporária dos agentes de IA.
+              O acesso ao sistema é liberado mediante o pagamento da assinatura escolhida. O atraso no pagamento pode resultar na suspensão imediata do acesso ao painel e na desativação temporária dos Funcionários IA.
             </p>
           </section>
 

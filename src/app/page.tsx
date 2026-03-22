@@ -45,7 +45,7 @@ export default function Home() {
           
           <p className="text-xl md:text-2xl text-slate-400 mb-14 max-w-4xl font-semibold animate-in fade-in slide-in-from-bottom-12 duration-1000">
             Acesse seu painel exclusivo para gerenciar leads <br className="hidden md:block" />
-            e acompanhar a performance dos seus agentes de IA.
+            e acompanhar a performance dos seus Funcionários IA.
           </p>
 
           <Link 
@@ -76,9 +76,9 @@ export default function Home() {
               <div className="h-14 w-14 rounded-2xl bg-primary/10 flex items-center justify-center text-primary mb-8 group-hover:bg-premium-gradient group-hover:text-white transition-all shadow-lg border border-primary/20">
                 <Bot className="h-8 w-8" />
               </div>
-              <h3 className="text-xl font-black text-white mb-4">Agentes de IA</h3>
+              <h3 className="text-xl font-black text-white mb-4">Funcionários IA</h3>
               <p className="text-slate-400 font-medium text-sm leading-relaxed">
-                Controle total sobre seus agentes. Pause, ative ou ajuste a personalidade da IA conforme sua necessidade.
+                Controle total sobre seus Funcionários IA. Pause, ative ou ajuste a personalidade da IA conforme sua necessidade.
               </p>
             </div>
 

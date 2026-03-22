@@ -10,7 +10,7 @@ const jakarta = Plus_Jakarta_Sans({
 
 export const metadata: Metadata = {
   title: "LF7 AI Flow - CRM & AI Monitoring",
-  description: "SaaS para gestão de leads e monitoramento de agentes de IA.",
+  description: "SaaS para gestão de leads e monitoramento de Funcionários IA.",
 };
 
 export default function RootLayout({

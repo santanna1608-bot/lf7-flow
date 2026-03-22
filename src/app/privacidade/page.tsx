@@ -31,7 +31,7 @@ export default function PrivacyPage() {
           <section>
             <h2 className="text-2xl font-black text-white mb-4">1. Coleta de Informações</h2>
             <p>
-              Coletamos as informações necessárias para a operação dos seus agentes de IA, incluindo logs de conversas, números de telefone dos leads e metadados de interação. Todos os dados são processados para fins exclusivos de triagem e qualificação comercial.
+              Coletamos as informações necessárias para a operação dos seus Funcionários IA, incluindo logs de conversas, números de telefone dos leads e metadados de interação. Todos os dados são processados para fins exclusivos de triagem e qualificação comercial.
             </p>
           </section>
 
@@ -45,7 +45,7 @@ export default function PrivacyPage() {
           <section>
             <h2 className="text-2xl font-black text-white mb-4">3. Integração com WhatsApp</h2>
             <p>
-              O LF7 AI Flow utiliza APIs de integração para conectar seus agentes de IA ao WhatsApp. Respeitamos as políticas de uso da plataforma e não realizamos práticas de spam. O usuário é responsável por garantir que a coleta de números de leads esteja em conformidade com as leis locais.
+              O LF7 AI Flow utiliza APIs de integração para conectar seus Funcionários IA ao WhatsApp. Respeitamos as políticas de uso da plataforma e não realizamos práticas de spam. O usuário é responsável por garantir que a coleta de números de leads esteja em conformidade com as leis locais.
             </p>
           </section>
 
