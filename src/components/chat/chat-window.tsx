@@ -5,7 +5,8 @@ import { createClientComponentClient } from "@supabase/auth-helpers-nextjs"
 import { useMessages } from "@/hooks/use-messages"
 import { Database } from "@/types/database"
 import { cn } from "@/lib/utils"
-import { Search, Send, User, ChevronLeft, MoreVertical, Phone, Video, Paperclip, Smile, Zap } from "lucide-react"
+import { Search, Send, User, ChevronLeft, MoreVertical, Phone, Video, Paperclip, Smile, Zap, X } from "lucide-react"
+import { LeadModal } from "@/components/crm/lead-modal"
 
 type Lead = Database['public']['Tables']['leads']['Row']
 
@@ -18,6 +19,9 @@ export function ChatWindow({ lead, onBack }: ChatWindowProps) {
   const { messages, loading } = useMessages(lead?.id || null)
   const [newMessage, setNewMessage] = useState("")
   const [sending, setSending] = useState(false)
+  const [searchTerm, setSearchTerm] = useState("")
+  const [isSearchOpen, setIsSearchOpen] = useState(false)
+  const [isLeadModalOpen, setIsLeadModalOpen] = useState(false)
   const scrollRef = useRef<HTMLDivElement>(null)
   const supabase = createClientComponentClient()
 
@@ -108,10 +112,48 @@ export function ChatWindow({ lead, onBack }: ChatWindowProps) {
           </div>
         </div>
         <div className="flex items-center gap-2 text-slate-500">
-           <button className="p-2 hover:bg-slate-200 rounded-full transition-all"><Search className="h-5 w-5" /></button>
-           <button className="p-2 hover:bg-slate-200 rounded-full transition-all"><MoreVertical className="h-5 w-5" /></button>
+          <button 
+            onClick={() => setIsSearchOpen(!isSearchOpen)}
+            className={cn(
+              "p-2 hover:bg-slate-200 rounded-full transition-all",
+              isSearchOpen && "text-primary bg-primary/10"
+            )}
+          >
+            <Search className="h-5 w-5" />
+          </button>
+          <button 
+            onClick={() => setIsLeadModalOpen(true)}
+            className="p-2 hover:bg-slate-200 rounded-full transition-all"
+          >
+            <MoreVertical className="h-5 w-5" />
+          </button>
         </div>
       </div>
+
+      {/* WhatsApp Message Search Bar */}
+      {isSearchOpen && (
+        <div className="bg-[#f0f2f5] px-4 py-2 border-b border-slate-200 animate-in slide-in-from-top duration-200 z-20">
+          <div className="relative flex items-center">
+            <Search className="absolute left-3 h-4 w-4 text-slate-400" />
+            <input 
+              type="text" 
+              placeholder="Pesquisar mensagens..."
+              className="w-full pl-10 pr-10 py-2 rounded-lg bg-white border-none text-sm focus:outline-none focus:ring-1 focus:ring-primary/20"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              autoFocus
+            />
+            {searchTerm && (
+              <button 
+                onClick={() => setSearchTerm("")}
+                className="absolute right-3 p-1 hover:bg-slate-100 rounded-full"
+              >
+                <X className="h-3 w-3 text-slate-400" />
+              </button>
+            )}
+          </div>
+        </div>
+      )}
 
       <div 
         ref={scrollRef}
@@ -123,7 +165,9 @@ export function ChatWindow({ lead, onBack }: ChatWindowProps) {
             </div>
         )}
         
-        {messages.map((msg, idx) => {
+        {messages.filter(msg => 
+          !searchTerm || msg.content.toLowerCase().includes(searchTerm.toLowerCase())
+        ).map((msg, idx) => {
           const isFirstInGroup = idx === 0 || messages[idx-1].role !== msg.role;
           return (
             <div
@@ -206,6 +250,20 @@ export function ChatWindow({ lead, onBack }: ChatWindowProps) {
             </p>
         </div>
       </div>
+
+      {lead && (
+        <LeadModal
+          lead={lead}
+          onClose={() => setIsLeadModalOpen(false)}
+          onUpdate={async (id, updates) => {
+            const { error } = await supabase
+              .from('leads')
+              .update(updates)
+              .eq('id', id)
+            return !error
+          }}
+        />
+      )}
     </div>
   )
 }

@@ -5,6 +5,7 @@ import { createClientComponentClient } from "@supabase/auth-helpers-nextjs"
 import { Database } from "@/types/database"
 import { cn } from "@/lib/utils"
 import { Search, User, MoreVertical, MessageSquarePlus, CircleDashed } from "lucide-react"
+import { LeadCreateModal } from "@/components/crm/lead-create-modal"
 
 type Lead = Database['public']['Tables']['leads']['Row']
 
@@ -16,8 +17,10 @@ interface ChatSidebarProps {
 export function ChatSidebar({ onSelectLead, selectedLeadId }: ChatSidebarProps) {
   const [leads, setLeads] = useState<Lead[]>([])
   const [search, setSearch] = useState("")
-  const [loading, setLoading] = useState(true)
   const [userAvatar, setUserAvatar] = useState<string | null>(null)
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false)
+  const [companyId, setCompanyId] = useState<string | null>(null)
+  const [funnelId, setFunnelId] = useState<string | null>(null)
   const supabase = createClientComponentClient()
 
   useEffect(() => {
@@ -36,7 +39,19 @@ export function ChatSidebar({ onSelectLead, selectedLeadId }: ChatSidebarProps) 
           .eq('user_id', session.user.id)
           .single()
 
-        if (profile?.avatar_url) setUserAvatar(profile.avatar_url)
+        if (profile?.company_id) {
+          setCompanyId(profile.company_id)
+          
+          // Buscar o primeiro funil disponível
+          const { data: funnels } = await supabase
+            .from('funnels')
+            .select('id')
+            .eq('company_id', profile.company_id)
+            .limit(1)
+            .single()
+            
+          if (funnels) setFunnelId(funnels.id)
+        }
 
         if (!profile?.company_id || !mounted) {
           setLeads([])
@@ -166,6 +181,20 @@ export function ChatSidebar({ onSelectLead, selectedLeadId }: ChatSidebarProps) 
           ))
         )}
       </div>
+
+      {companyId && funnelId && (
+        <LeadCreateModal
+          isOpen={isCreateModalOpen}
+          onClose={() => setIsCreateModalOpen(false)}
+          onSuccess={() => {
+            // Recarregar lista (já deve atualizar via subscription, mas forçamos localmente se necessário)
+            setIsCreateModalOpen(false)
+          }}
+          initialStatus="Novo Lead"
+          companyId={companyId}
+          funnelId={funnelId}
+        />
+      )}
     </div>
   )
 }
