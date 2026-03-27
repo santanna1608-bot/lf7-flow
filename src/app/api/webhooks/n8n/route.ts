@@ -16,7 +16,7 @@ export async function POST(req: Request) {
       }, { status: 401 })
     }
 
-    const apiKey = authHeader.split(' ')[1]
+    const apiKey = authHeader.replace('Bearer ', '').trim()
     
     if (!supabaseUrl || !supabaseAnonKey) {
        throw new Error('Configuração do banco de dados (Supabase) ausente no servidor.')
@@ -25,7 +25,7 @@ export async function POST(req: Request) {
     const supabase = createClient(supabaseUrl, supabaseAnonKey)
 
     // Normalização de Payloads
-    let leadData = body.lead || (body.phone ? { name: body.name, phone: body.phone } : null)
+    let leadData = body.lead || (body.phone ? { name: body.name, phone: body.phone, status: body.status } : null)
     let messageData = body.message || (body.content ? { content: body.content, role: body.role } : null)
 
     if (!leadData || !leadData.phone) {
@@ -40,8 +40,12 @@ export async function POST(req: Request) {
       p_api_key: apiKey,
       p_lead_name: leadData.name || null,
       p_lead_phone: leadData.phone,
-      p_message_content: (messageData && messageData.content) ? messageData.content : null,
-      p_message_role: (messageData && messageData.role) ? messageData.role : 'assistant'
+      p_lead_status: leadData.status || null,
+      p_message_content: (messageData && messageData.content) 
+        ? (Array.isArray(messageData.content) ? messageData.content[0] : String(messageData.content)) 
+        : null,
+      p_message_role: (messageData && messageData.role) ? messageData.role : 'user',
+      p_external_id: body.external_id || (messageData && messageData.id) || null
     })
 
     if (rpcError) {

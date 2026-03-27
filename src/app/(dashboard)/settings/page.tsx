@@ -14,7 +14,9 @@ import {
   RefreshCw,
   Bot,
   Save,
-  Wand2
+  Wand2,
+  AlertTriangle,
+  X
 } from "lucide-react"
 
 export default function SettingsPage() {
@@ -26,6 +28,8 @@ export default function SettingsPage() {
   const [webhookUrl, setWebhookUrl] = useState("")
   const [aiPersonality, setAiPersonality] = useState("")
   const [savingPersonality, setSavingPersonality] = useState(false)
+  const [showRotateModal, setShowRotateModal] = useState(false)
+  const [message, setMessage] = useState<{ type: 'success' | 'error', text: string } | null>(null)
   
   const fetchSettings = async () => {
     try {
@@ -70,7 +74,8 @@ export default function SettingsPage() {
   }
 
   const handleRotateKey = async () => {
-    if (rotating || !confirm("Tem certeza que deseja rotacionar sua chave de API? Todas as integrações atuais deixarão de funcionar até serem atualizadas.")) return
+    setRotating(true)
+    setMessage(null)
 
     setRotating(true)
     try {
@@ -95,10 +100,11 @@ export default function SettingsPage() {
       if (error) throw error
 
       setApiKey(newKey)
-      alert("Chave de API rotacionada com sucesso!")
+      setMessage({ type: 'success', text: "Chave de API rotacionada com sucesso!" })
+      setShowRotateModal(false)
     } catch (err) {
       console.error(err)
-      alert("Erro ao rotacionar chave.")
+      setMessage({ type: 'error', text: "Erro ao rotacionar chave." })
     } finally {
       setRotating(false)
     }
@@ -124,10 +130,10 @@ export default function SettingsPage() {
         .eq('id', profile.company_id)
 
       if (error) throw error
-      alert("Personalidade da IA salva com sucesso!")
+      setMessage({ type: 'success', text: "Personalidade da IA salva com sucesso!" })
     } catch (err) {
       console.error(err)
-      alert("Erro ao salvar personalidade.")
+      setMessage({ type: 'error', text: "Erro ao salvar personalidade." })
     } finally {
       setSavingPersonality(false)
     }
@@ -135,6 +141,52 @@ export default function SettingsPage() {
 
   return (
     <div className="flex-1 space-y-10 p-8 pt-6 max-w-[1400px] mx-auto pb-20 relative">
+      {/* Banner de Mensagem */}
+      {message && (
+        <div className={`fixed top-4 right-4 z-[100] p-4 rounded-2xl shadow-2xl animate-in slide-in-from-right duration-300 ${
+          message.type === 'success' ? 'bg-emerald-500 text-white' : 'bg-rose-500 text-white'
+        }`}>
+          <div className="flex items-center gap-3">
+            <Check className="h-5 w-5" />
+            <p className="font-bold text-sm">{message.text}</p>
+            <button onClick={() => setMessage(null)} className="ml-2 hover:bg-white/20 rounded-lg p-1">
+              <X className="h-4 w-4" />
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* Modal de Confirmação de Rotação */}
+      {showRotateModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
+          <div className="bg-white w-full max-w-md rounded-3xl shadow-2xl border border-slate-100 overflow-hidden animate-in fade-in zoom-in duration-200">
+            <div className="p-8">
+              <div className="h-16 w-16 rounded-2xl bg-rose-50 flex items-center justify-center text-rose-500 mb-6">
+                <AlertTriangle className="h-8 w-8" />
+              </div>
+              <h3 className="text-2xl font-black text-slate-900 tracking-tight mb-2">Rotacionar Chave?</h3>
+              <p className="text-slate-500 font-medium leading-relaxed mb-8">
+                Esta ação invalidará sua chave atual. Todas as integrações no n8n ou Evolution API **deixarão de funcionar** até que você atualize para a nova chave.
+              </p>
+              <div className="flex gap-4">
+                <button 
+                  onClick={() => setShowRotateModal(false)}
+                  className="flex-1 px-6 py-4 rounded-2xl border border-slate-100 text-sm font-black uppercase tracking-widest text-slate-500 hover:bg-slate-50 transition-all"
+                >
+                  Cancelar
+                </button>
+                <button 
+                  onClick={handleRotateKey}
+                  disabled={rotating}
+                  className="flex-1 bg-rose-500 text-white px-6 py-4 rounded-2xl text-sm font-black uppercase tracking-widest hover:bg-rose-600 transition-all shadow-xl shadow-rose-200 disabled:opacity-50 flex items-center justify-center gap-2"
+                >
+                  {rotating ? <Loader2 className="h-4 w-4 animate-spin" /> : "Confirmar"}
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
       <div className="absolute top-0 right-0 w-64 h-64 bg-primary/5 blur-[120px] rounded-full -z-10" />
       
       <div className="flex flex-col space-y-2 relative z-10">
@@ -212,7 +264,7 @@ export default function SettingsPage() {
               </div>
               <div className="mt-8">
                 <button 
-                  onClick={handleRotateKey}
+                  onClick={() => setShowRotateModal(true)}
                   disabled={loading || rotating}
                   className="text-[10px] font-black uppercase tracking-widest text-rose-500 hover:text-rose-400 flex items-center gap-2.5"
                 >
