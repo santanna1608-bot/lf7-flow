@@ -65,13 +65,12 @@ export function ChatWindow({ lead, onBack }: ChatWindowProps) {
         }
       }
 
-      console.log('Tentando enviar mensagem para lead:', lead.id, 'role: attendant');
-      
       const { error: msgError } = await supabase
         .from('messages')
         .insert({
           content: newMessage.trim(),
-          role: 'attendant',
+          role: 'assistant',
+          bot_message: 'false',
           lead_id: lead.id,
           company_id: lead.company_id,
           phone: lead.phone || null,
@@ -342,8 +341,8 @@ export function ChatWindow({ lead, onBack }: ChatWindowProps) {
           <form onSubmit={handleSendMessage} className="flex-1 flex items-center gap-3">
             <input
               type="text"
-              placeholder="Enviar como Atendente (v2)..."
-              className="flex-1 h-11 rounded-lg bg-white border-none px-4 text-[15px] focus:outline-none placeholder:text-primary/60 text-slate-900 transition-all shadow-sm font-medium"
+              placeholder="Digite uma mensagem..."
+              className="flex-1 h-11 rounded-lg bg-white border-none px-4 text-[15px] focus:outline-none placeholder:text-slate-500 text-slate-900 transition-all shadow-sm"
               value={newMessage}
               onChange={(e) => setNewMessage(e.target.value)}
               disabled={sending}
