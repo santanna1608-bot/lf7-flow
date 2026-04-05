@@ -69,9 +69,10 @@ export function ChatWindow({ lead, onBack }: ChatWindowProps) {
         .from('messages')
         .insert({
           content: newMessage.trim(),
-          role: 'user',
+          role: 'attendant',
           lead_id: lead.id,
           company_id: lead.company_id,
+          phone: lead.phone,
           file_url: fileUrl
         })
 
@@ -212,14 +213,14 @@ export function ChatWindow({ lead, onBack }: ChatWindowProps) {
               key={msg.id}
               className={cn(
                 "flex w-full animate-in fade-in slide-in-from-bottom-1 duration-300 mb-1",
-                msg.role === 'assistant' ? "justify-start" : "justify-end",
+                msg.role === 'user' ? "justify-start" : "justify-end",
                 isFirstInGroup ? "mt-4" : "mt-1.5"
               )}
             >
               <div
                 className={cn(
                   "max-w-[85%] md:max-w-[65%] px-3 py-1.5 shadow-sm relative text-[14.2px] leading-snug tracking-normal group/msg",
-                  msg.role === 'assistant' 
+                  msg.role === 'user' 
                     ? "bg-white text-slate-900 rounded-lg rounded-tl-none ml-2" 
                     : "bg-[#d9fdd3] text-[#111b21] rounded-lg rounded-tr-none mr-2 shadow-[#00000014]"
                 )}
@@ -228,7 +229,7 @@ export function ChatWindow({ lead, onBack }: ChatWindowProps) {
                 {isFirstInGroup && (
                   <div className={cn(
                     "absolute top-0 w-3 h-3",
-                    msg.role === 'assistant' 
+                    msg.role === 'user' 
                       ? "-left-1.5 border-t-[10px] border-t-white border-l-[10px] border-l-transparent" 
                       : "-right-1.5 border-t-[10px] border-t-[#d9fdd3] border-r-[10px] border-r-transparent"
                   )} />
@@ -256,7 +257,7 @@ export function ChatWindow({ lead, onBack }: ChatWindowProps) {
                   "text-[10px] text-slate-500 font-medium"
                 )}>
                   {new Date(msg.created_at || '').toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                  {msg.role === 'user' && (
+                  {['assistant', 'attendant'].includes(msg.role || '') && (
                     <div className="text-[#53bdeb] flex items-center">
                       <svg viewBox="0 0 16 15" width="16" height="15"><path fill="currentColor" d="M15.01 3.316l-.478-.372a.365.365 0 0 0-.51.063L8.666 9.879l-2.976-2.09a.307.307 0 0 0-.413.056l-.427.5a.306.306 0 0 0 .048.42l3.756 2.64a.341.341 0 0 0 .461-.044L15.083 3.82a.374.374 0 0 0-.073-.504zm-3.514.391l-.478-.372a.365.365 0 0 0-.51.063l-2.001 2.506a.342.342 0 0 0 .061.472l.441.344a.366.366 0 0 0 .51-.063l2.05-2.568a.375.375 0 0 0-.073-.482zM4.156 10.45l-2.454-1.724a.306.306 0 0 0-.413.056l-.427.5a.306.306 0 0 0 .048.42l3.756 2.64a.341.341 0 0 0 .461-.044L5.672 11.5l-.65-.508l-1.127 1.41z"></path></svg>
                     </div>
@@ -339,8 +340,8 @@ export function ChatWindow({ lead, onBack }: ChatWindowProps) {
           <form onSubmit={handleSendMessage} className="flex-1 flex items-center gap-3">
             <input
               type="text"
-              placeholder="Digite uma mensagem"
-              className="flex-1 h-11 rounded-lg bg-white border-none px-4 text-[15px] focus:outline-none placeholder:text-slate-500 text-slate-900 transition-all shadow-sm"
+              placeholder="Enviar como Atendente..."
+              className="flex-1 h-11 rounded-lg bg-white border-none px-4 text-[15px] focus:outline-none placeholder:text-primary/60 text-slate-900 transition-all shadow-sm font-medium"
               value={newMessage}
               onChange={(e) => setNewMessage(e.target.value)}
               disabled={sending}
