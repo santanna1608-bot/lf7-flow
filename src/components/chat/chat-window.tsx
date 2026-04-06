@@ -15,27 +15,36 @@ interface ChatWindowProps {
   onBack?: () => void
 }
 
-const isImageUrl = (url: string) => {
-  if (!url) return false;
-  return (
-    /\.(jpe?g|png|gif|webp|avif|bmp)/i.test(url) ||
-    /drive\.usercontent\.google\.com|googleusercontent\.com|supabase\.co.*\/storage\/v1\/object/i.test(url) ||
-    (url.includes('drive.google.com') && (url.includes('download') || url.includes('export=view')))
-  );
+const isImageUrl = (text: string) => {
+  if (!text) return false;
+  const drivePattern = /drive\.usercontent\.google\.com|googleusercontent\.com|drive\.google\.com.*(export=view|download|id=|\/d\/)/i;
+  const extPattern = /\.(jpe?g|png|gif|webp|avif|bmp)/i;
+  const supabasePattern = /supabase\.co.*\/storage\/v1\/object/i;
+  return drivePattern.test(text) || extPattern.test(text) || supabasePattern.test(text);
 };
 
-const getDirectImageUrl = (url: string | null) => {
-  if (!url) return "";
+const getDirectImageUrl = (text: string | null) => {
+  if (!text) return "";
   
-  // Se for Google Drive (vários formatos)
-  if (url.includes('drive.google.com') || url.includes('drive.usercontent.google.com')) {
-    const match = url.match(/(?:id=|\/d\/|file\/d\/)([\w-]{25,})/);
+  // Se for Google Drive (procurar ID em qualquer lugar)
+  if (text.includes('drive.google.com') || text.includes('drive.usercontent.google.com')) {
+    const match = text.match(/(?:id=|\/d\/|file\/d\/)([\w-]{25,})/);
     if (match && match[1]) {
       return `https://drive.google.com/uc?export=view&id=${match[1]}`;
     }
   }
   
-  return url;
+  // Se for imagem direta (extrair link puro)
+  const urlMatch = text.match(/https?:\/\/[^\s]+\.(?:jpe?g|png|gif|webp|avif|bmp)(?:\?[^\s]*)?/i);
+  if (urlMatch) return urlMatch[0];
+  
+  // Se for Supabase
+  if (text.includes('supabase.co') && text.includes('/storage/v1/object')) {
+     const supabaseMatch = text.match(/https?:\/\/[\w-]+\.supabase\.co.*\/storage\/v1\/object\/[^\s]+/i);
+     if (supabaseMatch) return supabaseMatch[0];
+  }
+
+  return text;
 };
 
 export function ChatWindow({ lead, onBack }: ChatWindowProps) {
@@ -304,11 +313,28 @@ export function ChatWindow({ lead, onBack }: ChatWindowProps) {
                              className="max-h-[400px] w-full object-cover cursor-pointer hover:scale-[1.01] transition-transform duration-500"
                              onClick={() => window.open(getDirectImageUrl(msg.content), '_blank')}
                              onError={(e) => {
-                               // Fallback simples se a imagem falhar: oculta a tag quebrada
-                               (e.target as HTMLImageElement).parentElement!.style.display = 'none';
+                               // Fallback: se a imagem falhar, oculta a tag e mostra o link original em vez de apenas o texto
+                               const target = e.target as HTMLImageElement;
+                               if (target.parentElement) {
+                                 target.parentElement.style.display = 'none';
+                               }
                              }}
                            />
                            <div className="absolute inset-0 bg-black/0 group-hover/img:bg-black/5 transition-colors pointer-events-none" />
+                        </div>
+                      )}
+                      
+                      {/* Botão de fallback visual se for Google Drive para garantir acesso */}
+                      {isImageUrl(msg.content) && msg.content.includes('drive.google.com') && (
+                        <div className="pt-1">
+                           <a 
+                             href={msg.content.match(/https?:\/\/[^\s]+/)?.[0] || msg.content} 
+                             target="_blank" 
+                             rel="noopener noreferrer"
+                             className="text-[10px] font-black uppercase tracking-wider text-primary hover:underline flex items-center gap-2 bg-primary/5 w-fit px-3 py-1.5 rounded-full"
+                           >
+                             <Paperclip className="h-3 w-3" /> Ver Foto Original no Drive
+                           </a>
                         </div>
                       )}
                     </div>
