@@ -24,6 +24,20 @@ const isImageUrl = (url: string) => {
   );
 };
 
+const getDirectImageUrl = (url: string | null) => {
+  if (!url) return "";
+  
+  // Se for Google Drive (vários formatos)
+  if (url.includes('drive.google.com') || url.includes('drive.usercontent.google.com')) {
+    const match = url.match(/(?:id=|\/d\/|file\/d\/)([\w-]{25,})/);
+    if (match && match[1]) {
+      return `https://drive.google.com/uc?export=view&id=${match[1]}`;
+    }
+  }
+  
+  return url;
+};
+
 export function ChatWindow({ lead, onBack }: ChatWindowProps) {
   const { messages, loading } = useMessages(lead?.id || null)
   const [newMessage, setNewMessage] = useState("")
@@ -251,10 +265,11 @@ export function ChatWindow({ lead, onBack }: ChatWindowProps) {
                       {isImageUrl(msg.file_url) ? (
                         <div className="relative group/img">
                           <img 
-                            src={msg.file_url} 
+                            src={getDirectImageUrl(msg.file_url)} 
                             alt="Anexo" 
+                            referrerPolicy="no-referrer"
                             className="max-h-[300px] w-full object-cover cursor-pointer hover:opacity-95 transition-opacity"
-                            onClick={() => window.open(msg.file_url!, '_blank')}
+                            onClick={() => window.open(getDirectImageUrl(msg.file_url!), '_blank')}
                           />
                         </div>
                       ) : (
@@ -277,10 +292,11 @@ export function ChatWindow({ lead, onBack }: ChatWindowProps) {
                        {isImageUrl(msg.content) ? (
                          <div className="overflow-hidden rounded-lg border border-black/5 shadow-sm">
                            <img 
-                             src={msg.content} 
+                             src={getDirectImageUrl(msg.content)} 
                              alt="Conteúdo" 
+                             referrerPolicy="no-referrer"
                              className="max-h-[400px] w-full object-cover cursor-pointer hover:scale-[1.02] transition-transform duration-500"
-                             onClick={() => window.open(msg.content, '_blank')}
+                             onClick={() => window.open(getDirectImageUrl(msg.content), '_blank')}
                            />
                          </div>
                        ) : (
