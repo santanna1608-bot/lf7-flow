@@ -17,10 +17,12 @@ interface ChatWindowProps {
 
 const isImageUrl = (text: string) => {
   if (!text) return false;
-  const drivePattern = /drive\.usercontent\.google\.com|googleusercontent\.com|drive\.google\.com.*(export=view|download|id=|\/d\/)/i;
+  // Detecção 100% permissiva para Google Drive em qualquer lugar da frase
+  if (text.includes('drive.google.com') || text.includes('drive.usercontent.google.com')) return true;
+  
   const extPattern = /\.(jpe?g|png|gif|webp|avif|bmp)/i;
   const supabasePattern = /supabase\.co.*\/storage\/v1\/object/i;
-  return drivePattern.test(text) || extPattern.test(text) || supabasePattern.test(text);
+  return extPattern.test(text) || supabasePattern.test(text);
 };
 
 const getDirectImageUrl = (text: string | null) => {
@@ -325,15 +327,15 @@ export function ChatWindow({ lead, onBack }: ChatWindowProps) {
                       )}
                       
                       {/* Botão de fallback visual se for Google Drive para garantir acesso */}
-                      {isImageUrl(msg.content) && msg.content.includes('drive.google.com') && (
+                      {(msg.content?.includes('drive.google.com') || msg.content?.includes('drive.usercontent.google.com')) && (
                         <div className="pt-1">
                            <a 
                              href={msg.content.match(/https?:\/\/[^\s]+/)?.[0] || msg.content} 
                              target="_blank" 
                              rel="noopener noreferrer"
-                             className="text-[10px] font-black uppercase tracking-wider text-primary hover:underline flex items-center gap-2 bg-primary/5 w-fit px-3 py-1.5 rounded-full"
+                             className="text-[10px] font-black uppercase tracking-wider text-orange-600 hover:text-orange-700 hover:underline flex items-center gap-2 bg-orange-100 border border-orange-200 w-fit px-3 py-2 rounded-lg transition-all"
                            >
-                             <Paperclip className="h-3 w-3" /> Ver Foto Original no Drive
+                             <Paperclip className="h-3.5 w-3.5" /> 📸 Ver Foto do Procedimento
                            </a>
                         </div>
                       )}
