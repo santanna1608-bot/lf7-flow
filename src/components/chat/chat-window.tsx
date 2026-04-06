@@ -288,20 +288,27 @@ export function ChatWindow({ lead, onBack }: ChatWindowProps) {
                     </div>
                   )}
                   {msg.content && (
-                    <div className="space-y-2">
-                       {isImageUrl(msg.content) ? (
-                         <div className="overflow-hidden rounded-lg border border-black/5 shadow-sm">
+                    <div className="space-y-3">
+                      {/* Texto da mensagem (mostra sempre o conteúdo bruto) */}
+                      <p className="whitespace-pre-wrap">{msg.content}</p>
+                      
+                      {/* Renderiza a imagem ABAIXO do texto caso seja detectada uma imagem no conteúdo */}
+                      {isImageUrl(msg.content) && (
+                        <div className="overflow-hidden rounded-lg border border-black/5 shadow-sm bg-slate-50 relative group/img">
                            <img 
                              src={getDirectImageUrl(msg.content)} 
                              alt="Conteúdo" 
                              referrerPolicy="no-referrer"
-                             className="max-h-[400px] w-full object-cover cursor-pointer hover:scale-[1.02] transition-transform duration-500"
+                             className="max-h-[400px] w-full object-cover cursor-pointer hover:scale-[1.01] transition-transform duration-500"
                              onClick={() => window.open(getDirectImageUrl(msg.content), '_blank')}
+                             onError={(e) => {
+                               // Fallback simples se a imagem falhar: oculta a tag quebrada
+                               (e.target as HTMLImageElement).parentElement!.style.display = 'none';
+                             }}
                            />
-                         </div>
-                       ) : (
-                         <p className="whitespace-pre-wrap">{msg.content}</p>
-                       )}
+                           <div className="absolute inset-0 bg-black/0 group-hover/img:bg-black/5 transition-colors pointer-events-none" />
+                        </div>
+                      )}
                     </div>
                   )}
                 </div>
