@@ -18,7 +18,7 @@ interface ChatWindowProps {
 const isImageUrl = (url: string) => {
   if (!url) return false;
   return (
-    /\.(jpe?g|png|gif|webp|avif|bmp)$/i.test(url) ||
+    /\.(jpe?g|png|gif|webp|avif|bmp)/i.test(url) ||
     /drive\.usercontent\.google\.com|googleusercontent\.com|supabase\.co.*\/storage\/v1\/object/i.test(url) ||
     (url.includes('drive.google.com') && (url.includes('download') || url.includes('export=view')))
   );
@@ -268,6 +268,7 @@ export function ChatWindow({ lead, onBack }: ChatWindowProps) {
                             src={getDirectImageUrl(msg.file_url)} 
                             alt="Anexo" 
                             referrerPolicy="no-referrer"
+                            crossOrigin="anonymous"
                             className="max-h-[300px] w-full object-cover cursor-pointer hover:opacity-95 transition-opacity"
                             onClick={() => window.open(getDirectImageUrl(msg.file_url!), '_blank')}
                           />
@@ -299,6 +300,7 @@ export function ChatWindow({ lead, onBack }: ChatWindowProps) {
                              src={getDirectImageUrl(msg.content)} 
                              alt="Conteúdo" 
                              referrerPolicy="no-referrer"
+                             crossOrigin="anonymous"
                              className="max-h-[400px] w-full object-cover cursor-pointer hover:scale-[1.01] transition-transform duration-500"
                              onClick={() => window.open(getDirectImageUrl(msg.content), '_blank')}
                              onError={(e) => {
