@@ -15,6 +15,15 @@ interface ChatWindowProps {
   onBack?: () => void
 }
 
+const isImageUrl = (url: string) => {
+  if (!url) return false;
+  return (
+    /\.(jpe?g|png|gif|webp|avif|bmp)$/i.test(url) ||
+    /drive\.usercontent\.google\.com|googleusercontent\.com|supabase\.co.*\/storage\/v1\/object/i.test(url) ||
+    (url.includes('drive.google.com') && (url.includes('download') || url.includes('export=view')))
+  );
+};
+
 export function ChatWindow({ lead, onBack }: ChatWindowProps) {
   const { messages, loading } = useMessages(lead?.id || null)
   const [newMessage, setNewMessage] = useState("")
@@ -238,19 +247,47 @@ export function ChatWindow({ lead, onBack }: ChatWindowProps) {
 
                 <div className="pr-12 md:pr-14">
                   {msg.file_url && (
-                    <div className="mb-2 p-2 bg-black/5 rounded-lg border border-black/5 flex items-center gap-2 group/file">
-                      <Paperclip className="h-4 w-4 text-slate-500" />
-                      <a 
-                        href={msg.file_url} 
-                        target="_blank" 
-                        rel="noopener noreferrer"
-                        className="text-xs font-bold text-primary hover:underline truncate max-w-[150px]"
-                      >
-                        Ver anexo
-                      </a>
+                    <div className="mb-2 overflow-hidden rounded-lg border border-black/5 bg-black/5 shadow-inner">
+                      {isImageUrl(msg.file_url) ? (
+                        <div className="relative group/img">
+                          <img 
+                            src={msg.file_url} 
+                            alt="Anexo" 
+                            className="max-h-[300px] w-full object-cover cursor-pointer hover:opacity-95 transition-opacity"
+                            onClick={() => window.open(msg.file_url!, '_blank')}
+                          />
+                        </div>
+                      ) : (
+                        <div className="p-2 flex items-center gap-2 group/file">
+                          <Paperclip className="h-4 w-4 text-slate-500" />
+                          <a 
+                            href={msg.file_url} 
+                            target="_blank" 
+                            rel="noopener noreferrer"
+                            className="text-xs font-bold text-primary hover:underline truncate max-w-[150px]"
+                          >
+                            Ver anexo
+                          </a>
+                        </div>
+                      )}
                     </div>
                   )}
-                  {msg.content && <p className="whitespace-pre-wrap">{msg.content}</p>}
+                  {msg.content && (
+                    <div className="space-y-2">
+                       {isImageUrl(msg.content) ? (
+                         <div className="overflow-hidden rounded-lg border border-black/5 shadow-sm">
+                           <img 
+                             src={msg.content} 
+                             alt="Conteúdo" 
+                             className="max-h-[400px] w-full object-cover cursor-pointer hover:scale-[1.02] transition-transform duration-500"
+                             onClick={() => window.open(msg.content, '_blank')}
+                           />
+                         </div>
+                       ) : (
+                         <p className="whitespace-pre-wrap">{msg.content}</p>
+                       )}
+                    </div>
+                  )}
                 </div>
 
                 <div className={cn(
