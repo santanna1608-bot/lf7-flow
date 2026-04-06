@@ -15,6 +15,13 @@ interface ChatWindowProps {
   onBack?: () => void
 }
 
+const isAudioUrl = (text: string | null) => {
+  if (!text) return false;
+  const audioExts = /\.(oga|ogg|mp3|wav|m4a|aac)/i;
+  const isSupabaseAudio = text.includes('supabase.co') && text.includes('/storage/v1/object') && audioExts.test(text);
+  return audioExts.test(text) || isSupabaseAudio || text.includes('audio');
+};
+
 const isImageUrl = (text: string) => {
   if (!text) return false;
   // Detecção 100% permissiva para Google Drive em qualquer lugar da frase
@@ -25,7 +32,7 @@ const isImageUrl = (text: string) => {
   return extPattern.test(text) || supabasePattern.test(text);
 };
 
-const getDirectImageUrl = (text: string | null) => {
+const getDirectMediaUrl = (text: string | null) => {
   if (!text) return "";
   
   // Se for Google Drive (procurar ID em qualquer lugar)
@@ -37,8 +44,12 @@ const getDirectImageUrl = (text: string | null) => {
   }
   
   // Se for imagem direta (extrair link puro)
-  const urlMatch = text.match(/https?:\/\/[^\s]+\.(?:jpe?g|png|gif|webp|avif|bmp)(?:\?[^\s]*)?/i);
-  if (urlMatch) return urlMatch[0];
+  const imgUrlMatch = text.match(/https?:\/\/[^\s]+\.(?:jpe?g|png|gif|webp|avif|bmp)(?:\?[^\s]*)?/i);
+  if (imgUrlMatch) return imgUrlMatch[0];
+  
+  // Se for áudio direto
+  const audioUrlMatch = text.match(/https?:\/\/[^\s]+\.(?:oga|ogg|mp3|wav|m4a|aac)(?:\?[^\s]*)?/i);
+  if (audioUrlMatch) return audioUrlMatch[0];
   
   // Se for Supabase
   if (text.includes('supabase.co') && text.includes('/storage/v1/object')) {
@@ -276,13 +287,25 @@ export function ChatWindow({ lead, onBack }: ChatWindowProps) {
                       {isImageUrl(msg.file_url) ? (
                         <div className="relative group/img">
                           <img 
-                            src={getDirectImageUrl(msg.file_url)} 
+                            src={getDirectMediaUrl(msg.file_url)} 
                             alt="Anexo" 
                             referrerPolicy="no-referrer"
                             crossOrigin="anonymous"
                             className="max-h-[300px] w-full object-cover cursor-pointer hover:opacity-95 transition-opacity"
-                            onClick={() => window.open(getDirectImageUrl(msg.file_url!), '_blank')}
+                            onClick={() => window.open(getDirectMediaUrl(msg.file_url!), '_blank')}
                           />
+                        </div>
+                      ) : isAudioUrl(msg.file_url) ? (
+                        <div className="p-3 bg-[#e8f1f7] rounded-lg">
+                           <audio 
+                             src={msg.file_url} 
+                             controls 
+                             className="w-full h-8 opacity-80" 
+                           />
+                           <div className="mt-2 flex items-center gap-1.5 pl-1">
+                              <Zap className="h-3 w-3 text-primary" />
+                              <span className="text-[10px] font-black uppercase text-slate-500 tracking-widest">Áudio do Cliente</span>
+                           </div>
                         </div>
                       ) : (
                         <div className="p-2 flex items-center gap-2 group/file">
@@ -308,12 +331,12 @@ export function ChatWindow({ lead, onBack }: ChatWindowProps) {
                       {isImageUrl(msg.content) && (
                         <div className="overflow-hidden rounded-lg border border-black/5 shadow-sm bg-slate-50 relative group/img">
                            <img 
-                             src={getDirectImageUrl(msg.content)} 
+                             src={getDirectMediaUrl(msg.content)} 
                              alt="Conteúdo" 
                              referrerPolicy="no-referrer"
                              crossOrigin="anonymous"
                              className="max-h-[400px] w-full object-cover cursor-pointer hover:scale-[1.01] transition-transform duration-500"
-                             onClick={() => window.open(getDirectImageUrl(msg.content), '_blank')}
+                             onClick={() => window.open(getDirectMediaUrl(msg.content), '_blank')}
                              onError={(e) => {
                                // Fallback: se a imagem falhar, oculta a tag e mostra o link original em vez de apenas o texto
                                const target = e.target as HTMLImageElement;
@@ -323,6 +346,21 @@ export function ChatWindow({ lead, onBack }: ChatWindowProps) {
                              }}
                            />
                            <div className="absolute inset-0 bg-black/0 group-hover/img:bg-black/5 transition-colors pointer-events-none" />
+                        </div>
+                      )}
+
+                      {/* Renderiza Player de ÁUDIO se um link de áudio for detectado no conteúdo da IA */}
+                      {isAudioUrl(msg.content) && (
+                        <div className="p-3 bg-[#d4ebd0] rounded-xl border border-black/5 shadow-sm mt-2">
+                           <audio 
+                             src={msg.content.match(/https?:\/\/[^\s]+(?:\.oga|\.mp3|\.wav|\.ogg|\.m4a)(?:\?[^\s]*)?/i)?.[0] || msg.content} 
+                             controls 
+                             className="w-full h-8 opacity-90 filter brightness-105" 
+                           />
+                           <div className="mt-2 flex items-center gap-1.5 pl-1 opacity-60">
+                              <Smile className="h-3 w-3 text-emerald-600" />
+                              <span className="text-[10px] font-black uppercase text-emerald-800 tracking-widest">Áudio da Bia (IA)</span>
+                           </div>
                         </div>
                       )}
                       
